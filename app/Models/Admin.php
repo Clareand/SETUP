@@ -16,12 +16,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id_user
  * @property int $id_role
  * @property string $address
- * @property int $city
+ * @property string|null $city
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
  * @property Role $role
  * @property User $user
+ * @property Regency|null $regency
  *
  * @package App\Models
  */
@@ -31,8 +32,7 @@ class Admin extends Model
 
 	protected $casts = [
 		'id_user' => 'int',
-		'id_role' => 'int',
-		'city' => 'int'
+		'id_role' => 'int'
 	];
 
 	protected $fillable = [
@@ -50,5 +50,10 @@ class Admin extends Model
 	public function user()
 	{
 		return $this->belongsTo(User::class, 'id_user');
+	}
+
+	public function regency()
+	{
+		return $this->belongsTo(Regency::class, 'city');
 	}
 }

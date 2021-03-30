@@ -16,6 +16,7 @@ class AddForeignKeysToAdminsTable extends Migration
         Schema::table('admins', function (Blueprint $table) {
             $table->foreign('id_user', 'id_admin_role')->references('id')->on('roles')->onUpdate('CASCADE')->onDelete('RESTRICT');
             $table->foreign('id_user', 'id_admin_user')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('RESTRICT');
+            $table->foreign('city', 'id_city')->references('id')->on('regencies')->onUpdate('CASCADE')->onDelete('SET NULL');
         });
     }
 
@@ -29,6 +30,7 @@ class AddForeignKeysToAdminsTable extends Migration
         Schema::table('admins', function (Blueprint $table) {
             $table->dropForeign('id_admin_role');
             $table->dropForeign('id_admin_user');
+            $table->dropForeign('id_city');
         });
     }
 }

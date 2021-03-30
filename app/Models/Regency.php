@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * 
  * @property Province $province
+ * @property Collection|Admin[] $admins
  *
  * @package App\Models
  */
@@ -33,5 +35,10 @@ class Regency extends Model
 	public function province()
 	{
 		return $this->belongsTo(Province::class);
+	}
+
+	public function admins()
+	{
+		return $this->hasMany(Admin::class, 'city');
 	}
 }

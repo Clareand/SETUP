@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "53fb4c1df7f8b3bac4aaae89080be3cf",
+    "content-hash": "963e81a0795ecf757d4ed41e86d7efd9",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -509,6 +509,56 @@
                 "laravel"
             ],
             "time": "2020-04-28T08:47:37+00:00"
+        },
+        {
+            "name": "gguney/rseeder",
+            "version": "v1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gguney/rseeder.git",
+                "reference": "6cbe8f21a1670d8c63048f897cbbf9b171104942"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gguney/rseeder/zipball/6cbe8f21a1670d8c63048f897cbbf9b171104942",
+                "reference": "6cbe8f21a1670d8c63048f897cbbf9b171104942",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "php": ">=5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GGuney\\RSeeder\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gokhan Guney",
+                    "email": "gokhanguneygg@gmail.com",
+                    "homepage": "http://gguney.com"
+                }
+            ],
+            "description": "Reverse Seeder for Laravel",
+            "homepage": "https://github.com/gguney/rseeder",
+            "keywords": [
+                "database",
+                "reverse",
+                "seeder"
+            ],
+            "support": {
+                "issues": "https://github.com/gguney/rseeder/issues",
+                "source": "https://github.com/gguney/rseeder/tree/master"
+            },
+            "time": "2017-03-18T08:32:56+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

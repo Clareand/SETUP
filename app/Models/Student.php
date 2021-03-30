@@ -17,12 +17,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id_role
  * @property string $last_name
  * @property string $address
- * @property string $city
+ * @property string|null $city
  * @property string $postal_code
  * @property int|null $point
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
+ * @property Province|null $province
  * @property Role $role
  * @property User $user
  *
@@ -47,6 +48,11 @@ class Student extends Model
 		'postal_code',
 		'point'
 	];
+
+	public function province()
+	{
+		return $this->belongsTo(Province::class, 'city');
+	}
 
 	public function role()
 	{
