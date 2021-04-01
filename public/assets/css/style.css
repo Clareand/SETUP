@@ -1,0 +1,63 @@
+.custom-height{
+    height: 300px !important;
+    overflow: hidden;
+}
+
+.bg-gray-1{
+    background-color: #434F5A !important;
+}
+
+.bg-gray-2{
+    background-color: #AEB6C3 !important;
+}
+
+
+/* button */
+
+.btn-olive
+{
+    color: #fff;
+    border-color: #85857B;
+    background-color: #85857B;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+}
+.btn-olive:hover
+{
+    color: #fff;
+    border-color: #707059; 
+    background-color: #707059;
+}
+.btn-olive:focus,
+.btn-olive.focus
+{
+    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08), 0 0 0 0 rgb(158, 158, 117);
+}
+.btn-olive.disabled,
+.btn-olive:disabled
+{
+    color: #fff;
+    border-color: #a1a179; 
+    background-color: #a1a179;
+}
+.btn-olive:not(:disabled):not(.disabled):active,
+.btn-olive:not(:disabled):not(.disabled).active,
+.show > .btn-olive.dropdown-toggle
+{
+    color: #fff;
+    border-color: #a1a179; 
+    background-color: #a1a179;
+}
+.btn-olive:not(:disabled):not(.disabled):active:focus,
+.btn-olive:not(:disabled):not(.disabled).active:focus,
+.show > .btn-olive.dropdown-toggle:focus
+{
+    box-shadow: none, 0 0 0 0 rgb(158, 158, 117);
+}
+
+
+/* misc */
+
+.logo-box{
+    display: flex;
+    margin:2rem;
+}
