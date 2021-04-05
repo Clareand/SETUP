@@ -55,6 +55,17 @@
 }
 
 
+.page-item.active.olive .page-link {
+    z-index: 3;
+    color: #fff;
+    border-color: #a1a179;
+    background-color: #a1a179;
+}
+
+.navbar-vertical.navbar-expand-xs .navbar-nav > .nav-item > .nav-link.active.olive {
+    background: #85857b45 !important;
+}
+
 /* misc */
 
 .logo-box{

@@ -13,6 +13,9 @@
 
 Route::prefix('admin')->group(function() {
     Route::middleware(['is_admin'])->group(function(){
-        Route::get('/dashboard', 'AdminController@dashboard')->name('dashboard');
+        Route::get('/', 'AdminController@dashboard')->name('dashboard');
+        Route::get('/list', 'AdminController@index')->name('list');
+        Route::get('/add', 'AdminController@create')->name('add'); 
+        Route::get('/store', 'AdminBEController@store'); 
     });
 });

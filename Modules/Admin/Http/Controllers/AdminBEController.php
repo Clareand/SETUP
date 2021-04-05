@@ -2,33 +2,29 @@
 
 namespace Modules\Admin\Http\Controllers;
 
-use App\Http\Controllers\HomeController;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Admin\Http\Controllers\AdminBEController;
+use App\Models\User;
+use App\Models\Admin;
+use App\Models\Province;
+use App\Models\Regency;
+use App\Models\Role;
+use App\Library\MyHelper;
+use DB;
+use Validator;
+use Auth;
 
-class AdminController extends Controller
+class AdminBEController extends Controller
 {
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
-    public function __construct()
+    public static function getUserAll()
     {
-        $this->middleware('auth');
-    }
-    public function dashboard()
-    {
-        return view('admin::layouts.dashboard');
-    }
-    public function index()
-    {
-        $data = AdminBEController::getUserAll();
-        // return $data;
-        if($data['status']=='success'){
-            return view('admin::layouts.index',$data['result']);
-        }
+        $data=Admin::with('user','regency.province')->paginate(10);
+        return MyHelper::checkGet($data);
     }
 
     /**
@@ -37,9 +33,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        $city=HomeController::getProvince();
-        $data['province']=$city['result'];
-        return view('admin::layouts.create',$data);
+        return view('admin::create');
     }
 
     /**
