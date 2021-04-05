@@ -17,7 +17,7 @@ class CreateAdminsTable extends Migration
             $table->integer('id', true);
             $table->integer('id_user')->index('id_admin_user');
             $table->integer('id_role');
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->char('city', 4)->nullable()->index('id_city');
             $table->timestamps();
         });

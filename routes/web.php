@@ -19,13 +19,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'AuthController@showFormLogin')->name('login');
 Route::get('login', 'AuthController@showFormLogin')->name('login');
 Route::post('login', 'AuthController@login');
-Route::get('signin','AuthController@showFormsignin')->name('signin');
 Route::get('register', 'AuthController@showFormRegister')->name('register');
 Route::post('register', 'AuthController@register');
+Route::prefix('admin')->group(function(){
+    Route::get('/','AuthController@showFormsignin')->name('signin'); //use for admin
+});
  
 Route::group(['middleware' => 'auth'], function () {
     Route::get('logout', 'AuthController@logout')->name('logout');
-    Route::get('student', 'HomeController@student')->name('student');
+    Route::get('pages', 'HomeController@student')->name('pages');
  
 });
 Route::middleware(['is_admin'])->group(function(){

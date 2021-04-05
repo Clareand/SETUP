@@ -16,9 +16,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id_user
  * @property int $id_role
  * @property string $last_name
- * @property string $address
+ * @property string|null $address
  * @property string|null $city
- * @property string $postal_code
+ * @property string|null $postal_code
  * @property int|null $point
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at

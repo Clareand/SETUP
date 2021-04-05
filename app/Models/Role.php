@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property Collection|Admin[] $admins
  * @property Collection|Student[] $students
+ * @property Collection|User[] $users
  *
  * @package App\Models
  */
@@ -39,5 +40,10 @@ class Role extends Model
 	public function students()
 	{
 		return $this->hasMany(Student::class, 'id_role');
+	}
+
+	public function users()
+	{
+		return $this->hasMany(User::class, 'id_role');
 	}
 }

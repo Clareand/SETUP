@@ -18,9 +18,9 @@ class CreateStudentsTable extends Migration
             $table->integer('id_user')->index('id_user_student');
             $table->integer('id_role')->index('id_role_student');
             $table->string('last_name');
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->char('city', 4)->nullable()->index('city_id');
-            $table->string('postal_code', 5);
+            $table->string('postal_code')->nullable();
             $table->integer('point')->nullable();
             $table->timestamps();
         });

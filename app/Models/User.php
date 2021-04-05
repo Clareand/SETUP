@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
+ * @property Role $role
  * @property Collection|Admin[] $admins
  * @property Collection|Student[] $students
  * @property Collection|Badge[] $badges
@@ -53,6 +54,11 @@ class User extends Model
 		'id_role',
 		'remember_token'
 	];
+
+	public function role()
+	{
+		return $this->belongsTo(Role::class, 'id_role');
+	}
 
 	public function admins()
 	{

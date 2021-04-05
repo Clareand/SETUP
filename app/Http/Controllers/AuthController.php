@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Hash;
 use Session;
 use App\User;
+use DB;
+use Illuminate\Support\Facades\DB as FacadesDB;
 
 class AuthController extends Controller
 {
@@ -23,7 +26,7 @@ class AuthController extends Controller
     {
         if (Auth::check()) { // true sekalian session field di users nanti bisa dipanggil via Auth
             //Login Success
-            return redirect()->route('home');
+            return redirect()->route('dashboard');
         }
         return view('auth.signin');
     }
@@ -60,10 +63,10 @@ class AuthController extends Controller
            $user = $request->user();
            if($user->id_role==1){
                $request->session()->put('id_role',$user->id_role);
-               return redirect()->route('home');
+               return redirect()->route('dashboard');
            }else{
             $request->session()->put('id_role',$user->id_role);
-            return redirect()->route('student');
+            return redirect()->route('pages');
            }
             
  
@@ -105,22 +108,37 @@ class AuthController extends Controller
         if($validator->fails()){
             return redirect()->back()->withErrors($validator)->withInput($request->all);
         }
- 
-        $user = new User;
-        $user->name = ucwords(strtolower($request->name));
-        $user->email = strtolower($request->email);
-        $user->phone = $request->phone;
-        $user->password = Hash::make($request->password);
-        $user->id_role=$request->role;
-        $simpan = $user->save();
- 
-        if($simpan){
-            Session::flash('success', 'Register berhasil! Silahkan login untuk mengakses data');
-            return redirect()->route('login');
-        } else {
-            Session::flash('errors', ['' => 'Register gagal! Silahkan ulangi beberapa saat lagi']);
+
+        DB::beginTransaction();
+        try{
+            $user = new User;
+            $user->name = ucwords(strtolower($request->name));
+            $user->email = strtolower($request->email);
+            $user->phone = $request->phone;
+            $user->password = Hash::make($request->password);
+            $user->id_role=$request->role;
+            $user->save();
+        }catch(\Exception $e){
+            DB::rollback();
+            Session::flash('errors', 'Register Failed! Please try again later');
             return redirect()->route('register');
-        }
+        };
+        if($user->id_role==2){
+            try{
+                $student = new Student;
+                $student->id_user = $user->id;
+                $student->id_role = $user->id_role;
+                $student->last_name = ucwords(strtolower($request->last_name));
+                $student->save();
+            }catch(\Exception $e){
+                DB::rollback();
+                Session::flash('errors', 'Register Failed! Please try again later');
+                return redirect()->route('register');
+            }
+        };
+        DB::commit();
+        Session::flash('success', 'Register Success! Please Login to access');
+        return redirect()->route('login');
     }
  
     public function logout()
