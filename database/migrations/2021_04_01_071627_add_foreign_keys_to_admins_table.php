@@ -14,7 +14,7 @@ class AddForeignKeysToAdminsTable extends Migration
     public function up()
     {
         Schema::table('admins', function (Blueprint $table) {
-            $table->foreign('id_user', 'id_admin_role')->references('id')->on('roles')->onUpdate('CASCADE')->onDelete('RESTRICT');
+            $table->foreign('id_role', 'id_admin_role')->references('id')->on('roles')->onUpdate('CASCADE')->onDelete('RESTRICT');
             $table->foreign('id_user', 'id_admin_user')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('RESTRICT');
             $table->foreign('city', 'id_city')->references('id')->on('regencies')->onUpdate('CASCADE')->onDelete('SET NULL');
         });

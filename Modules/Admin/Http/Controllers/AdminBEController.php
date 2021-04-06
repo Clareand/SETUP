@@ -41,9 +41,9 @@ class AdminBEController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(Request $request)
+    public static function store($request)
     {
-        //
+        //    
     }
 
     /**
@@ -61,9 +61,11 @@ class AdminBEController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function edit($id)
+    public static function edit($id)
     {
-        return view('admin::edit');
+    //    return $id;
+       $data = Admin::with('user','regency.province')->where('id',$id)->get();
+       return MyHelper::checkGet($data);
     }
 
     /**
@@ -72,9 +74,46 @@ class AdminBEController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public static function update($request, $id)
     {
-        //
+       $admin = Admin::with('user','regency.province')->findOrFail($id);
+       $validator = Validator::make($request->all(),[
+           'name'=>'string',
+           'phone'=>'string|max:13',
+           'email'=>'string',
+           'address'=>'string',
+           'city'=>'string',
+       ]);
+       if($validator->fails()){
+           $response = [$validator->messages()];
+           return $response;
+       };
+       
+       if($request['password']==null){
+           $postAdmin=$request->only(['address','city']);
+           $postUser=$request->only(['name','phone','email']);
+       }else{
+           $postUser=$request->except(['address','city']);
+           $postAdmin=$request->only(['address','city']);
+       };
+       DB::beginTransaction();
+       try{
+           $updateUser=User::where('id',$admin['id_user'])->update($postUser);
+       }catch(\Exception $e){
+           DB::rollback();
+           return $e;
+       };
+
+       try{
+           $updateAdmin=Admin::where('id',$id)->update($postAdmin);
+       }catch(\Exception $e){
+           DB::rollback();
+           return $e;
+       };
+
+       DB::commit();
+       return MyHelper::checkUpdate($updateAdmin);
+
     }
 
     /**
@@ -82,8 +121,27 @@ class AdminBEController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function destroy($id)
+    public static function destroy($id)
     {
-        //
+        $admin = Admin::with('user','regency.province')->findOrFail($id);
+        $user = User::findOrFail($admin['id_user']);
+        // return $user;
+        DB::beginTransaction();
+        try{
+            $deleteAdmin = $admin->delete();
+        }catch(\Exception $e){
+            DB::rollback();
+            return MyHelper::checkDelete($deleteAdmin);
+        }
+        try{
+            $is_deleted=1;
+            $updateUser=User::where('id',$user['id'])->update(['is_deleted'=>$is_deleted]);
+        }catch(\Exception $e){
+            DB::rollback();
+            return MyHelper::checkDelete($updateUser);
+        }
+        DB::commit();
+        return MyHelper::checkDelete($deleteAdmin);
+       
     }
 }

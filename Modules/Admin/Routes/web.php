@@ -12,10 +12,16 @@
 */
 
 Route::prefix('admin')->group(function() {
+    Route::get('/', 'AuthController@showFormsignin');
     Route::middleware(['is_admin'])->group(function(){
         Route::get('/', 'AdminController@dashboard')->name('dashboard');
         Route::get('/list', 'AdminController@index')->name('list');
         Route::get('/add', 'AdminController@create')->name('add'); 
-        Route::get('/store', 'AdminBEController@store'); 
+        Route::get('/edit/{id}', 'AdminController@edit')->name('edit'); 
+        Route::get('/detail/{id}', 'AdminController@show')->name('detail'); 
+        Route::post('/store', 'AdminController@store'); 
+        Route::post('/update/{id}', 'AdminController@update'); 
+        Route::get('/delete/{id}', 'AdminController@destroy'); 
+        // Route::get('/alert/{id}', 'AdminController@notifTest'); 
     });
 });

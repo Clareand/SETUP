@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('phone', 15)->unique('phone');
             $table->string('password');
             $table->integer('id_role')->index('id_user_roles');
-            $table->rememberToken();
+            $table->tinyInteger('is_deleted')->default(0);
             $table->timestamps();
         });
     }

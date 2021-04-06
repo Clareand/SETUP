@@ -26,7 +26,7 @@
               <div class="collapse @yield('user-collapse')" id="navbar-user">
                 <ul class="nav nav-sm flex-column">
                   <li class="nav-item @yield('admin-active')">
-                    <a href="../../pages/dashboards/dashboard.html" class="nav-link">
+                    <a href="{{url ('/admin/list')}}" class="nav-link">
                       <span class="sidenav-normal"> Admin </span>
                     </a>
                   </li>

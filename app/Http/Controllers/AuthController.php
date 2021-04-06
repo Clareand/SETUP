@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -108,7 +109,7 @@ class AuthController extends Controller
         if($validator->fails()){
             return redirect()->back()->withErrors($validator)->withInput($request->all);
         }
-
+        
         DB::beginTransaction();
         try{
             $user = new User;
@@ -119,9 +120,10 @@ class AuthController extends Controller
             $user->id_role=$request->role;
             $user->save();
         }catch(\Exception $e){
+            return $e;
             DB::rollback();
-            Session::flash('errors', 'Register Failed! Please try again later');
-            return redirect()->route('register');
+            Session::flash('errors', ['Register Failed! Please try again later']);
+            return redirect()->back()->withErrors($validator)->withInput($request->all);
         };
         if($user->id_role==2){
             try{
@@ -132,13 +134,32 @@ class AuthController extends Controller
                 $student->save();
             }catch(\Exception $e){
                 DB::rollback();
-                Session::flash('errors', 'Register Failed! Please try again later');
+                Session::flash('errors', ['Register Failed! Please try again later']);
                 return redirect()->route('register');
+            }
+        }else if($user->id_role==1){
+            try{
+                $admin = new Admin;
+                $admin->id_user = $user->id;
+                $admin->id_role = $user->id_role;
+                $admin->city = $request->city;
+                $admin->address=$request->address;
+                $admin->save();
+            }catch(\Exception $e){
+                DB::rollback();
+                Session::flash('errors', ['Register Admin Failed! Please try again later']);
+                return redirect()->back()->withErrors($validator)->withInput($request->all);
             }
         };
         DB::commit();
-        Session::flash('success', 'Register Success! Please Login to access');
-        return redirect()->route('login');
+        if($user->id_role==1){
+            Session::flash('success', ['Register Admin Success!']);
+            return redirect()->route('list');
+        }else{
+            Session::flash('success', ['Register Success! Please Login to access']);
+            return redirect()->route('login');
+        }
+        
     }
  
     public function logout()
@@ -146,7 +167,7 @@ class AuthController extends Controller
         $role =Auth::user()->id_role;
         Auth::logout(); // menghapus session yang aktif
         if($role==1){
-            return redirect()->route('signin');
+            return redirect()->route('admin');
         }else{
             return redirect()->route('login');
         }   

@@ -31,4 +31,9 @@ class HomeController extends Controller
         $data = Regency::where('province_id',$request->id_province)->get();
         return MyHelper::checkGet($data);
     }
+
+    public static function getCities($request){
+        $data = Regency::where('province_id',$request)->get();
+        return MyHelper::checkGet($data);
+    }
 }

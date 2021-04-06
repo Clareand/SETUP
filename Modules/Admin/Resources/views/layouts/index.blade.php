@@ -11,12 +11,13 @@
       <div class="card">
         <!-- Card header -->
         <div class="card-header border-0">
+          @include('baseAdmin.alerts')
           <div class="row align-items-center">
             <div class="col">
               <h3 class="mb-0">Admin Table</h3>
             </div>
             <div class="col text-right">
-              <button class="btn btn-olive" type="button">Add Admin</button>
+              <a href="{{url ('/admin/add')}}" class="btn btn-olive" type="button">Add Admin</a>
             </div>
           </div>
         </div>
@@ -49,18 +50,38 @@
                 </td>
                 <td>
                   <div class="btn-group">
-                    <button type="button" class="btn btn-default">
+                    <a href="{{url('admin/detail/'.$item['id'])}}" type="button" class="btn btn-default" data-toggle="tooltip" title="Detail">
                       <span class="btn-inner--icon"><i class="ni ni-active-40"></i></span>
-                    </button>
-                    <button type="button" class="btn btn-olive">
+                    </a>
+                    <a href="{{url('admin/edit/'.$item['id'])}}" type="button" class="btn btn-olive" data-toggle="tooltip" title="Edit">
                       <span class="btn-inner--icon"><i class="fas fa-pen"></i></span>
-                    </button>
-                    <button type="button" class="btn btn-default">
-                      <span class="btn-inner--icon"><i class="fas fa-trash-alt"></i></span>
+                    </a>
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalDelete{{$item['id']}}">
+                      <span class="btn-inner--icon" data-toggle="tooltip" title="Delete"  ><i class="fas fa-trash-alt"></i></span>
                     </button>
                   </div>
                 </td>
               </tr>
+              {{-- modal --}}
+              <div class="modal fade"  id="modalDelete{{$item['id']}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      Are you sure want to delete {{$item['user']['name']}} from Admin?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <a href="{{url('admin/delete/'.$item['id'])}}" type="button" class="btn btn-danger">Delete</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
               @endforeach
             </tbody>
           </table>

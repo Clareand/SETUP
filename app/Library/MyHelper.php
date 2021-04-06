@@ -16,4 +16,14 @@ class MyHelper{
             return ['status'=>'fail','result'=>['Failed to Show']];
         }
     }
+
+    public static function checkUpdate($data){
+        if($data) return ['status'=>'success', 'result'=>$data];
+        else return ['status'=>'fail','result'=>['Failed to Update']];
+    }
+
+    public static function checkDelete($data){
+        if($data) return ['status'=>'success','result'=>$data];
+        else return ['status'=>'fail','result'=>'something went wrong'];
+    }
 }

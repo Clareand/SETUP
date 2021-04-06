@@ -101,6 +101,7 @@
             @include('baseAdmin.breadcrumb')
           </div>
           @yield('card-header')
+          {{-- @include('baseAdmin.alerts') --}}
           {{-- stats --}}
           {{-- <!-- Card stats -->
           <div class="row">

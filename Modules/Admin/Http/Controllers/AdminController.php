@@ -3,10 +3,12 @@
 namespace Modules\Admin\Http\Controllers;
 
 use App\Http\Controllers\HomeController;
+use Dotenv\Result\Success;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Admin\Http\Controllers\AdminBEController;
+use Session;
 
 class AdminController extends Controller
 {
@@ -49,7 +51,7 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // $data = AdminBEController::store($request);
     }
 
     /**
@@ -59,7 +61,15 @@ class AdminController extends Controller
      */
     public function show($id)
     {
-        return view('admin::show');
+        $admin = AdminBEController::edit($id);
+        if($admin['status']=='success'){
+            // return $admin['result'][0]['regency'];
+            $data =[
+                'user'=>$admin['result']
+            ];
+            // return $data;
+            return view('admin::layouts.detail',$data);
+        };
     }
 
     /**
@@ -69,7 +79,17 @@ class AdminController extends Controller
      */
     public function edit($id)
     {
-        return view('admin::edit');
+        $admin = AdminBEController::edit($id);
+        if($admin['status']=='success'){
+            // return $admin['result'][0]['regency'];
+            $data =[
+                'user'=>$admin['result'],
+                'province'=>HomeController::getProvince(),
+                'city'=>HomeController::getCities($admin['result'][0]['regency']['province_id'])
+            ];
+            // return $data;
+            return view('admin::layouts.edit',$data);
+        };
     }
 
     /**
@@ -80,7 +100,12 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = AdminBEController::update($request,$id);
+        if($data['status']=='success'){
+            return redirect('admin/list')->withSuccess(['Admin has been Updated']);
+        }else{
+            return back()->withErrors($data['result'])->withInput();
+        };
     }
 
     /**
@@ -90,6 +115,24 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // return $id;
+        $data = AdminBEController::destroy($id);
+        // return $data;
+        if($data['status']=='success'){
+            return redirect('admin/list')->withSuccess(['Admin has been deleted']);
+        }else{
+            return back()->withErrors($data['result']);
+        }
+    }
+
+    public function notifTest($test){
+        if($test==1){
+            Session::flash('errors',['eror']);
+        }else if($test==2){
+            Session::flash('success',['ok']);
+        }else{
+            Session::flash('warning',['warn']);
+        }
+        // return view('admin::layouts.dashboard');
     }
 }

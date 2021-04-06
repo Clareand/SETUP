@@ -17,14 +17,12 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 Route::get('/', 'AuthController@showFormLogin')->name('login');
+Route::get('/signin', 'AuthController@showFormSignin')->name('admin');
 Route::get('login', 'AuthController@showFormLogin')->name('login');
 Route::post('login', 'AuthController@login');
 Route::get('register', 'AuthController@showFormRegister')->name('register');
 Route::post('register', 'AuthController@register');
 Route::post('city', 'HomeController@getCity');
-Route::prefix('admin')->group(function(){
-    Route::get('/','AuthController@showFormsignin')->name('signin'); //use for admin
-});
  
 Route::group(['middleware' => 'auth'], function () {
     Route::get('logout', 'AuthController@logout')->name('logout');
