@@ -1,4 +1,6 @@
 {
     "Student": true,
-    "Admin": true
+    "Admin": true,
+    "Class": true,
+    "Classes": true
 }

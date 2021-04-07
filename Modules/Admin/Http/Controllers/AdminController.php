@@ -101,6 +101,7 @@ class AdminController extends Controller
     public function update(Request $request, $id)
     {
         $data = AdminBEController::update($request,$id);
+        // return $data;
         if($data['status']=='success'){
             return redirect('admin/list')->withSuccess(['Admin has been Updated']);
         }else{

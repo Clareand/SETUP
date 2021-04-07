@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Database\Seeder;
-
 class StudentsTableSeeder extends Seeder
 {
 
@@ -22,11 +20,11 @@ class StudentsTableSeeder extends Seeder
                 'id' => 4,
                 'id_user' => 6,
                 'id_role' => 2,
-                'last_name' => '',
+                'last_name' => 'First',
                 'address' => NULL,
                 'city' => NULL,
                 'postal_code' => NULL,
-                'point' => NULL,
+                'point' =>0,
                 'created_at' => '2021-04-01 07:26:56',
                 'updated_at' => '2021-04-01 07:26:56',
             ),
@@ -39,7 +37,7 @@ class StudentsTableSeeder extends Seeder
                 'address' => NULL,
                 'city' => NULL,
                 'postal_code' => NULL,
-                'point' => NULL,
+                'point' => 0,
                 'created_at' => '2021-04-01 09:58:41',
                 'updated_at' => '2021-04-01 09:58:41',
             ),

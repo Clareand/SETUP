@@ -49,9 +49,9 @@ class Student extends Model
 		'point'
 	];
 
-	public function province()
+	public function regency()
 	{
-		return $this->belongsTo(Province::class, 'city');
+		return $this->belongsTo(Regency::class, 'city');
 	}
 
 	public function role()

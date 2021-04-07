@@ -30,8 +30,8 @@
                       <span class="sidenav-normal"> Admin </span>
                     </a>
                   </li>
-                  <li class="nav-item">
-                    <a href="../../pages/dashboards/alternative.html" class="nav-link">
+                  <li class="nav-item @yield('student-active')">
+                    <a href="{{url('/student')}}" class="nav-link">
                       <span class="sidenav-normal"> Student </span>
                     </a>
                   </li>
@@ -39,14 +39,14 @@
               </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link @yield('class_active')" href="#navbar-class" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-dashboards">
+                <a class="nav-link @yield('class-active')" href="#navbar-class" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-dashboards">
                   <i class="ni ni-collection text-primary"></i>
                   <span class="nav-link-text">Class</span>
                 </a>
-                <div class="collapse @yield('class_collapse')" id="navbar-class">
+                <div class="collapse @yield('class-collapse')" id="navbar-class">
                   <ul class="nav nav-sm flex-column">
-                    <li class="nav-item">
-                      <a href="../../pages/dashboards/dashboard.html" class="nav-link">
+                    <li class="nav-item @yield('class-list-active')">
+                      <a href="{{url('class')}}" class="nav-link">
                         <span class="sidenav-normal"> Class List </span>
                       </a>
                     </li>

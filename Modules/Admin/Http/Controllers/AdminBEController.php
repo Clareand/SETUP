@@ -14,6 +14,7 @@ use App\Library\MyHelper;
 use DB;
 use Validator;
 use Auth;
+use Hash;
 
 class AdminBEController extends Controller
 {
@@ -83,6 +84,7 @@ class AdminBEController extends Controller
            'email'=>'string',
            'address'=>'string',
            'city'=>'string',
+           'password'=>'confirmed'
        ]);
        if($validator->fails()){
            $response = [$validator->messages()];
@@ -93,7 +95,8 @@ class AdminBEController extends Controller
            $postAdmin=$request->only(['address','city']);
            $postUser=$request->only(['name','phone','email']);
        }else{
-           $postUser=$request->except(['address','city']);
+           $postUser=$request->except(['address','city','_token','province','password_confirmation']);
+           $postUser['password']=Hash::make($request->password);
            $postAdmin=$request->only(['address','city']);
        };
        DB::beginTransaction();

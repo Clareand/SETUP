@@ -131,6 +131,7 @@ class AuthController extends Controller
                 $student->id_user = $user->id;
                 $student->id_role = $user->id_role;
                 $student->last_name = ucwords(strtolower($request->last_name));
+                $student->point=0;
                 $student->save();
             }catch(\Exception $e){
                 DB::rollback();
@@ -155,9 +156,9 @@ class AuthController extends Controller
         if($user->id_role==1){
             Session::flash('success', ['Register Admin Success!']);
             return redirect()->route('list');
-        }else{
+        }else if($user->id_role==2){
             Session::flash('success', ['Register Success! Please Login to access']);
-            return redirect()->route('login');
+            return redirect('/login');
         }
         
     }

@@ -2,9 +2,12 @@
 
 namespace Modules\Student\Http\Controllers;
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Admin\Http\Controllers\AdminBEController;
+use Modules\Student\Http\Controllers\StudentBEController;
 
 class StudentController extends Controller
 {
@@ -14,7 +17,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return view('student::index');
+        $data = StudentBEController::index();
+        return view('student::layouts.index',$data['result']);
     }
 
     /**
@@ -43,7 +47,15 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        return view('student::show');
+        $student=StudentBEController::show($id);
+        if($student['status']=='success'){
+            $data=[
+                'user'=>$student['result'],
+                'province'=>HomeController::getProvince(),
+            ];
+            return view('student::layouts.detail',$data);
+        };
+        return back()->withErrors(['Sorry,Not Found']);
     }
 
     /**
@@ -53,7 +65,24 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
-        return view('student::edit');
+        $student=StudentBEController::show($id);
+        if($student['status']=='success'){
+            if($student['result'][0]['province']){
+                $data=[
+                    'user'=>$student['result'],
+                    'province'=>HomeController::getProvince(),
+                    'city'=>HomeController::getCities($student['result'][0]['regency']['province_id'])
+                ];
+            }else{
+                $data=[
+                    'user'=>$student['result'],
+                    'province'=>HomeController::getProvince(),
+                ];
+            }
+           
+            return view('student::layouts.edit',$data);
+        };
+        return back()->withErrors(['Sorry,Not Found']);
     }
 
     /**
@@ -64,7 +93,11 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = StudentBEController::update($request,$id);
+        if($data['status']=='success'){
+            return redirect('student')->withSuccess(['Data has been updated']);
+        }
+        return back()->withErrors($data['result'])->withInput();
     }
 
     /**
@@ -74,6 +107,10 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        //
+       $data=StudentBEController::destroy($id);
+       if($data['status']=='success'){
+           return redirect('student')->withSuccess(['Data has been deleted']);
+       }
+       return back()->withErrors($data['result']);
     }
 }

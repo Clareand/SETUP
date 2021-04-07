@@ -9,7 +9,7 @@
 	<div class="row">
 		<div class=" col-xl-8 order-xl-1">
 			<div class="card">
-				<form class="needs-validation" novalidate action="{{url('admin/update/'.$user[0]['user']['id'])}}" method="post">
+				<form class="needs-validation" novalidate action="{{url('admin/update/'.$user[0]['id'])}}" method="post">
 					@csrf
 					<div class="card-header">
 						@include('baseAdmin.alerts')
@@ -103,7 +103,7 @@
 									</div>
 								</div>
 								<hr class="my-4">
-								<h6 class=" heading-small text-muted mb-4">Contact Information</h6>
+								<h6 class=" heading-small text-muted mb-4">Password Information</h6>
 								<div class="pl-lg-4">
 									<div class="row">
 										<div class="col-lg-6">

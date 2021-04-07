@@ -21,7 +21,7 @@ class CreateStudentsTable extends Migration
             $table->string('address')->nullable();
             $table->char('city', 4)->nullable()->index('city_id');
             $table->string('postal_code')->nullable();
-            $table->integer('point')->nullable();
+            $table->integer('point')->default(0);
             $table->timestamps();
         });
     }

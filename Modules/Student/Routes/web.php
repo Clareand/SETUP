@@ -12,5 +12,11 @@
 */
 
 Route::prefix('student')->group(function() {
-    Route::get('/', 'StudentController@index');
+    Route::middleware(['is_admin'])->group(function(){
+        Route::get('/', 'StudentController@index');
+        Route::get('/detail/{id}', 'StudentController@show');
+        Route::get('/edit/{id}', 'StudentController@edit');
+        Route::post('/update/{id}', 'StudentController@update');
+        Route::get('/delete/{id}', 'StudentController@destroy');
+    });
 });
