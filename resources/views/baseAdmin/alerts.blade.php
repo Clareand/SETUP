@@ -1,9 +1,9 @@
-@if (Session::has('errors'))
+@if (Session::has('error'))
 <div class="alert alert-danger alert-dismissible fade show" role="alert">
     <span class="alert-icon"><i class="fa fa-times-circle"></i></span>
     <span class="alert-text"><strong>Something it's Wrong: </strong> 
         <br>
-        @foreach (Session::get('errors') as $e)
+        @foreach (Session::get('error') as $e)
             {{$e}} <br>
         @endforeach
     </span>

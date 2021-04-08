@@ -26,4 +26,9 @@ class MyHelper{
         if($data) return ['status'=>'success','result'=>$data];
         else return ['status'=>'fail','result'=>'something went wrong'];
     }
+
+    public static function checkCreate($data){
+        if($data) return ['status'=>'success','result'=>$data];
+        else return ['status'=>'fail','result'=>$data];
+    }
 }

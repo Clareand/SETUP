@@ -103,7 +103,7 @@ class AdminController extends Controller
         $data = AdminBEController::update($request,$id);
         // return $data;
         if($data['status']=='success'){
-            return redirect('admin/list')->withSuccess(['Admin has been Updated']);
+            return redirect('admin/list')->withSuccess(['Admin has been updated']);
         }else{
             return back()->withErrors($data['result'])->withInput();
         };
@@ -122,7 +122,7 @@ class AdminController extends Controller
         if($data['status']=='success'){
             return redirect('admin/list')->withSuccess(['Admin has been deleted']);
         }else{
-            return back()->withErrors($data['result']);
+            return back()->withError($data['result']);
         }
     }
 

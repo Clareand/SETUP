@@ -42,9 +42,29 @@ class ClassesBEController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(Request $request)
-    {
-        //
+    public static function store($request)
+    { 
+        // return $request;
+        $validator = Validator::make($request->all(),[
+            'name'=>'string',
+            'tech'=>'integer',
+            'id_learning_path'=>'nullable|integer',
+            'description'=>'nullable'
+        ]);
+        if($validator->fails()){
+            $response=[$validator->messages()];
+            return $response;
+        }
+        DB::beginTransaction();
+        try{
+            $data = ClassList::create(array_filter($request->all()));
+        }catch(\Exception $e){
+            DB::rollback();
+            return $e;
+            return MyHelper::checkCreate($data);
+        }
+        DB::commit();
+        return MyHelper::checkCreate($data);
     }
 
     /**
@@ -52,9 +72,10 @@ class ClassesBEController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function show($id)
+    public static function show($id)
     {
-        return view('classes::show');
+        $data = ClassList::with('learning_path','tech_field','module_lists')->where('id',$id)->get();
+        return MyHelper::checkGet($data);
     }
 
     /**
@@ -62,9 +83,11 @@ class ClassesBEController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function edit($id)
+    public static function edit($id)
     {
-        return view('classes::edit');
+        $data=ClassList::with('learning_path','tech_field','module_lists')->where('id',$id)->get();
+        // return $data;
+        return MyHelper::checkGet($data);
     }
 
     /**
@@ -73,9 +96,34 @@ class ClassesBEController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public static function update($request, $id)
     {
-        //
+        $class = ClassList::with('learning_path','tech_field')->where('id',$id)->get();
+        $validator = Validator::make($request->all(),[
+            'name'=>'string',
+            'field_of_techh'=>'integer',
+            'id_learning_path'=>'integer|nullable',
+            'description'=>'nullable'
+        ]);
+        if($validator->fails()){
+            $response=[
+                'status'=>'fail',
+                'result'=>$validator->messages()->all()
+            ];
+            return $response;
+        }
+        $post = $request->except('_token');
+        // return $post;
+        DB::beginTransaction();
+        try{
+            $updateClass = ClassList::where('id',$id)->update($post);
+        }catch(\Exception $e){
+            DB::rollback();
+            return $e;
+            return MyHelper::checkUpdate($updateClass);
+        }
+        DB::commit();
+        return MyHelper::checkUpdate($updateClass);
     }
 
     /**
@@ -83,8 +131,17 @@ class ClassesBEController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function destroy($id)
+    public static function destroy($id)
     {
-        //
+        $class = ClassList::findOrFail($id);
+        DB::beginTransaction();
+        try{
+            $deleteClass=$class->delete();
+        }catch(\Exception $e){
+            DB::rollback();
+            return MyHelper::checkDelete($deleteClass);
+        }
+        DB::commit();
+        return MyHelper::checkDelete($deleteClass);
     }
 }

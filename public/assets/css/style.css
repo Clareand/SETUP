@@ -72,3 +72,8 @@
     display: flex;
     margin:2rem;
 }
+
+.custom-height{
+    height: 52vh !important;
+    overflow: hidden;
+}

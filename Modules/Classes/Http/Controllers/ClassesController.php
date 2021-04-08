@@ -2,9 +2,12 @@
 
 namespace Modules\Classes\Http\Controllers;
 
+use App\Http\Controllers\HomeController;
+use App\Models\ClassList;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Admin\Http\Controllers\AdminBEController;
 use Modules\Classes\Http\Controllers\ClassesBEController;
 use Session;
 
@@ -34,7 +37,9 @@ class ClassesController extends Controller
      */
     public function create()
     {
-        return view('classes::create');
+        $data = HomeController::getAllTech();
+        // return $data;
+        return view('classes::layouts.create',$data);
     }
 
     /**
@@ -44,7 +49,11 @@ class ClassesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = ClassesBEController::store($request);
+        if($data['status']=='success'){
+            return redirect('class')->withSuccess(['Class has been created']);
+        }
+    return back()->withError($data['result']);
     }
 
     /**
@@ -54,7 +63,9 @@ class ClassesController extends Controller
      */
     public function show($id)
     {
-        return view('classes::show');
+        $data = ClassesBEController::show($id);
+        // return $data;
+        return view('classes::layouts.detail',$data);
     }
 
     /**
@@ -64,7 +75,19 @@ class ClassesController extends Controller
      */
     public function edit($id)
     {
-        return view('classes::edit');
+        $class = ClassesBEController::edit($id);
+        // return $class['result'][0]['field_of_tech'];
+        $tech =HomeController::getAllTech();
+        $path = HomeController::getPaths($class['result'][0]['field_of_tech']);
+        if($class['status']=='success'){
+            $data=[
+                'class'=>$class['result'],
+                'tech'=>$tech['result'],
+                'path'=>$path['result']
+            ];
+        }
+        // return $data;
+        return view('classes::layouts.edit',$data);
     }
 
     /**
@@ -75,7 +98,13 @@ class ClassesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // return $request;
+        $data = ClassesBEController::update($request,$id);
+        // return $data;
+        if($data['status']=='success'){
+            return redirect('class')->withSuccess(['Class has been updated']);
+        };
+        return back()->withError($data['result'])->withInput($request->all());
     }
 
     /**
@@ -85,6 +114,10 @@ class ClassesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = ClassesBEController::destroy($id);
+        if($data['status']='success'){
+            return redirect('class')->withSuccess(['Class hass been deleted']);
+        }
+        return back()->withError($data['result']);
     }
 }

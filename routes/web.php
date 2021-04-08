@@ -29,6 +29,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('pages', 'HomeController@student')->name('pages');
 
     Route::get('province', 'HomeController@getProvince');
+    Route::get('paths', 'HomeController@getLearningPaths');
+    Route::get('tech', 'HomeController@getAllTech');
+    Route::post('path', 'HomeController@getLearningPath');
+    
 });
 Route::middleware(['is_admin'])->group(function(){
     Route::get('home', 'HomeController@index')->name('home');

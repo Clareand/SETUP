@@ -17,7 +17,7 @@
               <h3 class="mb-0">Class Table</h3>
             </div>
             <div class="col text-right">
-              <a href="{{url ('/admin/add')}}" class="btn btn-olive" type="button">Add Class</a>
+              <a href="{{url ('class/create')}}" class="btn btn-olive" type="button">Add Class</a>
             </div>
           </div>
         </div>
