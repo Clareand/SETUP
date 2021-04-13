@@ -138,7 +138,7 @@ class MasterDataController extends Controller
     {
         $data = MasterDataBEController::storeBadge($request);
         if($data['status']=='success'){
-            return redirect('tech')->withSuccess(['Tech field has been created']);
+            return redirect('badge')->withSuccess(['Badge field has been created']);
         }
         return back()->withError($data['result']);
     }
@@ -152,7 +152,7 @@ class MasterDataController extends Controller
     {
         $data = MasterDataBEController::showBadge($id);
         if($data['status']=='success'){
-            return view('masterdata::tech.detail',$data);
+            return view('masterdata::badge.detail',$data);
         }
     }
 
@@ -163,8 +163,8 @@ class MasterDataController extends Controller
      */
     public function editBadge($id)
     {
-        $data = MasterDataBEController::editTech($id);
-        return view('masterdata::tech.edit',$data);
+        $data = MasterDataBEController::editBadge($id);
+        return view('masterdata::badge.edit',$data);
     }
 
     /**
@@ -177,7 +177,7 @@ class MasterDataController extends Controller
     {
         $data = MasterDataBEController::updateBadge($request,$id);
         if($data['status']=='success'){
-            return redirect('tech')->withSuccess(['Tech field has been updated']);
+            return redirect('badge')->withSuccess(['Badge field has been updated']);
         }
         return back()->withError($data['result'])->withInput($request->all());
     }
@@ -191,7 +191,7 @@ class MasterDataController extends Controller
     {
         $data = MasterDataBEController::destroyBadge($id);
         if($data['status']=='success'){
-            return redirect('tech')->withSuccess(['Tech Field has been deleted']);
+            return redirect('badge')->withSuccess(['Badge Field has been deleted']);
         }
         return back()->withError($data['result']);
     }

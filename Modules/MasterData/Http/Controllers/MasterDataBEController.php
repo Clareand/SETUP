@@ -138,11 +138,9 @@ class MasterDataBEController extends Controller
     }
 
     // Badges
-
-     // tech_field
      public static function getAllBadge()
      {
-         $data = Badge::all();
+         $data = Badge::paginate(10);
          return MyHelper::checkGet($data);
      }
  

@@ -1,8 +1,8 @@
 @extends('baseAdmin.main')
 @section('master-data-active','active')
 @section('data-collapse','show')
-@section('tech-active','active')
-@section('main-title','Tech Field')
+@section('badge-active','active')
+@section('main-title','badge')
 @section('title','List')
 @section('page','Table')
 @section('content')
@@ -17,7 +17,7 @@
               <h3 class="mb-0">Tech Field Table</h3>
             </div>
             <div class="col text-right">
-              <a href="{{url ('tech/create')}}" class="btn btn-olive" type="button">Add Tech</a>
+              <a href="{{url ('badge/create')}}" class="btn btn-olive" type="button">Add Badge</a>
             </div>
           </div>
         </div>
@@ -28,6 +28,8 @@
               <tr>
                 <th scope="col" class="sort" data-sort="no">No</th>
                 <th scope="col" class="sort" data-sort="name">Name</th>
+                <th scope="col" class="sort" data-sort="name">Point</th>
+                <th scope="col" class="sort" data-sort="name">Image</th>
                 <th scope="col" class="sort" data-sort="email">Action</th>
               </tr>
             </thead>
@@ -40,12 +42,22 @@
                 <td class="name">
                   {{$item['name']}}
                 </td>
+                <td class="name">
+                  {{$item['point']}}
+                </td>
+                <td class="name">
+                 @if ($item['image'])
+                 <img src="..." class="rounded mx-auto d-block" alt="..."/>
+                 @else
+                 <img style='width:300px' src="{{url('assets/img/picture/not-found.png')}}" class="rounded float-left img-thumbnail" alt="...">
+                 @endif
+                </td>
                 <td>
                   <div class="btn-group">
-                    <a href="{{url('tech/detail/'.$item['id'])}}" type="button" class="btn btn-default" data-toggle="tooltip" title="Detail">
+                    <a href="{{url('badge/detail/'.$item['id'])}}" type="button" class="btn btn-default" data-toggle="tooltip" title="Detail">
                       <span class="btn-inner--icon"><i class="ni ni-active-40"></i></span>
                     </a>
-                    <a href="{{url('tech/edit/'.$item['id'])}}" type="button" class="btn btn-olive" data-toggle="tooltip" title="Edit">
+                    <a href="{{url('badge/edit/'.$item['id'])}}" type="button" class="btn btn-olive" data-toggle="tooltip" title="Edit">
                       <span class="btn-inner--icon"><i class="fas fa-pen"></i></span>
                     </a>
                     <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalDelete{{$item['id']}}">
@@ -69,7 +81,7 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <a href="{{url('tech/delete/'.$item['id'])}}" type="button" class="btn btn-danger">Delete</a>
+                      <a href="{{url('badge/delete/'.$item['id'])}}" type="button" class="btn btn-danger">Delete</a>
                     </div>
                   </div>
                 </div>

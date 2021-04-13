@@ -76,8 +76,8 @@
               </a>
               <div class="collapse @yield('data-collapse')" id="navbar-class">
                 <ul class="nav nav-sm flex-column">
-                  <li class="nav-item @yield('class-list-active')">
-                    <a href="{{url('badges')}}" class="nav-link">
+                  <li class="nav-item @yield('badge-active')">
+                    <a href="{{url('badge')}}" class="nav-link">
                       <span class="sidenav-normal">Badges</span>
                     </a>
                   </li>

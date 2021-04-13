@@ -27,11 +27,11 @@ Route::prefix('tech')->group(function() {
 Route::prefix('badge')->group(function() {
     Route::group(['middleware'=>'auth'],function(){
      Route::get('/', 'MasterDataController@getAllBadge');
-     Route::get('/create', 'MasterDataController@createTech');
-     Route::post('/store', 'MasterDataController@storeTech');
-     Route::get('/detail/{id}', 'MasterDataController@showTech');
-     Route::get('/edit/{id}', 'MasterDataController@editTech');
-     Route::post('/update/{id}', 'MasterDataController@updateTech');
-     Route::get('/delete/{id}', 'MasterDataController@destroyTech');
+     Route::get('/create', 'MasterDataController@createBadge');
+     Route::post('/store', 'MasterDataController@storeBadge');
+     Route::get('/detail/{id}', 'MasterDataController@showBadge');
+     Route::get('/edit/{id}', 'MasterDataController@editBadge');
+     Route::post('/update/{id}', 'MasterDataController@updateBadge');
+     Route::get('/delete/{id}', 'MasterDataController@destroyBadge');
     });
  });
