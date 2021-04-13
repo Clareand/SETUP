@@ -66,7 +66,8 @@ class AuthController extends Controller
                $request->session()->put('id_role',$user->id_role);
                return redirect()->route('dashboard');
            }else{
-            $request->session()->put('id_role',$user->id_role);
+            $point = Student::where('id_user',$user->id)->get();
+            $request->session()->put('point',$point[0]['point']);
             return redirect()->route('pages');
            }
             
@@ -74,7 +75,7 @@ class AuthController extends Controller
         } else { // false
  
             //Login Fail
-            Session::flash('error', 'Email atau password salah');
+            Session::flash('error', ['Email atau password salah']);
             return redirect()->route('login');
         }
  

@@ -10,6 +10,8 @@ use Illuminate\Routing\Controller;
 use Modules\Admin\Http\Controllers\AdminBEController;
 use Modules\Classes\Http\Controllers\ClassesBEController;
 use Session;
+use Auth;
+use Modules\MasterData\Http\Controllers\MasterDataController;
 
 class ClassesController extends Controller
 {
@@ -37,7 +39,7 @@ class ClassesController extends Controller
      */
     public function create()
     {
-        $data = HomeController::getAllTech();
+        $data = MasterDataController::getAllTech();
         // return $data;
         return view('classes::layouts.create',$data);
     }
@@ -53,7 +55,7 @@ class ClassesController extends Controller
         if($data['status']=='success'){
             return redirect('class')->withSuccess(['Class has been created']);
         }
-    return back()->withError($data['result']);
+        return back()->withError($data['result']);
     }
 
     /**
@@ -76,8 +78,7 @@ class ClassesController extends Controller
     public function edit($id)
     {
         $class = ClassesBEController::edit($id);
-        // return $class['result'][0]['field_of_tech'];
-        $tech =HomeController::getAllTech();
+        $tech =MasterDataController::getAllTech();
         $path = HomeController::getPaths($class['result'][0]['field_of_tech']);
         if($class['status']=='success'){
             $data=[
@@ -115,9 +116,36 @@ class ClassesController extends Controller
     public function destroy($id)
     {
         $data = ClassesBEController::destroy($id);
-        if($data['status']='success'){
+        if($data['status']=='success'){
             return redirect('class')->withSuccess(['Class hass been deleted']);
         }
         return back()->withError($data['result']);
+    }
+
+    // FE
+
+    public function classFe(){
+        $data = ClassesBEController::index();
+        // return $data;
+        if($data['status']=='success'){
+            return view('classes::fronts.index',$data['result']);
+        }
+    }
+
+    public function classEnroll(Request $request){
+        $data = ClassesBEController::classEnroll($request);
+        // return $data;
+        if($data['status']=='success'){
+            return redirect('class/list')->withSuccess(['Enrollment Success']);
+        }
+        return back()->withError($data['result']);
+    }
+
+    public function homePage(){
+        $data = ClassesBEController::getPath();
+        // return $data;
+        if($data['status']=='success'){
+            return view('classes::fronts.homePage',$data);
+        }
     }
 }

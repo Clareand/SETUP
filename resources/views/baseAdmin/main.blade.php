@@ -34,6 +34,8 @@
   <!-- Argon CSS -->
   <link rel="stylesheet" href="{{url('assets/css/argon.css')}}" type="text/css">
   <link rel="stylesheet" href="{{url('assets/css/style.css')}}" type="text/css">
+  {{-- <link rel="stylesheet" href="{{url('assets/css/mdb.min.css')}}" type="text/css"> --}}
+  
 </head>
 
 <body>

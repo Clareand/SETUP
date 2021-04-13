@@ -11,6 +11,8 @@
 |
 */
 
+use Modules\Classes\Http\Controllers\ClassesController;
+
 Route::prefix('class')->group(function() {
     Route::middleware(['is_admin'])->group(function(){
         Route::get('/', 'ClassesController@index');
@@ -20,5 +22,11 @@ Route::prefix('class')->group(function() {
         Route::get('/edit/{id}', 'ClassesController@edit');
         Route::post('/update/{id}', 'ClassesController@update');
         Route::get('/delete/{id}', 'ClassesController@destroy');
+    });
+    
+    Route::middleware(['student'])->group(function(){
+        Route::get('/list','ClassesController@classFe');
+        Route::post('/enroll','ClassesController@classEnroll');
+        Route::get('/homepage','ClassesController@homePage');
     });
 });

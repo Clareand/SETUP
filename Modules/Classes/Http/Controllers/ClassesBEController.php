@@ -11,6 +11,7 @@ use App\Models\Material;
 use App\Models\Task;
 use App\Models\ClassList;
 use App\Library\MyHelper;
+use App\Models\UserClassList;
 use DB;
 use Validator;
 use Auth;
@@ -22,6 +23,13 @@ class ClassesBEController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
+    
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    
     public static function index()
     {
         $data=ClassList::with('tech_field','learning_path')->paginate(10);
@@ -143,5 +151,29 @@ class ClassesBEController extends Controller
         }
         DB::commit();
         return MyHelper::checkDelete($deleteClass);
+    }
+
+
+    //FE
+
+    public static function classEnroll($request){
+        $user = Auth::user();
+        $request['id_user']=$user['id'];
+        // return $request;
+        DB::beginTransaction();
+        try{
+            $data = UserClassList::create(array_filter($request->all()));
+        }catch(\Exception $e){
+            DB::rollback();
+            return $e;
+            return MyHelper::checkCreate($data);
+        }
+        DB::commit();
+        return MyHelper::checkCreate($data);
+    }
+
+    public static function getPath(){
+        $data=LearningPath::with('tech_field')->get();
+        return MyHelper::checkGet($data);
     }
 }

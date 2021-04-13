@@ -2,5 +2,6 @@
     "Student": true,
     "Admin": true,
     "Class": true,
-    "Classes": true
+    "Classes": true,
+    "MasterData": true
 }

@@ -68,7 +68,27 @@
                   <i class="ni ni-spaceship text-orange"></i>
                   <span class="nav-link-text">Learning Path</span>
                 </a>
-              </li>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link @yield('master-data-active')" href="#navbar-class" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-dashboards">
+                <i class="ni ni-collection text-primary"></i>
+                <span class="nav-link-text">Master Data</span>
+              </a>
+              <div class="collapse @yield('data-collapse')" id="navbar-class">
+                <ul class="nav nav-sm flex-column">
+                  <li class="nav-item @yield('class-list-active')">
+                    <a href="{{url('badges')}}" class="nav-link">
+                      <span class="sidenav-normal">Badges</span>
+                    </a>
+                  </li>
+                  <li class="nav-item @yield('tech-collapse')">
+                    <a href="{{url('tech_field')}}" class="nav-link">
+                      <span class="sidenav-normal">Tech Field</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
           </ul>
         </div>
       </div>

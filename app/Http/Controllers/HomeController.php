@@ -51,9 +51,5 @@ class HomeController extends Controller
         $data = LearningPath::where('id_field_of_tech',$request)->get();
         return MyHelper::checkGet($data);
     }
-
-    public static function getAllTech(){
-        $data=TechField::all();
-        return MyHelper::checkGet($data);
-    }
+   
 }
