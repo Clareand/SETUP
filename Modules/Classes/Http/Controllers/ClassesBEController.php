@@ -32,7 +32,7 @@ class ClassesBEController extends Controller
     
     public static function index()
     {
-        $data=ClassList::with('tech_field','learning_path')->paginate(10);
+        $data=ClassList::with('tech_field')->paginate(10);
         return MyHelper::checkGet($data);
     }
 
@@ -56,7 +56,6 @@ class ClassesBEController extends Controller
         $validator = Validator::make($request->all(),[
             'name'=>'string',
             'tech'=>'integer',
-            'id_learning_path'=>'nullable|integer',
             'description'=>'nullable'
         ]);
         if($validator->fails()){
@@ -82,7 +81,7 @@ class ClassesBEController extends Controller
      */
     public static function show($id)
     {
-        $data = ClassList::with('learning_path','tech_field','module_lists')->where('id',$id)->get();
+        $data = ClassList::with('tech_field','module_lists')->where('id',$id)->get();
         return MyHelper::checkGet($data);
     }
 
@@ -93,7 +92,7 @@ class ClassesBEController extends Controller
      */
     public static function edit($id)
     {
-        $data=ClassList::with('learning_path','tech_field','module_lists')->where('id',$id)->get();
+        $data=ClassList::with('tech_field','module_lists')->where('id',$id)->get();
         // return $data;
         return MyHelper::checkGet($data);
     }
@@ -106,7 +105,7 @@ class ClassesBEController extends Controller
      */
     public static function update($request, $id)
     {
-        $class = ClassList::with('learning_path','tech_field')->where('id',$id)->get();
+        $class = ClassList::with('tech_field')->where('id',$id)->get();
         $validator = Validator::make($request->all(),[
             'name'=>'string',
             'field_of_techh'=>'integer',

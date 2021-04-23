@@ -114,9 +114,13 @@ class MasterDataController extends Controller
 
     // badges
 
-    public function getAllBadge(){
+    public static function getAllBadge(){
         $data = MasterDataBEController::getAllBadge();
         return view('masterdata::badge.index',$data['result']);
+    }
+    public static function getBadge(){
+        $data = MasterDataBEController::getAllBadge();
+        return $data;
     }
     
 

@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * 
  * @property Collection|Regency[] $regencies
- * @property Collection|Student[] $students
  *
  * @package App\Models
  */
@@ -33,10 +32,5 @@ class Province extends Model
 	public function regencies()
 	{
 		return $this->hasMany(Regency::class);
-	}
-
-	public function students()
-	{
-		return $this->hasMany(Student::class, 'city');
 	}
 }

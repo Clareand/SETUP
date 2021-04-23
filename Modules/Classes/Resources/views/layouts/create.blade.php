@@ -38,7 +38,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="form-control-label" for="input-email">Technology</label>
-                                    <select class="form-control" data-toggle="select" id="tech" name="field_of_tech" required onchange="getPath()">
+                                    <select class="form-control selects" data-toggle="select" id="tech" name="field_of_tech" required onchange="getPath()">
                                         <option value="" disabled selected hidden>Technology Option</option>
                                         @foreach ($result as $item)    
                                         <option value="{{$item['id']}}">{{$item['name']}}</option>
@@ -49,16 +49,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-email">Learning Path</label>
-                                    <select class="form-control" data-toggle="select" id="id_learning_path" name="id_learning_path">
-                                        <option value="" disabled selected hidden>Learning Path</option>
-                                    </select>
-                                </div>
-                            </div>	
                         </div>
                     </div>
                     <hr class="my-4">

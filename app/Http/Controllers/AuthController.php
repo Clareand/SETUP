@@ -108,7 +108,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), $rules, $messages);
  
         if($validator->fails()){
-            return redirect()->back()->withErrors($validator)->withInput($request->all);
+            return redirect()->back()->withError($validator)->withInput($request->all);
         }
         
         DB::beginTransaction();

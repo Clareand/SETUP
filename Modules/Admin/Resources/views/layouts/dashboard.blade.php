@@ -1,2 +1,4 @@
 @extends('baseAdmin.main')
-@include('baseAdmin.alerts')
+@section('content')
+    @include('baseAdmin.alerts')
+@endsection

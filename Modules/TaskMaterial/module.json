@@ -1,0 +1,13 @@
+{
+    "name": "TaskMaterial",
+    "alias": "taskmaterial",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\TaskMaterial\\Providers\\TaskMaterialServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

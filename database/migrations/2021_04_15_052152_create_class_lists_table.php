@@ -17,7 +17,6 @@ class CreateClassListsTable extends Migration
             $table->integer('id', true);
             $table->string('name');
             $table->integer('field_of_tech')->nullable()->index('id_tech');
-            $table->integer('id_learning_path')->nullable()->index('id_learning_path');
             $table->integer('all_module')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();

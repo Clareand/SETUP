@@ -15,11 +15,12 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $id
  * @property string $name
- * @property string $image
+ * @property string|null $image
  * @property int $point
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
+ * @property Collection|LearningPath[] $learning_paths
  * @property Collection|User[] $users
  *
  * @package App\Models
@@ -37,6 +38,11 @@ class Badge extends Model
 		'image',
 		'point'
 	];
+
+	public function learning_paths()
+	{
+		return $this->hasMany(LearningPath::class, 'id_badge');
+	}
 
 	public function users()
 	{

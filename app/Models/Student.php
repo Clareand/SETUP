@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property Province|null $province
+ * @property Regency|null $regency
  * @property Role $role
  * @property User $user
  *

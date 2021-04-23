@@ -44,7 +44,7 @@ class Admin extends Model
 
 	public function role()
 	{
-		return $this->belongsTo(Role::class, 'id_user');
+		return $this->belongsTo(Role::class, 'id_role');
 	}
 
 	public function user()

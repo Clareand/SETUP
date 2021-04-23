@@ -70,7 +70,7 @@
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="form-control-label" for="input-city">Province</label>
-                                            <select class="form-control" data-toggle="select" id="province" name="province" onchange="getCity()">
+                                            <select class="form-control selects" data-toggle="select" id="province" name="province" onchange="getCity()">
                                                 <option value="" disabled selected hidden>Province Name</option>
                                                 @foreach ($province['result'] as $items)  
                                                     @if ($users['regency'])
@@ -84,7 +84,7 @@
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="form-control-label" for="input-country">City</label>
-                                            <select class="form-control" data-toggle="select" id="city" name="city">
+                                            <select class="form-control selects" data-toggle="select" id="city" name="city">
                                                 <option value="" disabled selected hidden>City Name</option>
                                                 @if ($users['regency'])
                                                     @foreach ($city['result'] as $items)

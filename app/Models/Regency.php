@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property Province $province
  * @property Collection|Admin[] $admins
+ * @property Collection|Student[] $students
  *
  * @package App\Models
  */
@@ -40,5 +41,10 @@ class Regency extends Model
 	public function admins()
 	{
 		return $this->hasMany(Admin::class, 'city');
+	}
+
+	public function students()
+	{
+		return $this->hasMany(Student::class, 'city');
 	}
 }

@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $phone
  * @property string $password
  * @property int $id_role
- * @property string|null $remember_token
+ * @property int $is_deleted
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
@@ -38,12 +38,12 @@ class User extends Model
 	protected $table = 'users';
 
 	protected $casts = [
-		'id_role' => 'int'
+		'id_role' => 'int',
+		'is_deleted' => 'int'
 	];
 
 	protected $hidden = [
-		'password',
-		'remember_token'
+		'password'
 	];
 
 	protected $fillable = [
@@ -52,7 +52,7 @@ class User extends Model
 		'phone',
 		'password',
 		'id_role',
-		'remember_token'
+		'is_deleted'
 	];
 
 	public function role()

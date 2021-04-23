@@ -14,7 +14,6 @@ class AddForeignKeysToClassListsTable extends Migration
     public function up()
     {
         Schema::table('class_lists', function (Blueprint $table) {
-            $table->foreign('id_learning_path', 'id_learning_path')->references('id')->on('learning_paths')->onUpdate('CASCADE')->onDelete('SET NULL');
             $table->foreign('field_of_tech', 'id_tech')->references('id')->on('tech_fields')->onUpdate('CASCADE')->onDelete('SET NULL');
         });
     }
@@ -27,7 +26,6 @@ class AddForeignKeysToClassListsTable extends Migration
     public function down()
     {
         Schema::table('class_lists', function (Blueprint $table) {
-            $table->dropForeign('id_learning_path');
             $table->dropForeign('id_tech');
         });
     }

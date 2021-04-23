@@ -76,7 +76,7 @@
 										<div class="col-lg-6">
 											<div class="form-group">
 												<label class="form-control-label" for="input-city">Province</label>
-												<select class="form-control" data-toggle="select" id="province" name="province" onchange="getCity()" required>
+												<select class="form-control selects" data-toggle="select" id="province" name="province" onchange="getCity()" required>
 														<option value="" disabled selected hidden>Province Name</option>
 														@foreach ($province['result'] as $items)    
 														<option value="{{$items['id']}}" @if($items['id']==$users['regency']['province_id']) selected @endif>{{$items['name']}}</option>
@@ -90,7 +90,7 @@
 										<div class="col-lg-6">
 											<div class="form-group">
 												<label class="form-control-label" for="input-country">City</label>
-												<select class="form-control" data-toggle="select" id="city" name="city" required>
+												<select class="form-control selects" data-toggle="select" id="city" name="city" required>
 													@foreach ($city['result'] as $items)
 													<option value="{{$items['id']}}" @if($items['id']==$users['regency']['id']) selected @endif>{{$items['name']}}</option>
 													@endforeach

@@ -127,13 +127,21 @@ class AdminController extends Controller
     }
 
     public function notifTest($test){
+        $data=[
+            'status'=>'fail',
+            'result'=>[
+                'error',
+                'erroor'
+            ]
+        ];
+        // return $data;
         if($test==1){
-            Session::flash('errors',['eror']);
+            Session::flash('error',$data['result']);
         }else if($test==2){
             Session::flash('success',['ok']);
         }else{
             Session::flash('warning',['warn']);
         }
-        // return view('admin::layouts.dashboard');
+        return view('admin::layouts.dashboard');
     }
 }

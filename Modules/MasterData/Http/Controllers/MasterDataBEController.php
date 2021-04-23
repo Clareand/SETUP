@@ -50,7 +50,7 @@ class MasterDataBEController extends Controller
             'name'=>'string'
         ]);
         if($validator->fails()){
-            $response=[$validator->messages()];
+            $response=MyHelper::checkValidator($validator->messages()->all());
             return $response;
         }
 
@@ -100,7 +100,7 @@ class MasterDataBEController extends Controller
             'name'=>'string'
         ]);
         if($validator->fails()){
-            $response=[$validator->messages()];
+            $response=MyHelper::checkValidator($validator->messages()->all());
             return $response;
         }
 
@@ -156,7 +156,7 @@ class MasterDataBEController extends Controller
              'point'=>'integer',
          ]);
          if($validator->fails()){
-             $response=[$validator->messages()];
+            $response=MyHelper::checkValidator($validator->messages()->all());
              return $response;
          }
  
@@ -207,7 +207,7 @@ class MasterDataBEController extends Controller
              'point'=>'integer'
          ]);
          if($validator->fails()){
-             $response=[$validator->messages()];
+            $response=MyHelper::checkValidator($validator->messages()->all());
              return $response;
          }
  

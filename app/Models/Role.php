@@ -34,7 +34,7 @@ class Role extends Model
 
 	public function admins()
 	{
-		return $this->hasMany(Admin::class, 'id_user');
+		return $this->hasMany(Admin::class, 'id_role');
 	}
 
 	public function students()

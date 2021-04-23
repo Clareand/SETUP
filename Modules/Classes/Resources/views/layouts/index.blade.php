@@ -29,7 +29,6 @@
                 <th scope="col" class="sort" data-sort="no">No</th>
                 <th scope="col" class="sort" data-sort="name">Name</th>
                 <th scope="col" class="sort" data-sort="email">Tech</th>
-                <th scope="col">Learning Path</th>
                 <th scope="col text-right">Action</th>
               </tr>
             </thead>
@@ -44,13 +43,6 @@
                 </td>
                 <td>
                   {{$item['tech_field']['name']}}
-                </td>
-                <td>
-                    @if ($item['learning_path'])
-                        {{$item['learning_path']['name']}}
-                    @else
-                    -
-                    @endif
                 </td>
                 <td>
                   <div class="btn-group">

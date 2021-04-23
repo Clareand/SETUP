@@ -3,5 +3,7 @@
     "Admin": true,
     "Class": true,
     "Classes": true,
-    "MasterData": true
+    "MasterData": true,
+    "LearningPath": true,
+    "TaskMaterial": true
 }

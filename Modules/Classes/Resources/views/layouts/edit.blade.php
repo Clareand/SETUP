@@ -36,7 +36,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="form-control-label" for="input-email">Technology</label>
-                                    <select class="form-control" data-toggle="select" id="tech" name="field_of_tech" required onchange="getPath()">
+                                    <select class="form-control selects" data-toggle="select" id="tech" name="field_of_tech" required onchange="getPath()">
                                         <option value="" disabled selected hidden>Technology Option</option>
                                         @foreach ($tech as $items)    
                                         <option value="{{$items['id']}}"@if($items['id']==$item['field_of_tech']) selected @endif>{{$items['name']}}</option>
@@ -44,18 +44,6 @@
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-email">Learning Path</label>
-                                    <select class="form-control" data-toggle="select" id="id_learning_path" name="id_learning_path">
-                                        @foreach ($path as $items)
-                                        <option value="{{$items['id']}}" @if($items['id']==$item['id_learning_path']) selected @endif>{{$items['name']}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>	
                         </div>
                     </div>
                     <hr class="my-4">

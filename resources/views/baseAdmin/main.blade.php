@@ -34,6 +34,8 @@
   <!-- Argon CSS -->
   <link rel="stylesheet" href="{{url('assets/css/argon.css')}}" type="text/css">
   <link rel="stylesheet" href="{{url('assets/css/style.css')}}" type="text/css">
+  <link rel="stylesheet" href="{{url('assets/vendor/quill/dist/quill.core.css')}}" type="text/css">
+  {{-- <link rel="stylesheet" href="{{url('assets/vendor/quill/dist/quill.snow.css')}}" type="text/css"> --}}
   {{-- <link rel="stylesheet" href="{{url('assets/css/mdb.min.css')}}" type="text/css"> --}}
   
 </head>
@@ -209,8 +211,8 @@
       <footer class="footer pt-0">
         <div class="row align-items-center justify-content-lg-between">
           <div class="col-lg-6">
-            <div class="copyright text-center  text-lg-left  text-muted">
-              &copy; 2020 <a href="https://www.creative-tim.com" class="font-weight-bold ml-1" target="_blank">Creative Tim</a>
+            <div class="copyright text-right text-muted">
+              SETUP 2020 
             </div>
           </div>
         </div>
@@ -256,7 +258,7 @@
   </script>
   <script type="text/javascript">
   $(document).ready(function() {
-    $('select').select2();
+    $('.selects').select2();
 });
   </script>
   @yield('custom-script')

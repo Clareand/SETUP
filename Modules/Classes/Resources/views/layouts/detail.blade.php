@@ -38,14 +38,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-email">Learning Path</label>
-                                    <input type="text" id="input-username" class="form-control" placeholder="Basic programing" name="id_learning_path" value="{{old('id_learning_path')?old('id_learning_path'):$item['learning_path']['name']}}" disabled>
-                                </div>
-                            </div>	
-                        </div>
                     </div>
                     <hr class="my-4">
                     <h6 class="heading-small text-muted mb-4">Class description</h6>

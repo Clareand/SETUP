@@ -16,14 +16,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $name
  * @property int|null $field_of_tech
- * @property int|null $id_learning_path
  * @property int|null $all_module
  * @property string|null $description
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property LearningPath|null $learning_path
  * @property TechField|null $tech_field
+ * @property Collection|ClassPath[] $class_paths
  * @property Collection|ModuleList[] $module_lists
  * @property Collection|User[] $users
  *
@@ -35,26 +34,24 @@ class ClassList extends Model
 
 	protected $casts = [
 		'field_of_tech' => 'int',
-		'id_learning_path' => 'int',
 		'all_module' => 'int'
 	];
 
 	protected $fillable = [
 		'name',
 		'field_of_tech',
-		'id_learning_path',
 		'all_module',
 		'description'
 	];
 
-	public function learning_path()
-	{
-		return $this->belongsTo(LearningPath::class, 'id_learning_path');
-	}
-
 	public function tech_field()
 	{
 		return $this->belongsTo(TechField::class, 'field_of_tech');
+	}
+
+	public function class_paths()
+	{
+		return $this->hasMany(ClassPath::class, 'id_class');
 	}
 
 	public function module_lists()

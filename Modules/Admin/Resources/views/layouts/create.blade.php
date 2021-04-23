@@ -76,7 +76,7 @@
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label class="form-control-label" for="input-city">Province</label>
-											<select class="form-control" data-toggle="select" id="province" name="province" onchange="getCity()" required>
+											<select class="form-control selects" data-toggle="select" id="province" name="province" onchange="getCity()" required>
 													<option value="" disabled selected hidden>Province Name</option>
 													@foreach ($province as $item)    
 													<option value="{{$item['id']}}">{{$item['name']}}</option>
@@ -88,7 +88,7 @@
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label class="form-control-label" for="input-country">City</label>
-											<select class="form-control" data-toggle="select" id="city" name="city" required>
+											<select class="form-control selects" data-toggle="select" id="city" name="city" required>
 													<option value="" disabled selected hidden>City Name</option>
 											</select>
 											<div class="invalid-feedback">please provide valid city.</div>

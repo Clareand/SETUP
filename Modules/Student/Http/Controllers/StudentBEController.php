@@ -90,7 +90,7 @@ class StudentBEController extends Controller
            'password'=>'confirmed'
         ]);
         if($validator->fails()){
-            $response = [$validator->messages()];
+            $response=MyHelper::checkValidator($validator->messages()->all());
             return $response;
         };
         // return $student;

@@ -31,4 +31,8 @@ class MyHelper{
         if($data) return ['status'=>'success','result'=>$data];
         else return ['status'=>'fail','result'=>$data];
     }
+
+    public static function checkValidator($data){
+        if($data) return ['status'=>'fail','result'=>$data];
+    }
 }
