@@ -13,7 +13,7 @@ use DB;
 use Validator;
 use Auth;
 use Hash;
-
+use Illuminate\Support\Facades\Storage;
 class MasterDataBEController extends Controller
 {
     /**
@@ -159,10 +159,16 @@ class MasterDataBEController extends Controller
             $response=MyHelper::checkValidator($validator->messages()->all());
              return $response;
          }
- 
+         $image = $request->file('image');
+         $name = time().'.'.$image->getClientOriginalExtension();
+         $path = $request->image->storeAs(('public/badges'), $name);
          DB::beginTransaction();
          try{
-             $data=Badge::create(array_filter($request->all()));
+             $badge = new Badge;
+             $badge->name = $request->name;
+             $badge->point = $request->point;
+             $badge->image = $path;
+             $data = $badge->save();
          }catch(\Exception $e){
              DB::rollback();
              return $e;
@@ -201,7 +207,7 @@ class MasterDataBEController extends Controller
       * @return Renderable
       */
      public static function updateBadge($request, $id)
-     {
+     {  //return $request;
          $validator=Validator::make($request->all(),[
              'name'=>'string',
              'point'=>'integer'
@@ -210,8 +216,20 @@ class MasterDataBEController extends Controller
             $response=MyHelper::checkValidator($validator->messages()->all());
              return $response;
          }
- 
-         $post = $request->except('_token');
+         $badge = Badge::where('id',$id)->get();
+         if($request['image']){
+             if(!empty($badge['image'])){
+                Storage::delete($badge['image']);
+             }
+            $image = $request->file('image');
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $path = $request->image->storeAs(('public/badges'), $name);
+         }
+         $post = [
+             'name'=>$request->name,
+             'point'=>$request->point,
+             'image'=>$path
+         ];
          DB::beginTransaction();
          try{
              $updateTech = Badge::where('id',$id)->update($post);
@@ -234,7 +252,9 @@ class MasterDataBEController extends Controller
          $tech = Badge::findOrFail($id);
          DB::beginTransaction();
          try{
-             $deleteBadge=$tech->delete();
+            if(Storage::delete($tech->image)) {
+                $deleteBadge=$tech->delete();
+            };
          }catch(\Exception $e){
              DB::rollback();
              return $e;

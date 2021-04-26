@@ -10,7 +10,7 @@
     <div class="col-xl-8 order-xl-1">
         <div class="card">
             @foreach ($result as $item)
-            <form class="needs-validation" novalidate action="{{url('badge/update/'.$item['id'])}}" method="post">
+            <form class="needs-validation" novalidate action="{{url('badge/update/'.$item['id'])}}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="card-header">
                     @include('baseAdmin.alerts')
@@ -52,7 +52,7 @@
                     <div class="pl-lg-4">
                         <div class="row">
                             @if ($item['image'])
-                            <img src="" class="rounded float-left img-thumbnail" alt="...">
+                            <img src="{{ Storage::url( $item['image']) }}" class="rounded float-left img-thumbnail" alt="...">
                             @else
                             <img style='width:300px' src="{{url('assets/img/picture/not-found.png')}}" class="rounded float-left img-thumbnail" alt="...">
                             @endif

@@ -9,7 +9,7 @@
 <div class="row">
     <div class="col-xl-8 order-xl-1">
         <div class="card">
-            <form class="needs-validation" novalidate action="{{url('badge/store')}}" method="post">
+            <form class="needs-validation" novalidate action="{{url('badge/store')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="card-header">
                     @include('baseAdmin.alerts')

@@ -180,6 +180,7 @@ class MasterDataController extends Controller
     public function updateBadge(Request $request, $id)
     {
         $data = MasterDataBEController::updateBadge($request,$id);
+        // return $data;
         if($data['status']=='success'){
             return redirect('badge')->withSuccess(['Badge field has been updated']);
         }

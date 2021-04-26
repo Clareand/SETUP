@@ -12,12 +12,14 @@
               <h5 class="pb-2 pt-1">
                 {{$item['tech_field']['name']}}
               </h5>
-              <h4 class="font-weight-bold card-title">
+              <h3 class="font-weight-bold card-title text-center">
                 {{$item['name']}}
-              </h4>
+              </h3>
               <p class="card-text" style="height:8rem;">
                 {{$item['description']}}
               </p>
+              <button disabled class="btn btn-outline-olive btn-sm">hello</button>
+              <br><br>
               <form action="{{url('class/enroll')}}" method="POST">
                 @csrf
                 <input type="hidden" name="id_class" value="{{$item['id']}}">

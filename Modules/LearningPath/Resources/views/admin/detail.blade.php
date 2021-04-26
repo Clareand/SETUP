@@ -43,7 +43,7 @@
                 <h5 class="text-darker text-center">{{$item['tech_field']['name']}}</h3>
                 <div class="row align-items-center">
                     @if ($item['badge']['image']!="")
-                    <img style='width:400px' src="" class="rounded mx-auto d-block" alt="...">
+                    <img style='width:400px' src="{{ Storage::url( $item['badge']['image']) }}" class="rounded mx-auto d-block" alt="...">
                     @else
                         <img style='width:400px' src="{{url('assets/img/picture/not-found.png')}}" class="rounded mx-auto d-block" alt="...">
                     @endif
