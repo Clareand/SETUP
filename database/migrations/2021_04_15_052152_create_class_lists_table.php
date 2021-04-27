@@ -19,6 +19,7 @@ class CreateClassListsTable extends Migration
             $table->integer('field_of_tech')->nullable()->index('id_tech');
             $table->integer('all_module')->nullable();
             $table->text('description')->nullable();
+            $table->string('image')->nullable()->default('');
             $table->timestamps();
         });
     }

@@ -22,9 +22,7 @@ class LearningPathController extends Controller
     public function index()
     {
         $data = LearningPathBEController::index();
-        if($data['status']=='success'){
-            return view('learningpath::admin.index',$data['result']);
-        }
+        return view('learningpath::admin.index',$data);
     }
 
     /**

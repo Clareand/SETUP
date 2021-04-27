@@ -32,10 +32,15 @@
               </tr>
             </thead>
             <tbody class="list">
-              @foreach ($data as $item)
+              @if ($status =='fail')
+              <tr>
+                  <td colspan="5" class="text-center">No Data to display</td>
+              </tr>
+              @else
+              @foreach ($result as $item)
               <tr>
                 <th scope="row">
-                  {{$loop->iteration+(10*($current_page-1))}}
+                  {{$loop->iteration+(10*($result['current_page']))}}
                 </th>
                 <td class="title">
                   {{$item['title']}}
@@ -75,10 +80,6 @@
                 </div>
               </div>
               @endforeach
-              @if (count($data)==0)
-                  <tr>
-                      <td colspan="5">No Data to display</td>
-                  </tr>
               @endif
             </tbody>
           </table>

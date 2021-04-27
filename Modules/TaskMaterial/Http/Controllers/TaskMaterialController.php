@@ -21,7 +21,7 @@ class TaskMaterialController extends Controller
     public function getMaterial()
     {
         $data = TaskMaterialBEController::getMaterial();
-        return view('taskmaterial::material.index',$data['result']);
+        return view('taskmaterial::material.index',$data);
     }
 
     /**
@@ -98,5 +98,73 @@ class TaskMaterialController extends Controller
             return redirect('material')->withSuccess(['Material hass been deleted']);
         }
         return back()->withError($data['result']);
+    }
+
+    // Task
+    public function getTask()
+    {
+        $data = TaskMaterialBEController::getTask();
+        return view('taskmaterial::task.index',$data);
+    }
+
+    public function createTask()
+    {
+        return view('taskmaterial::task.create');
+    }
+
+    public function storeTask(Request $request)
+    {
+        $data = TaskMaterialBEController::storeTask($request);
+        if($data['status']=='success'){
+            return redirect('task')->withSuccess(['Task has ben created']);
+            // nanti langsung diarahin ke detail, buat tambahin field pertanyaan
+        }
+        return back()->withError($data['result']);
+    }
+
+    public function showTask($id)
+    {
+        $data = TaskMaterialBEController::showTask($id);
+        // return $data;
+        return view('taskmaterial::task.detail',$data);
+    }
+
+    public function editTask($id)
+    {
+        $data = TaskMaterialBEController::editTask($id);
+        // return $data;
+        return view('taskmaterial::task.edit',$data);
+    }
+
+    public function updateTask(Request $request, $id)
+    {
+        $data = TaskMaterialBEController::updateTask($request,$id);
+        // return $data;
+        if($data['status']=='success'){
+            return redirect('task/detail/'.$id)->withSuccess(['Task has been updated']);
+        }
+        return back()->withError($data['result'])->withInput($request->all());
+    }
+
+    public function destroyTask($id)
+    {
+        $data = TaskMaterialBEController::destroyTask($id);
+        if($data['status']=='success'){
+            return redirect('task')->withSuccess(['Task has been deleted']);
+        }
+        return back()->withError($data['result']);
+    }
+
+    
+    // question
+
+    public function createQuestion($id)
+    {
+        $data['id']=$id;
+        return view('taskmaterial::question.create',$data);
+    }
+
+    public function storeQuestion(Request $request,$id){
+        return $request;
     }
 }

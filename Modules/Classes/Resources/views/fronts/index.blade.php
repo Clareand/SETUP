@@ -6,7 +6,11 @@
         <div class="col-lg-3">
           <div class="card card-cascade narrower">
             <div class="view view-cascade narrower overlay">
+              @if ($item['image'])
+              <img class="card-img-top" src="{{Storage::url( $item['image']) }}" alt="" style="height: 48vh"/>
+              @else
               <img class="card-img-top" src="{{url('assets/img/picture/cyan-forest.jpg')}}" alt=""/>
+              @endif
             </div>
             <div class="card-body card-body-cascade">
               <h5 class="pb-2 pt-1">

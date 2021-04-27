@@ -207,7 +207,8 @@ class MasterDataBEController extends Controller
       * @return Renderable
       */
      public static function updateBadge($request, $id)
-     {  //return $request;
+     {  
+        //  return $request;
          $validator=Validator::make($request->all(),[
              'name'=>'string',
              'point'=>'integer'

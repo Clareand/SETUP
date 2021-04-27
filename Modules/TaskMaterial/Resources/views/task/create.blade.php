@@ -1,21 +1,21 @@
 @extends('baseAdmin.main')
 @section('class-active','active')
 @section('class-collapse','show')
-@section('material-list-active','active')
-@section('main-title','Material')
-@section('title','List')
-@section('page','Table')
+@section('task-list-active','active')
+@section('main-title','Task')
+@section('title','Create')
+@section('page','Form')
 @section('content')
 <div class="row">
     <div class="col-xl-8 order-xl-1">
         <div class="card">
-            <form class="needs-validation" novalidate action="{{url('material/store')}}" method="post" id="forms" enctype="multipart/form-data">
+            <form class="needs-validation" novalidate action="{{url('task/store')}}" method="post" id="forms" enctype="multipart/form-data">
                 @csrf
                 <div class="card-header">
                     @include('baseAdmin.alerts')
                     <div class="row align-items-center">
                         <div class="col-8">
-                            <h3 class="mb-0">Add New Material </h3>
+                            <h3 class="mb-0">Add New Task </h3>
                         </div>
                         <div class="col-4 text-right">
                             <button type="submit" class="btn btn-olive" id="submited" onclick="getValue()">Save</button>
@@ -23,13 +23,13 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <h6 class="heading-small text-muted mb-4">Material Information</h6>
+                    <h6 class="heading-small text-muted mb-4">Task Information</h6>
                     <div class="pl-lg-4">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="form-control-label" for="input-username">Name</label>
-                                    <input type="text" id="input-username" class="form-control" placeholder="Basic programing" name="title" required>
+                                    <input type="text" id="input-username" class="form-control" placeholder="Basic programing" name="name" required>
                                     <div class="invalid-feedback">
                                         Please insert material title.
                                     </div>
@@ -38,22 +38,21 @@
                         </div>
                     </div>
                     <hr class="my-4">
-                    <h6 class="heading-small text-muted mb-4">Material Text</h6>
+                    <h6 class="heading-small text-muted mb-4">Task Description</h6>
                     <div class="pl-lg-4">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-control-label" for="input-address">Description</label>
-                                    <div id="editor"></div>
-                                    <input type="hidden" name="material_text" id="material_text">
+                                    <textarea id="input-address" class="form-control" placeholder="Description about this Task" name="description" required></textarea>
                                     <div class="invalid-feedback">
-                                        Please insert text for this module.
+                                        Please insert text for this Task.
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <hr class="my-4">
+                    {{-- <hr class="my-4">
                     <h6 class="heading-small text-muted mb-4">Material Image</h6>
                     <div class="pl-lg-4">
                         <div class="row">
@@ -64,7 +63,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </form>
         </div>

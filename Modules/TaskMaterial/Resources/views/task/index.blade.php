@@ -1,8 +1,8 @@
 @extends('baseAdmin.main')
-@section('master-data-active','active')
-@section('data-collapse','show')
-@section('tech-active','active')
-@section('main-title','Tech Field')
+@section('class-active','active')
+@section('class-collapse','show')
+@section('task-list-active','active')
+@section('main-title','Task')
 @section('title','List')
 @section('page','Table')
 @section('content')
@@ -14,10 +14,10 @@
           @include('baseAdmin.alerts')
           <div class="row align-items-center">
             <div class="col">
-              <h3 class="mb-0">Tech Field Table</h3>
+              <h3 class="mb-0">Task Table</h3>
             </div>
             <div class="col text-right">
-              <a href="{{url ('tech/create')}}" class="btn btn-olive" type="button">Add Tech</a>
+              <a href="{{url ('task/create')}}" class="btn btn-olive" type="button">Add Task</a>
             </div>
           </div>
         </div>
@@ -28,25 +28,29 @@
               <tr>
                 <th scope="col" class="sort" data-sort="no">No</th>
                 <th scope="col" class="sort" data-sort="name">Name</th>
-                <th scope="col" class="sort" data-sort="email">Action</th>
+                <th scope="col text-right">Action</th>
               </tr>
             </thead>
             <tbody class="list">
-              @if ($status=='success')
+              @if ($status =='fail')
+              <tr>
+                  <td colspan="5" class="text-center">No Data to display</td>
+              </tr>
+              @else
               @foreach ($result as $item)
               <tr>
                 <th scope="row">
                   {{$loop->iteration+(10*($result['current_page']))}}
                 </th>
-                <td class="name">
+                <td class="title">
                   {{$item['name']}}
                 </td>
                 <td>
                   <div class="btn-group">
-                    <a href="{{url('tech/detail/'.$item['id'])}}" type="button" class="btn btn-default" data-toggle="tooltip" title="Detail">
+                    <a href="{{url('task/detail/'.$item['id'])}}" type="button" class="btn btn-default" data-toggle="tooltip" title="Detail">
                       <span class="btn-inner--icon"><i class="ni ni-active-40"></i></span>
                     </a>
-                    <a href="{{url('tech/edit/'.$item['id'])}}" type="button" class="btn btn-olive" data-toggle="tooltip" title="Edit">
+                    <a href="{{url('task/edit/'.$item['id'])}}" type="button" class="btn btn-olive" data-toggle="tooltip" title="Edit">
                       <span class="btn-inner--icon"><i class="fas fa-pen"></i></span>
                     </a>
                     <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalDelete{{$item['id']}}">
@@ -66,20 +70,16 @@
                       </button>
                     </div>
                     <div class="modal-body">
-                      Are you sure want to delete class <strong>{{$item['name']}}</strong> ?
+                      Are you sure want to delete class <strong>{{$item['title']}}</strong> ?
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <a href="{{url('tech/delete/'.$item['id'])}}" type="button" class="btn btn-danger">Delete</a>
+                      <a href="{{url('task/delete/'.$item['id'])}}" type="button" class="btn btn-danger">Delete</a>
                     </div>
                   </div>
                 </div>
               </div>
               @endforeach
-              @else
-                  <tr>
-                      <td colspan="5" class="text-center">No Data to display</td>
-                  </tr>
               @endif
             </tbody>
           </table>

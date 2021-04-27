@@ -55,8 +55,8 @@
                         <span class="sidenav-normal"> Module </span>
                       </a>
                     </li>
-                    <li class="nav-item">
-                      <a href="../../pages/dashboards/alternative.html" class="nav-link">
+                    <li class="nav-item @yield('task-list-active')">
+                      <a href="{{url('task')}}" class="nav-link">
                         <span class="sidenav-normal"> Task </span>
                       </a>
                     </li>

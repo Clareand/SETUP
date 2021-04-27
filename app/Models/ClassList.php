@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $field_of_tech
  * @property int|null $all_module
  * @property string|null $description
+ * @property string|null $image
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
@@ -41,7 +42,8 @@ class ClassList extends Model
 		'name',
 		'field_of_tech',
 		'all_module',
-		'description'
+		'description',
+		'image'
 	];
 
 	public function tech_field()

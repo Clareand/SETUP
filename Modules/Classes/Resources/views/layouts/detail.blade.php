@@ -51,6 +51,18 @@
                             </div>
                         </div>
                     </div>
+                    <hr class="my-4">
+                    <h6 class="heading-small text-muted mb-4">Class Image</h6>
+                    <div class="pl-lg-4">
+                        <div class="row">
+                            @if ($item['image'])
+                            <img src="{{ Storage::url( $item['image']) }}" class="rounded float-left img-thumbnail" style='width:300px' alt="...">
+                            @else
+                            <img style='width:300px' src="{{url('assets/img/picture/not-found.png')}}" class="rounded float-left img-thumbnail" alt="...">
+                            @endif
+                        </div>
+                        <br>
+                    </div>
                 </div>
             </form>
         </div>

@@ -34,10 +34,11 @@
               </tr>
             </thead>
             <tbody class="list">
-              @foreach ($data as $item)
+              @if ($status == 'success')
+              @foreach ($result as $item)
               <tr>
                 <th scope="row">
-                  {{$loop->iteration+(10*($current_page-1))}}
+                  {{$loop->iteration+(10*($result['current_page']))}}
                 </th>
                 <td class="name">
                   {{$item['name']}}
@@ -87,9 +88,9 @@
                 </div>
               </div>
               @endforeach
-              @if (count($data)==0)
+              @else
                   <tr>
-                      <td colspan="5">No Data to display</td>
+                      <td colspan="5" class="text-center">No Data to display</td>
                   </tr>
               @endif
             </tbody>

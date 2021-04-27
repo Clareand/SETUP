@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Model;
  * Class Task
  * 
  * @property int $id
- * @property int $id_class
  * @property string $name
  * @property string $description
  * @property Carbon|null $created_at
@@ -30,12 +29,7 @@ class Task extends Model
 {
 	protected $table = 'tasks';
 
-	protected $casts = [
-		'id_class' => 'int'
-	];
-
 	protected $fillable = [
-		'id_class',
 		'name',
 		'description'
 	];

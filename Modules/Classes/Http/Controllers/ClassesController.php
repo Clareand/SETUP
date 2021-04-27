@@ -27,10 +27,7 @@ class ClassesController extends Controller
     public function index()
     {
         $data = ClassesBEController::index();
-        // return $data;
-        if($data['status']=='success'){
-            return view('classes::layouts.index',$data['result']);
-        }
+        return view('classes::layouts.index',$data);
     }
 
     /**
@@ -99,9 +96,7 @@ class ClassesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // return $request;
         $data = ClassesBEController::update($request,$id);
-        // return $data;
         if($data['status']=='success'){
             return redirect('class')->withSuccess(['Class has been updated']);
         };

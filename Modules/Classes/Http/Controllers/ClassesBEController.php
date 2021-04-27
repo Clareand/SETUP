@@ -16,6 +16,7 @@ use DB;
 use Validator;
 use Auth;
 use Hash;
+use PhpParser\Node\Stmt\ClassLike;
 
 class ClassesBEController extends Controller
 {
@@ -62,9 +63,18 @@ class ClassesBEController extends Controller
             $response=[$validator->messages()];
             return $response;
         }
+        if($request['image']){
+            $image = $request->file('image');
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $path = $request->image->storeAs(('public/class'), $name);
+        }
+         $store = $request->except('_token','image');
+         if($request['image']){
+            $store['image'] = $path;
+         }
         DB::beginTransaction();
         try{
-            $data = ClassList::create(array_filter($request->all()));
+            $data = ClassList::create($store);
         }catch(\Exception $e){
             DB::rollback();
             return $e;
@@ -119,7 +129,19 @@ class ClassesBEController extends Controller
             ];
             return $response;
         }
+        $class = ClassList::where('id',$id)->get();
+         if($request['image']){
+             if(!empty($class['image'])){
+                Storage::delete($class['image']);
+             }
+            $image = $request->file('image');
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $path = $request->image->storeAs(('public/class'), $name);
+         }
         $post = $request->except('_token');
+        if($request['image']){
+            $post['image'] = $path;
+        }
         // return $post;
         DB::beginTransaction();
         try{
@@ -141,6 +163,7 @@ class ClassesBEController extends Controller
     public static function destroy($id)
     {
         $class = ClassList::findOrFail($id);
+        $path = $class['image'];
         DB::beginTransaction();
         try{
             $deleteClass=$class->delete();
@@ -149,6 +172,7 @@ class ClassesBEController extends Controller
             return MyHelper::checkDelete($deleteClass);
         }
         DB::commit();
+        Storage::delete($path);
         return MyHelper::checkDelete($deleteClass);
     }
 

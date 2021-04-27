@@ -31,7 +31,7 @@ class MasterDataController extends Controller
 
     public function getTech(){
         $data = MasterDataBEController::getTech();
-        return view('masterdata::tech.index',$data['result']);
+        return view('masterdata::tech.index',$data);
     }
     
 
@@ -116,7 +116,7 @@ class MasterDataController extends Controller
 
     public static function getAllBadge(){
         $data = MasterDataBEController::getAllBadge();
-        return view('masterdata::badge.index',$data['result']);
+        return view('masterdata::badge.index',$data);
     }
     public static function getBadge(){
         $data = MasterDataBEController::getAllBadge();
