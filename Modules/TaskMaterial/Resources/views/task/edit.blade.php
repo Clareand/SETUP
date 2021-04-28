@@ -23,12 +23,75 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    @if (count($item['task_fields'])==0)
-                        No question added
-                    @else
-                        question list
-                    @endif
+                <div class="card-body custom-height-2">
+                    <div class="scrollbar-inner">
+                        <div class="card">
+                            @foreach ($item['task_fields'] as $field)
+                                @if ($field['field_type']=='short answer')
+                                    <div class="card-header" style="background-color: #fafafa">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <h2>{{$field['field_question']}}</h2>
+                                            </div>
+                                            <div class="col-lg-6 text-right">
+                                                <h4 class="text-olive">{{$field['point']}} Points</h4>
+                                            </div>
+                                        </div>
+                                        <h5 class="text-gray">{{$field['field_type']}}</h5>
+                                    </div>
+                                    <div class="card-body" style="background-color: #fafafa">
+                                        @foreach ($field['task_field_options'] as $task)
+                                        Answer: {{$task['option_value']}}
+                                        @endforeach
+                                    </div>
+                                    <br>
+                                @elseif($field['field_type']=='file upload')
+                                    <div class="card-header" style="background-color: #fafafa">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <h2>{{$field['field_question']}}</h2>
+                                            </div>
+                                            <div class="col-lg-6 text-right">
+                                                <h4 class="text-olive">{{$field['point']}} Points</h4>
+                                            </div>
+                                        </div>
+                                        <h5 class="text-gray">{{$field['field_type']}}</h5>
+                                    </div>
+                                    <br>
+                                @else
+                                    <div class="card-header" style="background-color: #fafafa">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <h2>{{$field['field_question']}}</h2>
+                                            </div>
+                                            <div class="col-lg-6 text-right">
+                                                <h4 class="text-olive">{{$field['point']}} Points</h4>
+                                            </div>
+                                        </div>
+                                        <h5 class="text-gray">{{$field['field_type']}}</h5>
+                                    </div>
+                                    <div class="card-body" style="background-color: #fafafa">
+                                        <div class="row">
+                                            @foreach ($field['task_field_options'] as $task)
+                                                <div class="col-lg-12">
+                                                    @if ($task['option_value']=='true')
+                                                        <div class="text-teal">
+                                                            {{$loop->iteration}}. {{$task['option_text']}} (Answer)
+                                                        </div>
+                                                    @else
+                                                        <div>
+                                                            {{$loop->iteration}}. {{$task['option_text']}}
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    <br>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>

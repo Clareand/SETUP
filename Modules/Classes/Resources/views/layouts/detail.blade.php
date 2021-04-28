@@ -70,11 +70,18 @@
     <div class="col-xl-4 order-xl-1">
         <div class="card">
             <div class="card-header">
-                <h3>Module list</h3>
+                <div class="row align-items-center">
+                    <div class="col-8">
+                        <h3 class="mb-0">Module List </h3>
+                    </div>
+                    <div class="col-4 text-right">
+                        <a href="{{url('class/add/module/'.$item['id'])}}" class="btn btn-olive">Edit</a>
+                    </div>
+                </div>
             </div>
             <div class="card-body custom-height">
                 <div class="scrollbar-inner">
-                    @if (!$item['module_list'])
+                    @if (count($item['module_lists'])==0)
                     <strong>No Module to display</strong>
                 @else
                     <div class="card bg-light">

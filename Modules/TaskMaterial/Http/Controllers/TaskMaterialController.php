@@ -165,6 +165,10 @@ class TaskMaterialController extends Controller
     }
 
     public function storeQuestion(Request $request,$id){
-        return $request;
+        $data = TaskMaterialBEController::storeQuestion($request,$id);
+        if($data['status']=='success'){
+            return redirect('task/detail/'.$id)->withSuccess(['Task Field has been created']);
+        }
+        return back()->withError($data['result']);
     }
 }

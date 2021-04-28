@@ -4,6 +4,7 @@ namespace Modules\Classes\Http\Controllers;
 
 use App\Http\Controllers\HomeController;
 use App\Models\ClassList;
+use App\Models\Task;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -142,5 +143,17 @@ class ClassesController extends Controller
         if($data['status']=='success'){
             return view('classes::fronts.homePage',$data);
         }
+    }
+
+    public function addModule($id){
+        $data = ClassesBEController::addModule();
+        $data['result']['id']=$id;
+        // return $data;
+        return view('classes::layouts.module',$data['result']);
+    }
+
+    public function storeModule(Request $request,$id){
+        $data = ClassesBEController::storeModule($request,$id);
+        return $data;
     }
 }

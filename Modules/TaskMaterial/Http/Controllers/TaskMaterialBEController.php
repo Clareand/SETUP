@@ -10,6 +10,7 @@ use App\Models\TaskField;
 use App\Models\ClassList;
 use App\Models\Material;
 use App\Library\MyHelper;
+use App\Models\TaskFieldOption;
 use DB;
 use Validator;
 use Auth;
@@ -186,7 +187,7 @@ class TaskMaterialBEController extends Controller
 
     public static function showTask($id)
     {
-        $data = Task::where('id',$id)->with('task_fields.task_field_option')->get();
+        $data = Task::where('id',$id)->with('task_fields.task_field_options')->get();
         // return $data;
         return MyHelper::checkGet($data);
     }
@@ -238,6 +239,72 @@ class TaskMaterialBEController extends Controller
         DB::commit();
         Storage::delete($path);
         return MyHelper::checkDelete($deleteTask);
+    }
+
+    public static function storeQuestion($request,$id){
+        if($request['field_type']=='short answer'||$request['field_type']=='file upload'){
+            $storeField = [
+                'id_task'=>$id,
+                'field_question'=>$request['field_question'],
+                'field_type'=>$request['field_type'],
+                'point'=>$request['point']
+            ];
+            DB::beginTransaction();
+            try{
+                $data1 = TaskField::create($storeField);
+            }catch(\Exception $e){
+                return $e;
+                return MyHelper::checkCreate($data1);
+            }
+            $storeFieldOption = [
+                'id_task_field'=>$data1['id'],
+                'option_value'=>$request['option_value'],
+                'option_text'=>$request['option_text']
+            ];
+            try{
+                $data2 = TaskFieldOption::create($storeFieldOption);
+            }catch(\Exception $e){
+                DB::rollback();
+                return $e;
+                return MyHelper::checkCreate($data2);
+            };
+            DB::commit();
+            return MyHelper::checkCreate($data2);
+        }else if($request['field_type']=='multiple'){
+            $storeField = [
+                'id_task'=>$id,
+                'field_question'=>$request['field_question'],
+                'field_type'=>$request['field_type'],
+                'point'=>$request['point']
+            ];
+            
+            DB::beginTransaction();
+            try{
+                $data1 = TaskField::create($storeField);
+            }catch(\Exception $e){
+                DB::rollback();
+                return $e;
+                return MyHelper::checkCreate($data1);
+            }
+
+            $fields = $request->except('_token','field_question','field_type','point');
+            for($i=1;$i<5;$i++){
+                $storeFieldOption = [
+                    'id_task_field'=>$data1['id'],
+                    'option_value'=>$fields['option_value_'.$i],
+                    'option_text'=>$request['option_text_'.$i]
+                ];
+
+                try{
+                    $data2 = TaskFieldOption::create($storeFieldOption);
+                }catch(\Exception $e){
+                    return $e;
+                    return MyHelper::checkCreate($data2);
+                }
+            }
+            DB::commit();
+            return MyHelper::checkCreate($data2);
+        }
     }
 
 }

@@ -86,7 +86,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-control-label" for="input-address">Answer</label>
-                                    <input class="form-control" name="material_answer" id="material_text" required>
+                                    <input class="form-control" name="option_value" id="material_text" required>
                                     <div class="invalid-feedback">
                                         Please insert text for this module.
                                     </div>
@@ -130,6 +130,12 @@
                     </div>`
                 )
                 $('.selects').select2();
+            }
+
+            if(idField=='file upload'){
+                fields.append(
+                    `<input hidden name="option_value" value="true">`
+                )
             }
         }
     </script>

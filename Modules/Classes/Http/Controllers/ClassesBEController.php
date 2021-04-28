@@ -11,6 +11,7 @@ use App\Models\Material;
 use App\Models\Task;
 use App\Models\ClassList;
 use App\Library\MyHelper;
+use App\Models\ModuleList;
 use App\Models\UserClassList;
 use DB;
 use Validator;
@@ -198,5 +199,56 @@ class ClassesBEController extends Controller
     public static function getPath(){
         $data=LearningPath::with('tech_field')->get();
         return MyHelper::checkGet($data);
+    }
+
+    public static function addModule(){
+        $task = Task::all();
+        $material = Material::all();
+        $data=[
+            'task'=>$task,
+            'material'=>$material
+        ];
+        return MyHelper::checkGet($data);
+    }
+
+    public static function storeModule($request,$id){
+        $class = ModuleList::where('id_class',$id)->get();
+        $count = 0;
+        // return $class;
+        foreach ($class as $item){
+            if($item['step']==$request['step']){
+                $response=[
+                    'status'=>'fail',
+                    'result'=>['Step already define']
+                ];
+                return $response;
+            }
+            if($item['id_material']==$request['id_material']){
+                $response=[
+                    'status'=>'fail',
+                    'result'=>['module already added']
+                ];
+                return $response;
+            }
+            if($item['id_task']==$request['id_task']){
+                $response=[
+                    'status'=>'fail',
+                    'result'=>['task already added']
+                ];
+                return $response;
+            }
+        }
+
+        DB::beginTransaction();
+        try{
+            $addModule=ModuleList::create(array_filter($request->all()));
+        }catch(\Exception $e){
+            DB::rollback();
+            return $e;
+            return MyHelper::checkCreate($addModule);
+        }
+        DB::commit();
+        return MyHelper::checkCreate($addModule);
+        
     }
 }
