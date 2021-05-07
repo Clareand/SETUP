@@ -98,6 +98,7 @@ class ClassesController extends Controller
     public function update(Request $request, $id)
     {
         $data = ClassesBEController::update($request,$id);
+        // return $data;
         if($data['status']=='success'){
             return redirect('class')->withSuccess(['Class has been updated']);
         };
@@ -145,8 +146,22 @@ class ClassesController extends Controller
         }
     }
 
+    public function pathClassList($id){
+        $data = ClassesBEController::pathClassList($id);
+        // return $data;
+        return view('classes::fronts.pathList',$data);
+    }
+
+    public function classDetail($id){
+        $data = ClassesBEController::classDetail($id);
+        // return $data;
+        return view('classes::fronts.detail',$data);
+    }
+
+
+    // Module
     public function addModule($id){
-        $data = ClassesBEController::addModule();
+        $data = ClassesBEController::addModule($id);
         $data['result']['id']=$id;
         // return $data;
         return view('classes::layouts.module',$data['result']);
@@ -154,6 +169,17 @@ class ClassesController extends Controller
 
     public function storeModule(Request $request,$id){
         $data = ClassesBEController::storeModule($request,$id);
-        return $data;
+        if($data['status']=='success'){
+            return back()->withSuccess(['Successfuly Added']);
+        }
+        return back()->withError($data['result']);
+    }
+
+    public function destroyModule($id){
+        $data = ClassesBEController::destroyModule($id);
+        if($data['status']=='success'){
+            return back()->withSuccess(['Learning Material has been deleted']);
+        }
+        return back()->withError($data['result']);
     }
 }

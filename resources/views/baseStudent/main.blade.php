@@ -64,7 +64,7 @@
               <div class="dropdown-menu  dropdown-menu-bottom wider ">
                 <div class="row dropdown-margin-2">
                   <div class="col-lg-12 col-divider">
-                    <a href="" class="dropdown-item">
+                    <a href="{{url('app/list')}}" class="dropdown-item">
                       <div class="row">
                         <div class="col-sm-3 top">
                           <i class="ni ni-single-02 font-16"></i>
@@ -83,7 +83,7 @@
                     </a>
                   </div>
                   <div class="col-lg-12 col-divider">
-                    <a href="" class="dropdown-item">
+                    <a href="{{url('app/homepage')}}" class="dropdown-item">
                       <div class="row">
                         <div class="col-sm-3 top">
                           <i class="ni ni-bullet-list-67 font-16"></i>
@@ -145,7 +145,7 @@
                         </a>
                       </div>
                       <div class="col-md-4">
-                        <a href="" class="text-default">
+                        <a href="{{url('logout')}}" class="text-default">
                           <i class="fa fa-sign-out-alt"></i>
                           <span>Logout</span>
                         </a>
@@ -186,16 +186,17 @@
       </div>
     </div>
     <!-- Page content -->
+    @yield('header')
     <div class="container-fluid mt--6">
       <!-- tets -->
-      
       @yield('content')
       <!-- Footer -->
+      <br>
       <footer class="footer pt-0">
         <div class="row align-items-center justify-content-lg-between">
-          <div class="col-lg-6">
-            <div class="copyright text-center  text-lg-left  text-muted">
-              &copy; 2020 <a href="https://www.creative-tim.com" class="font-weight-bold ml-1" target="_blank">Creative Tim</a>
+          <div class="col-lg-12">
+            <div class="copyright text-center text-gray">
+            2020 SETUP
             </div>
           </div>
         </div>

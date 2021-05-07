@@ -19,7 +19,7 @@
                             <h3 class="mb-0">Class Detail </h3>
                         </div>
                         <div class="col-4 text-right">
-                            <button class="btn btn-olive">Edit</button>
+                            <button class="btn btn-olive" id="submited" onclick="getValue()">Edit</button>
                         </div>
                     </div>
                 </div>
@@ -52,10 +52,22 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-control-label" for="input-address">Description</label>
-                                    <textarea id="input-description" class="form-control" placeholder="About this Class" name="description" type="text" enctype="multipart/form-data">
-                                        {{old('description')?old('description'):$item['description']}}
+                                    <label class="form-control-label" for="input-address">Short Description</label>
+                                    <textarea id="input-description" class="form-control" placeholder="About this Class" name="short_description" type="text" enctype="multipart/form-data">
+                                        {{old('short_description')?old('short_description'):$item['short_description']}}
                                     </textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="input-address">Long Description</label>
+                                    <div id="editor"></div>
+                                    <input type="hidden" name="long_description" id="long_description">
+                                    <div class="invalid-feedback">
+                                        Please insert text for this module.
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -136,5 +148,35 @@
 					}
 			});
 	}
+</script>
+<script>
+    var toolbarOptions = [
+  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+  ['blockquote', 'code-block'],
+ 
+  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+  [{ 'direction': 'rtl' }],                         // text direction
+  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+  ['clean']                                         // remove formatting button
+];
+
+const editor = document.getElementById('editor');
+
+var quill = new Quill('#editor', {
+  modules: {
+    toolbar: toolbarOptions
+  },
+  theme: 'snow'
+});
+
+editor.firstChild.innerHTML =  {!! json_encode($class[0]['long_description']) !!}
+
+function getValue(){
+    var text_material = quill.root.innerHTML;
+    $('#long_description').val(text_material);
+    console.log(text_material);
+}
 </script>
 @endsection

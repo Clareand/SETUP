@@ -160,6 +160,21 @@
     margin-top:10vh;
 }
 
+.bg-black-blue
+{
+    background-color: #434F5A !important;
+}
+
+.square-1{
+    width: 200px;
+    height: 200px;
+}
+
+.square-2{
+    width: 300px;
+    height: 300px;
+}
+
 
 /* Wider */
 .card-cascade.wider{

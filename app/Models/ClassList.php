@@ -42,7 +42,8 @@ class ClassList extends Model
 		'name',
 		'field_of_tech',
 		'all_module',
-		'description',
+		'short_description',
+		'long_description',
 		'image'
 	];
 

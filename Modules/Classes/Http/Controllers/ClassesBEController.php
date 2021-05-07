@@ -13,11 +13,11 @@ use App\Models\ClassList;
 use App\Library\MyHelper;
 use App\Models\ModuleList;
 use App\Models\UserClassList;
+use Illuminate\Support\Facades\Storage;
 use DB;
 use Validator;
 use Auth;
 use Hash;
-use PhpParser\Node\Stmt\ClassLike;
 
 class ClassesBEController extends Controller
 {
@@ -58,7 +58,8 @@ class ClassesBEController extends Controller
         $validator = Validator::make($request->all(),[
             'name'=>'string',
             'tech'=>'integer',
-            'description'=>'nullable'
+            'short_description'=>'nullable',
+            'long_description'=>'nullable',
         ]);
         if($validator->fails()){
             $response=[$validator->messages()];
@@ -92,7 +93,7 @@ class ClassesBEController extends Controller
      */
     public static function show($id)
     {
-        $data = ClassList::with('tech_field','module_lists')->where('id',$id)->get();
+        $data = ClassList::with('tech_field','module_lists.material','module_lists.task')->where('id',$id)->get();
         return MyHelper::checkGet($data);
     }
 
@@ -103,7 +104,7 @@ class ClassesBEController extends Controller
      */
     public static function edit($id)
     {
-        $data=ClassList::with('tech_field','module_lists')->where('id',$id)->get();
+        $data=ClassList::with('tech_field','module_lists.material','module_lists.task')->where('id',$id)->get();
         // return $data;
         return MyHelper::checkGet($data);
     }
@@ -121,7 +122,8 @@ class ClassesBEController extends Controller
             'name'=>'string',
             'field_of_techh'=>'integer',
             'id_learning_path'=>'integer|nullable',
-            'description'=>'nullable'
+            'short_description'=>'nullable',
+            'long_description'=>'nullable'
         ]);
         if($validator->fails()){
             $response=[
@@ -172,8 +174,12 @@ class ClassesBEController extends Controller
             DB::rollback();
             return MyHelper::checkDelete($deleteClass);
         }
-        DB::commit();
-        Storage::delete($path);
+        $image = Storage::delete($path);
+        if($image==1){
+            DB::commit();
+            return MyHelper::checkDelete($deleteClass);
+        }
+        DB::rollback();
         return MyHelper::checkDelete($deleteClass);
     }
 
@@ -197,16 +203,31 @@ class ClassesBEController extends Controller
     }
 
     public static function getPath(){
-        $data=LearningPath::with('tech_field')->get();
+        $data=LearningPath::with('tech_field','badge')->get();
         return MyHelper::checkGet($data);
     }
 
-    public static function addModule(){
+    public static function pathClassList($id){
+        $data = LearningPath::with('class_paths.class_list','badge')->where('id',$id)->get();
+        return MyHelper::checkGet($data);
+    }
+
+    public static function classDetail($id){
+        $data = ClassList::where('id',$id)->with('tech_field','module_lists.material','module_lists.task')->get();
+        return MyHelper::checkGet($data);
+    }
+
+    // module & task in class
+
+    public static function addModule($id){
         $task = Task::all();
         $material = Material::all();
+        $list = ModuleList::where('id_class',$id)->with('material','task')->orderBy('step','asc')->get();
+        // return $list;
         $data=[
             'task'=>$task,
-            'material'=>$material
+            'material'=>$material,
+            'list'=>$list
         ];
         return MyHelper::checkGet($data);
     }
@@ -216,6 +237,7 @@ class ClassesBEController extends Controller
         $count = 0;
         // return $class;
         foreach ($class as $item){
+            // return $request;
             if($item['step']==$request['step']){
                 $response=[
                     'status'=>'fail',
@@ -223,14 +245,14 @@ class ClassesBEController extends Controller
                 ];
                 return $response;
             }
-            if($item['id_material']==$request['id_material']){
+            else if($item['id_material']==$request['id_material'] && $request['id_material']){
                 $response=[
                     'status'=>'fail',
                     'result'=>['module already added']
                 ];
                 return $response;
             }
-            if($item['id_task']==$request['id_task']){
+            else if($item['id_task']==$request['id_task'] && $request['id_task']){
                 $response=[
                     'status'=>'fail',
                     'result'=>['task already added']
@@ -247,8 +269,41 @@ class ClassesBEController extends Controller
             return $e;
             return MyHelper::checkCreate($addModule);
         }
+        $module['all_module'] = ModuleList::where('id_class',$id)->count();
+        
+        try{
+            $countModule=ClassList::where('id',$id)->update($module);
+        }catch(\Exception $e){
+            DB::rollback();
+            return $e;
+            return MyHelper::checkUpdate($countModule);
+        }
         DB::commit();
+        
         return MyHelper::checkCreate($addModule);
         
+    }
+
+    public static function destroyModule($id){
+        $class = ModuleList::where('id',$id)->get();
+        DB::beginTransaction();
+        try{
+            $module = ModuleList::where('id',$id)->delete();
+        }catch(\Exception $e){
+            DB::rollback();
+            return $e;
+            return MyHelper::checkDelete($module);
+        }
+        $modules['all_module'] = ModuleList::where('id_class',$class[0]['id_class'])->count();
+        // return $modules;
+        try{
+            $countModule=ClassList::where('id',$class[0]['id_class'])->update($modules);
+        }catch(\Exception $e){
+            DB::rollback();
+            return $e;
+            return MyHelper::checkUpdate($countModule);
+        }
+        DB::commit();
+        return MyHelper::checkDelete($module);
     }
 }

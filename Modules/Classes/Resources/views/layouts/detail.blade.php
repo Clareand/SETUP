@@ -45,8 +45,20 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="form-control-label" for="input-address">Description</label>
-                                    <input id="input-address" class="form-control" placeholder="About this Class" name="description" type="text" value="{{old('description')?old('description'):$item['description']}}" disabled>
+                                    <label class="form-control-label" for="input-address">Short Description</label>
+                                    <textarea name="short_description" class="form-control" rows='5' readonly>
+                                        {{$item['short_description']}}
+                                    </textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pl-lg-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="input-address">Long Description</label>
+                                    <div id="editor">{!! html_entity_decode($item['long_description']) !!}</div>
                                 </div>
                             </div>
                         </div>
@@ -84,11 +96,31 @@
                     @if (count($item['module_lists'])==0)
                     <strong>No Module to display</strong>
                 @else
+                @foreach ($item['module_lists'] as $items)
                     <div class="card bg-light">
-                        <div class="card-body">
-                            test
+                        <div class="card-body" style="background-color: #e9e8e8">
+                           <div class="row">
+                               <div class="col-md-2">
+                                   {{$items['step']}}
+                               </div>
+                               <div class="col-md-7">
+                                @if ($items['type']=='task')
+                                    {{$items['task']['name']}}
+                                @else
+                                    {{$items['material']['title']}}
+                                @endif
+                               </div>
+                               <div class="col-md-3">
+                                @if ($items['type']=='task')
+                                    <span class="badge badge-md badge-warning">{{$items['type']}}</span>
+                                @else
+                                    <span class="badge badge-md badge-success">{{$items['type']}}</span>
+                                @endif
+                               </div>
+                           </div>
                         </div>
                     </div>
+                @endforeach
                 @endif
                 </div>
             </div>

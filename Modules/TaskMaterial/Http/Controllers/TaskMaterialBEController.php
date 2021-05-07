@@ -307,4 +307,86 @@ class TaskMaterialBEController extends Controller
         }
     }
 
+    public static function editQuestion($field){
+        // $data = TaskField::where('id',$field)->with('task_field_options')->get();
+        $data = Task::where('id',$field)->with('task_fields.task_field_options')->get();   
+        return MyHelper::checkGet($data);
+    }
+
+    public static function UpdateQuestion($request,$task,$option){
+        if($request['field_type']=='short answer'||$request['field_type']=='file upload'){
+            $storeField = [
+                'field_question'=>$request['field_question'],
+                'field_type'=>$request['field_type'],
+                'point'=>$request['point']
+            ];
+            DB::beginTransaction();
+            try{
+                $data1 = TaskField::where('id',$option)->update($storeField);
+            }catch(\Exception $e){
+                return $e;
+                return MyHelper::checkUpdate($data1);
+            }
+            $storeFieldOption = [
+                'option_value'=>$request['option_value'],
+                'option_text'=>$request['option_text']
+            ];
+            try{
+                $data2 = TaskFieldOption::where('id_task_field',$option)->update($storeFieldOption);
+            }catch(\Exception $e){
+                DB::rollback();
+                return $e;
+                return MyHelper::checkUpdate($data2);
+            };
+            DB::commit();
+            return MyHelper::checkUpdate($data1);
+        }else if($request['field_type']=='multiple'){
+            $storeField = [
+                'field_question'=>$request['field_question'],
+                'field_type'=>$request['field_type'],
+                'point'=>$request['point']
+            ];
+            
+            DB::beginTransaction();
+            try{
+                $data1 = TaskField::where('id',$option)->update($storeField);
+            }catch(\Exception $e){
+                DB::rollback();
+                return $e;
+                return MyHelper::checkCreate($data1);
+            }
+            $fields = $request->except('_token','field_question','field_type','point');
+            $field_option = TaskFieldOption::where('id_task_field',$option)->get();
+            for($i=1;$i<count($field_option);$i++){
+                $storeFieldOption = [
+                    'option_value'=>$fields['option_value_'.$i],
+                    'option_text'=>$request['option_text_'.$i]
+                ];
+
+                try{
+                    $data2 = TaskFieldOption::where('id',$field_option[$i-1]['id'])->update($storeFieldOption);
+                }catch(\Exception $e){
+                    return $e;
+                    return MyHelper::checkCreate($data2);
+                }
+            }
+            DB::commit();
+            return MyHelper::checkUpdate($data2);
+        }
+    }
+
+    public static function destroyQuestion($id){
+        DB::beginTransaction(); 
+        try{
+            $field = TaskField::where('id',$id)->with('task_field_options')->delete();
+        }catch(\Exception $e){
+            DB::rollback();
+            return $e;
+            return MyHelper::checkDelete($field);
+        }
+        DB::commit();
+        return MyHelper::checkDelete($field);
+
+    }
+
 }

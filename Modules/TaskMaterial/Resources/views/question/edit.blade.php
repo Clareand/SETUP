@@ -2,15 +2,14 @@
 @section('class-active','active')
 @section('class-collapse','show')
 @section('task-list-active','active')
-@section('main-title','Material')
-@section('title','Form')
-@section('page','Editor')
+@section('main-title','Task')
+@section('title','Edit')
+@section('page','Form')
 @section('content')
 <div class="row">
-    <div class="col-xl-8 order-xl-1">
-        @foreach ($result as $item)
+    <div class="col-xl-6 order-xl-1">
         <div class="card">
-            <form class="needs-validation" novalidate action="" id="forms" enctype="multipart/form-data">
+            <form class="needs-validation" novalidate action="{{url('question/update/'.$result[0]['id'].'/'.$id['option'])}}" method="post" id="forms" enctype="multipart/form-data">
                 @csrf
                 <div class="card-header">
                     @include('baseAdmin.alerts')
@@ -19,7 +18,115 @@
                             <h3 class="mb-0">Question Field </h3>
                         </div>
                         <div class="col-4 text-right">
-                            <a href="{{url('question/create/'.$item['id'])}}" type="submit" class="btn btn-olive" id="submited">Add New Field</a>
+                            <button type="submit" class="btn btn-olive" id="submited">Edit</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h6 class="heading-small text-muted mb-4">Question Information</h6>
+                    @foreach ($result as $item)
+                        @foreach ($item['task_fields'] as $items)
+                        @if ($items['id']==$id['option'])
+                        <div class="pl-lg-4">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-username">Question</label>
+                                        <input type="text" id="input-username" class="form-control" placeholder="Basic programing" name="field_question" value="{{old('field_question')?old('field_question'):$items['field_question']}}">
+                                        <div class="invalid-feedback">
+                                            Please insert material title.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-username">Type</label>
+                                        <input type="text" id="input-username" class="form-control" placeholder="Question Point" name="field_type" value="{{old('field_type')?old('field_type'):$items['field_type']}}" readonly>
+                                        <div class="invalid-feedback">
+                                            Please Choose field type
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-username">Point</label>
+                                        <input type="text" id="input-username" class="form-control" placeholder="Question Point" name="point" value="{{old('point')?old('point'):$items['point']}}">
+                                        <div class="invalid-feedback">
+                                            Please insert material point.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-4">
+                        <div id='fields'></div>
+                        @if ($items['field_type']=='short answer')
+                        @foreach ($items['task_field_options'] as $option)
+                        <h6 class="heading-small text-muted mb-4">Question Fields</h6>
+                        <div class="pl-lg-4">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-address">Answer</label>
+                                        <input class="form-control" name="option_value" id="material_text" value="{{old('option_value')?old('option_value'):$option['option_value']}}">
+                                        <div class="invalid-feedback">
+                                            Please insert text for this module.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                        @elseif($items['field_type']=='multiple')
+                            <h6 class="heading-small text-muted mb-4">Question for multiplechoice Fields</h6>
+                            <div class="pl-lg-4">
+                                @foreach ($items['task_field_options'] as $options)
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="input-address">Field {{$loop->iteration}}</label>
+                                            <input class="form-control" name="option_text_{{$loop->iteration}}" id="material_text" placeholder="" value="{{old('option_text')?old('option_text'):$options['option_text']}}" required>
+                                            <div class="invalid-feedback">
+                                                Please insert text for this module.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="custom-toogle" for="input-address">Answer</label>
+                                            <select class="form-control selects" data-toggle="select" id="{{$loop->iteration}}" name="option_value_{{$loop->iteration}}" required>
+                                                <option value="{{$options['option_value']}}"@if($options['option_value']=='true')selected @endif>True</option>
+                                                <option value="{{$options['option_value']}}"@if($options['option_value']=='false')selected @endif>False</option>
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                Please insert text for this module.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                            @else
+                            <input hidden name="option_value" value="true">
+                        @endif
+                        @endif
+                        @endforeach
+                    @endforeach
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-xl-6 order-xl-1">
+        @foreach ($result  as $item)
+        <div class="card">
+            <form class="needs-validation" novalidate action="" id="forms" enctype="multipart/form-data">
+                @csrf
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0">Question Field </h3>
                         </div>
                     </div>
                 </div>
@@ -47,10 +154,10 @@
                                                 @endforeach
                                            </div>
                                            <div class="col-md-3 text-right">
-                                                <button class="btn btn-sm btn-default" data-toggle="modal" type="button" data-target="#modalDelete{{$field['id']}}">
+                                                <button href="" class="btn btn-sm btn-default" data-toggle="modal" type="button" data-target="#modalDelete{{$field['id']}}">
                                                     <span><i class="fas fa-trash-alt"></i></span>
                                                 </button>
-                                                <a class="btn btn-sm btn-warning" href="{{url('question/edit/'.$item['id'].'/'.$field['id'])}}" data-toggle="tooltip" title="Edit">
+                                                <a class="btn btn-sm btn-warning" href="{{url('question/edit/'.$item['id'].'/'.$field['id'])}}">
                                                     <span><i class="fas fa-pen-alt"></i></span>
                                                 </a>
                                            </div>
@@ -72,10 +179,10 @@
                                                 <h5 class="text-gray">{{$field['field_type']}}</h5>
                                             </div>
                                             <div class="col-md-3 text-right">
-                                                <button class="btn btn-sm btn-default" data-toggle="modal" type="button" data-target="#modalDelete{{$field['id']}}">
+                                                <button href="" class="btn btn-sm btn-default" data-toggle="modal" type="button" data-target="#modalDelete{{$field['id']}}">
                                                     <span><i class="fas fa-trash-alt"></i></span>
                                                 </button>
-                                                <a class="btn btn-sm btn-warning" href="{{url('question/edit/'.$item['id'].'/'.$field['id'])}}" data-toggle="tooltip" title="Edit">
+                                                <a class="btn btn-sm btn-warning" href="{{url('question/edit/'.$item['id'].'/'.$field['id'])}}">
                                                     <span><i class="fas fa-pen-alt"></i></span>
                                                 </a>
                                             </div>
@@ -117,7 +224,7 @@
                                                 <button class="btn btn-sm btn-default" data-toggle="modal" type="button" data-target="#modalDelete{{$field['id']}}">
                                                     <span><i class="fas fa-trash-alt"></i></span>
                                                 </button>
-                                                <a class="btn btn-sm btn-warning" href="{{url('question/edit/'.$item['id'].'/'.$field['id'])}}" data-toggle="tooltip" title="Edit">
+                                                <a class="btn btn-sm btn-warning" href="{{url('question/edit/'.$item['id'].'/'.$field['id'])}}">
                                                     <span><i class="fas fa-pen-alt"></i></span>
                                                 </a>
                                             </div>
@@ -150,52 +257,7 @@
                 </div>
             </form>
         </div>
-    </div>
-    <div class="col-xl-4 order-xl-1">
-        <div class="card">
-            <form class="needs-validation" novalidate action="{{url('task/update/'.$result[0]['id'])}}" method="post" id="forms" enctype="multipart/form-data">
-                @csrf
-                <div class="card-header">
-                    @include('baseAdmin.alerts')
-                    <div class="row align-items-center">
-                        <div class="col-8">
-                            <h3 class="mb-0">Edit Task </h3>
-                        </div>
-                        <div class="col-4 text-right">
-                            <button type="submit" class="btn btn-olive" id="submited" onclick="getValue()">Edit</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <h6 class="heading-small text-muted mb-4">Task Information</h6>
-                    <div class="pl-lg-4">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-username">Task Name</label>
-                                    <input type="text" id="input-username" class="form-control" placeholder="Basic programing" name="name" value="{{old('name')?old('name'):$item['name']}}" required>
-                                    <div class="invalid-feedback">
-                                        Please insert task name.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-address">Description</label>
-                                    <textarea class="form-control" placeholder="Description about this Task" name="description" required>
-                                        {{$item['description']}}
-                                    </textarea>
-                                    <div class="invalid-feedback">
-                                        Please insert text for this Task.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </form>
-        </div>
+        @endforeach
     </div>
 </div>
 @endsection

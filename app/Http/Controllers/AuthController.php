@@ -66,9 +66,9 @@ class AuthController extends Controller
                $request->session()->put('id_role',$user->id_role);
                return redirect()->route('dashboard');
            }else{
-            $point = Student::where('id_user',$user->id)->get();
+            $point = Student::where('id_user',$user['id'])->get();
             $request->session()->put('point',$point[0]['point']);
-            return redirect()->route('pages');
+            return redirect()->route('homepage');
            }
             
  

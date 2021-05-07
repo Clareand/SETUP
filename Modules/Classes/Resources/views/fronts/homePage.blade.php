@@ -38,24 +38,26 @@
     <div class="col-lg-3">
         <div class="card card-cascade narrower">
         <div class="view view-cascade narrower overlay">
+            @if ($item['badge']['image'])
+            <img src="{{ Storage::url( $item['badge']['image']) }}" class="rounded img-thumbnail" alt="..." style='object-fit: cover;'/>
+            @else
             <img class="card-img-top" src="{{url('assets/img/picture/cyan-forest.jpg')}}" alt=""/>
+            @endif
         </div>
         <div class="card-body card-body-cascade">
             <h5 class="pb-2 pt-1">
-            {{$item['tech_field']['name']}}
+              {{$item['tech_field']['name']}}
             </h5>
-            <h4 class="font-weight-bold card-title">
-            {{$item['name']}}
-            </h4>
+            <h3 class="font-weight-bold card-title text-center">
+              {{$item['name']}}
+            </h3>
             <p class="card-text" style="height:23rem;">
-            {{$item['description']}}
+              {{$item['description']}}
             </p>
-            <form action="{{url('class/enroll')}}" method="POST">
-            @csrf
-            <input type="hidden" name="id_class" value="{{$item['id']}}">
-            <button type="submit" class="btn btn-olive">Enroll</button>
-            </form>
-        </div>
+            <br><br>
+              {{-- <input type="hidden" name="id_class" value="{{$item['id']}}"> --}}
+              <a href="{{url('app/path/class/list/'.$item['id'])}}" class="btn btn-olive">Detail</a>
+          </div>
         </div>
     </div>
     @endforeach

@@ -40,8 +40,8 @@ Route::prefix('question')->group(function() {
         Route::get('/create/{id}', 'TaskMaterialController@createQuestion');
         Route::post('/store/{id}', 'TaskMaterialController@storeQuestion');
         // Route::get('/detail/{id}', 'TaskMaterialController@showTask');
-        // Route::get('/edit/{id}', 'TaskMaterialController@editTask');
-        // Route::post('/update/{id}', 'TaskMaterialController@updateTask');
-        // Route::get('/delete/{id}', 'TaskMaterialController@destroyTask');
+        Route::get('/edit/{task}/{field}', 'TaskMaterialController@editQuestion');
+        Route::post('/update/{task}/{field}', 'TaskMaterialController@updateQuestion');
+        Route::get('/delete/{id}', 'TaskMaterialController@destroyQuestion');
     });
 });

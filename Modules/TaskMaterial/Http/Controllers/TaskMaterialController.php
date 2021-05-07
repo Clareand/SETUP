@@ -41,6 +41,7 @@ class TaskMaterialController extends Controller
     public function storeMaterial(Request $request)
     {
         $data = TaskMaterialBEController::storeMaterial($request);
+        return $data;
         if($data['status']=='success'){
             return redirect('material')->withSuccess(['Material has ben created']);
         }
@@ -160,6 +161,7 @@ class TaskMaterialController extends Controller
 
     public function createQuestion($id)
     {
+        $data = TaskMaterialBEController::showTask($id);
         $data['id']=$id;
         return view('taskmaterial::question.create',$data);
     }
@@ -167,7 +169,37 @@ class TaskMaterialController extends Controller
     public function storeQuestion(Request $request,$id){
         $data = TaskMaterialBEController::storeQuestion($request,$id);
         if($data['status']=='success'){
-            return redirect('task/detail/'.$id)->withSuccess(['Task Field has been created']);
+            return redirect('question/create/'.$id)->withSuccess(['Task Field has been created']);
+        }
+        return back()->withError($data['result']);
+    }
+
+    public function editQuestion($task,$option){
+        $data = TaskMaterialBEController::editQuestion($task);
+        $data['id']=[
+            'task'=>$task,
+            'option'=>$option
+        ];
+        // return $data;
+        if($data['status']=='success'){
+            return view('taskmaterial::question.edit',$data);
+        }
+    }
+
+    public function UpdateQuestion(Request $request,$task,$option){
+        // return $request;
+        $data = TaskMaterialBEController::UpdateQuestion($request,$task,$option);
+        // return $data;
+        if($data['status']=='success'){
+            return redirect('task/detail/'.$task)->withSuccess(['Question successfuly updated']);
+        }
+        return back()->withError($data['result']);
+    }
+
+    public static function destroyQuestion($id){
+        $data = TaskMaterialBEController::destroyQuestion($id);
+        if($data['status']=='success'){
+            return back()->withSuccess(['Question has been deleted']);
         }
         return back()->withError($data['result']);
     }

@@ -22,5 +22,11 @@ class DatabaseSeeder extends Seeder
         $this->call(BadgesTableSeeder::class);
         $this->call(LearningPathsTableSeeder::class);
         $this->call(ClassListsTableSeeder::class);
+        $this->call(MaterialsTableSeeder::class);
+        $this->call(TasksTableSeeder::class);
+        $this->call(TaskFieldsTableSeeder::class);
+        $this->call(TaskFieldOptionsTableSeeder::class);
+        $this->call(ModuleListsTableSeeder::class);
+        $this->call(ClassPathTableSeeder::class);
     }
 }

@@ -24,11 +24,16 @@ Route::prefix('class')->group(function() {
         Route::get('/delete/{id}', 'ClassesController@destroy');
         Route::get('/add/module/{id}', 'ClassesController@addModule');
         Route::post('/store/module/{id}', 'ClassesController@storeModule');
+        Route::get('/delete/module/{id}', 'ClassesController@destroyModule');
     });
-    
+});
+
+Route::prefix('app')->group(function(){
     Route::middleware(['student'])->group(function(){
-        Route::get('/list','ClassesController@classFe');
+        Route::get('/list','ClassesController@classFe')->name('list');
         Route::post('/enroll','ClassesController@classEnroll');
-        Route::get('/homepage','ClassesController@homePage');
+        Route::get('/homepage','ClassesController@homePage')->name('homepage');
+        Route::get('/path/class/list/{id}','ClassesController@pathClassList');
+        Route::get('/detail/class/{id}','ClassesController@classDetail');
     });
 });

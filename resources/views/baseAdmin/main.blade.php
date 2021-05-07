@@ -210,8 +210,8 @@
       <!-- Footer -->
       <footer class="footer pt-0">
         <div class="row align-items-center justify-content-lg-between">
-          <div class="col-lg-6">
-            <div class="copyright text-right text-muted">
+          <div class="col-lg-12">
+            <div class="copyright text-center text-muted">
               SETUP 2020 
             </div>
           </div>

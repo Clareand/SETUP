@@ -1,8 +1,10 @@
 @extends('baseAdmin.main')
-@section('learning-active','active')
-@section('main-title','Learning Path')
+@section('class-active','active')
+@section('class-collapse','show')
+@section('class-list-active','active')
+@section('main-title','')
 @section('title','Class')
-@section('page','Add')
+@section('page','Add Module')
 @section('content')
     <div class="row">
         <div class="col-xl-6 order-xl-1">
@@ -68,23 +70,52 @@
                 </div>
                 <div class="card-body">
                     <div class="scrollbar-inner">
-                        {{-- @foreach ($path as $item) --}}
+                        @foreach ($list as $item)
                         <div class="card" style="background-color: #EAEAEA">
                             <div class="card-body text-darker">
                                 <div class="row">
                                     <div class="col-md-1">
-                                        {{-- {{$item['step']}} --}}
+                                        {{$item['step']}}
                                     </div>
-                                    {{-- <div class="col-md-8">{{$item['class_list']['name']}}</div> --}}
+                                    @if ($item['type']=='task')
+                                    <div class="col-md-8">{{$item['task']['name']}}</div>
+                                    @else
+                                    <div class="col-md-8">{{$item['material']['title']}}</div>
+                                    @endif
                                     <div class="col-md-3 text-right">
-                                        <a href="" class="btn btn-sm btn-default">
+                                        <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#modalDelete{{$item['id']}}">
                                             <span><i class="fas fa-trash-alt"></i></span>
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {{-- @endforeach --}}
+                        <div class="modal fade"  id="modalDelete{{$item['id']}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  Are you sure want to delete module
+                                  @if ($item['type']=='task')
+                                    <strong>{{$item['task']['name']}}</strong>
+                                  @else
+                                    <strong>{{$item['material']['title']}}</strong>
+                                  @endif
+                                  ?
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                  <a href="{{url('class/delete/module/'.$item['id'])}}" type="button" class="btn btn-danger">Delete</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        @endforeach
                     </div>
                 </div>
             </div>

@@ -18,9 +18,9 @@ class StudentsTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 4,
-                'id_user' => 6,
+                'id_user' => 2,
                 'id_role' => 2,
-                'last_name' => 'First',
+                'last_name' => 'Stjarna',
                 'address' => NULL,
                 'city' => NULL,
                 'postal_code' => NULL,
@@ -31,6 +31,19 @@ class StudentsTableSeeder extends Seeder
             1 => 
             array (
                 'id' => 5,
+                'id_user' => 6,
+                'id_role' => 2,
+                'last_name' => 'First',
+                'address' => NULL,
+                'city' => NULL,
+                'postal_code' => NULL,
+                'point' =>0,
+                'created_at' => '2021-04-01 07:26:56',
+                'updated_at' => '2021-04-01 07:26:56',
+            ),
+            2 => 
+            array (
+                'id' => 6,
                 'id_user' => 7,
                 'id_role' => 2,
                 'last_name' => 'Nur',
