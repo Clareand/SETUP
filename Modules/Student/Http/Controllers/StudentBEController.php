@@ -148,4 +148,9 @@ class StudentBEController extends Controller
         DB::commit();
         return MyHelper::checkDelete($deleteStudent);
     }
+
+    public static function studentProfile($id){
+        $data = Student::where('id_user',$id)->with('user','regency.province','user.badges','user.class_lists')->get();
+        return MyHelper::checkGet($data);
+    }
 }

@@ -20,3 +20,10 @@ Route::prefix('student')->group(function() {
         Route::get('/delete/{id}', 'StudentController@destroy');
     });
 });
+
+Route::prefix('app')->group(function(){
+    Route::middleware(['student'])->group(function(){
+        Route::get('/profile/{id}','StudentController@studentProfile');
+        Route::post('/profile/update/{id}','StudentController@updateProfileStudent');
+    });
+});

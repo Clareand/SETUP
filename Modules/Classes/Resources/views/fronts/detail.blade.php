@@ -33,16 +33,22 @@
 <br><br><br><br><br>
 <div class="row">
     <div class="col-xl-3">
-        {{-- <div class="card"> --}}
-            {{-- <div class="card-body"> --}}
+        <div class="row">
+            <div class="col-lg-12">
                 <div class="list-group">
                     <a class="list-group-item list-group-item-action active" onclick="getText(1)" id="info">
-                      Information
+                        Information
                     </a>
                     <a class="list-group-item list-group-item-action" onclick="getText(2)" id="material">Materials</a>
                 </div>
-            {{-- </div> --}}
-        {{-- </div> --}}
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+            <div class="col-lg-12">
+                <button class="btn btn-olive btn-block" onclick="checkEnrollment({{Auth::user()->id}},{{$result[0]['id']}})">Learn</button>
+            </div>
+        </div>
     </div>
     <div class="col-xl-9">
         <div id="text">
@@ -50,7 +56,27 @@
             <div id="editor">{!! html_entity_decode($item['long_description']) !!}</div>
         </div>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="ModalFailed" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Failed!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                Sorry, You haven't Entered this class. Please enroll first to learn this class.
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-olive" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
 </div>
+
 @endsection
 
 @section('custom-script')
@@ -99,6 +125,29 @@
         <div id="editor">{!! html_entity_decode($item['long_description']) !!}</div>`
                 )
             }
+        }
+
+        function checkEnrollment($id,$class){
+            console.log($id,$class)
+            var token = "{{csrf_token()}}";
+            $.ajax({
+					type:'POST',
+					url:"<?php echo url('app/enroll/check')?>",
+					data:"_token="+token+"&id="+$id+"&class="+$class,
+					success:function(data){
+						console.log(data)
+                        if(data=='true'){
+                            console.log('ok')
+                            window.location.href = "{{URL::to('app/list')}}"
+                        }else{
+                            console.log('fail')
+                            $('#ModalFailed').modal('show');
+                        }
+					},
+					error:function(data,textStatus,errorThrown){
+						console.log(data)
+					}
+			});
         }
     </script>
 @endsection

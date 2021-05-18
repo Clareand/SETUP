@@ -16,6 +16,19 @@
     background-color: #AEB6C3 !important;
 }
 
+.bg-teal-pastel
+{
+    background-color: #BAC8C9 !important;
+}
+
+a.bg-teal-pastel:hover,
+a.bg-teal-pastel:focus,
+button.bg-teal-pastel:hover,
+button.bg-teal-pastel:focus
+{
+    background-color: #b8d3d4 !important;
+}
+
 
 /* button */
 

@@ -97,7 +97,7 @@ class StudentController extends Controller
         if($data['status']=='success'){
             return redirect('student')->withSuccess(['Data has been updated']);
         }
-        return back()->withErrors($data['result'])->withInput();
+        return back()->withError($data['result'])->withInput();
     }
 
     /**
@@ -107,10 +107,38 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
+
        $data=StudentBEController::destroy($id);
        if($data['status']=='success'){
            return redirect('student')->withSuccess(['Data has been deleted']);
        }
        return back()->withErrors($data['result']);
+    }
+
+    // front
+    public function studentProfile($id){
+        $student= StudentBEController::studentProfile($id);
+        if($student['result'][0]['regency']['province']){
+            $data=[
+                'result'=>$student['result'],
+                'province'=>HomeController::getProvince(),
+                'city'=>HomeController::getCities($student['result'][0]['regency']['province_id'])
+            ];
+        }else{
+            $data=[
+                'user'=>$student['result'],
+                'province'=>HomeController::getProvince(),
+            ];
+        }
+        // return $data;
+        return view('student::fronts.profile',$data);
+    }
+
+    public function updateProfileStudent(Request $request,$id){
+        $data = StudentBEController::update($request,$id);
+       if($data['status']=='success'){
+           return back()->withSuccess(['Succesfuly Updated']);
+       }
+       return back()->withErrors($data['result'])->withInput();
     }
 }

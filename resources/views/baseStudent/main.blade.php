@@ -106,6 +106,7 @@
             </li>
           </ul>
           <!-- Navbar links -->
+          @if (Auth::user()) 
           <ul class="navbar-nav align-items-center  ml-md-auto ">
             <li class="nav-item dropdown">
                 <a class="nav-link pr-0" aria-haspopup="true" aria-expanded="false">
@@ -126,7 +127,7 @@
                         <i class="fa fa-chevron-down"></i>
                     </span>
                   </div>
-                </a>
+                </a>      
                 <div class="dropdown-menu  dropdown-menu-right wider">
                   <div class="row dropdown-margin-1">
                       <div class="col-sm-6">
@@ -139,7 +140,7 @@
                   <div class="dropdown-divider centered"></div> 
                   <div class="row dropdown-margin-2">
                       <div class="col-md-8">
-                        <a href="" class="text-default">
+                        <a href="{{url('app/profile/'.Auth::user()->id)}}" class="text-default">
                           <i class="ni ni-single-02"></i>
                           <span>My profile</span>
                         </a>
@@ -170,7 +171,29 @@
                   </div>
                 </div>
               </li>
-          </ul>
+            </ul>
+            @else 
+            <ul class="navbar-nav align-items-center  ml-md-auto ">
+                <li class="nav-item dropdown">
+                  <div class="nav-link pr-0">
+                    <div class="media align-items-center">
+                      <span>
+                          <a href="{{route('login')}}" class="btn btn-default">Sign in</a>
+                      </span>
+                    </div>
+                  </div>
+                </li>
+                <li class="nav-item dropdown">
+                  <div class="nav-link pr-0">
+                    <div class="media align-items-center">
+                      <span>
+                          <a href="{{route('register')}}" class="btn btn-olive">Sign up</a>
+                      </span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            @endif
         </div>
       </div>
     </nav>

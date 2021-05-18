@@ -217,6 +217,14 @@ class ClassesBEController extends Controller
         return MyHelper::checkGet($data);
     }
 
+    public static function checkEnrollment($request){
+        $data = UserClassList::where(['id_user'=>$request['id'],'id_class'=>$request['class']])->get();
+        if(count($data)!=0){
+            return 'true';
+        }
+        return 'false';
+    }
+
     // module & task in class
 
     public static function addModule($id){

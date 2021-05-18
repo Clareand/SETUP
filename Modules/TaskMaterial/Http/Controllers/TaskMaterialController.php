@@ -41,7 +41,6 @@ class TaskMaterialController extends Controller
     public function storeMaterial(Request $request)
     {
         $data = TaskMaterialBEController::storeMaterial($request);
-        return $data;
         if($data['status']=='success'){
             return redirect('material')->withSuccess(['Material has ben created']);
         }

@@ -6,7 +6,7 @@
        <div class="row margin-1">
            <div class="col-lg-4 top-2">
             <h1 class="display-3">
-                Hello {{Auth::user()->name}}, <br>
+                Hello @if (Auth::user()){{Auth::user()->name}}@endif, <br>
                 Lorem Ipsum sir dolor amet Vestibulum porta nibh
             </h1>
             <h6 class="lead">Lorem Ipsum sir dolor</h6>

@@ -31,7 +31,33 @@
     </div>
     <div class="row">
       <div class="col-lg-3">
-
+        <div class="card bg-teal-pastel">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <h3 for="input-username" style="font-size:large;font-weight:300">Find Class</h3>
+                  <input type="text" id="input-username" class="form-control" name="search">
+              </div>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-lg-12">
+                <h4 for="input-username" class="text-center" style="font-size:x-large;font-weight:400">Learning Path</h4>
+                <p>
+                  Lorem Ipsum sir dolor amet Suspendisse potenti. Nam pretium diam libero fermentum dictum
+                </p>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-lg-12">
+                <a href="" class="btn btn-olive btn-block">Find your Path</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="col-lg-9">
         <div class="row">

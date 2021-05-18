@@ -14,7 +14,7 @@
 use Modules\Classes\Http\Controllers\ClassesController;
 
 Route::prefix('class')->group(function() {
-    Route::middleware(['is_admin'])->group(function(){
+    Route::middleware(['is_admin','auth'])->group(function(){
         Route::get('/', 'ClassesController@index');
         Route::get('/create', 'ClassesController@create');
         Route::post('/store', 'ClassesController@store');
@@ -27,13 +27,14 @@ Route::prefix('class')->group(function() {
         Route::get('/delete/module/{id}', 'ClassesController@destroyModule');
     });
 });
-
+Route::get('/','ClassesController@homePage')->name('homepage');
 Route::prefix('app')->group(function(){
-    Route::middleware(['student'])->group(function(){
-        Route::get('/list','ClassesController@classFe')->name('list');
+    Route::get('/detail/class/{id}','ClassesController@classDetail');
+    Route::get('/list','ClassesController@classFe')->name('list');
+    Route::get('/path/class/list/{id}','ClassesController@pathClassList');
+    Route::middleware(['student','auth'])->group(function(){
         Route::post('/enroll','ClassesController@classEnroll');
+        Route::post('/enroll/check','ClassesController@checkEnrollment');
         Route::get('/homepage','ClassesController@homePage')->name('homepage');
-        Route::get('/path/class/list/{id}','ClassesController@pathClassList');
-        Route::get('/detail/class/{id}','ClassesController@classDetail');
     });
 });

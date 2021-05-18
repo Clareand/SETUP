@@ -20,10 +20,10 @@ class ClassesController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
 
     public function index()
     {
@@ -156,6 +156,11 @@ class ClassesController extends Controller
         $data = ClassesBEController::classDetail($id);
         // return $data;
         return view('classes::fronts.detail',$data);
+    }
+
+    public function checkEnrollment(Request $request){
+        $data = ClassesBEController::checkEnrollment($request);
+        return $data;
     }
 
 
