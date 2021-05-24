@@ -170,6 +170,7 @@ class ClassesController extends Controller
     public function classMaterial($class,$tutorial){
         $data = ClassesBEController::classMaterial($class,$tutorial);
         // return $data;
+        // Session::put('modal', 'true');
         return view('classes::fronts.material',$data['result']);
     }
 
@@ -181,7 +182,9 @@ class ClassesController extends Controller
     // check Task
     public function checkTask(Request $request,$id){
         $data = ClassesBEController::checkTask($request,$id);
-        return $data;
+        // return $data;
+        Session::put('modal', 'true');
+        return back();
     }
 
 

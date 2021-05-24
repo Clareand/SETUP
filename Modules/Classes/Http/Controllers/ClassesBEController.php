@@ -17,6 +17,7 @@ use App\Models\TaskField;
 use App\Models\UserClassList;
 use App\Models\UserModule;
 use App\Models\UserTask;
+use App\Models\UserTaskAnswer;
 use Illuminate\Support\Facades\Storage;
 use DB;
 use Validator;
@@ -251,27 +252,40 @@ class ClassesBEController extends Controller
     }
 
     public static function classMaterial($class,$tutorial){
-        $module = ModuleList::where(['id'=>$tutorial,'id_class'=>$class])->with('material','task.task_fields.task_field_options')->get();
+        $module = ModuleList::where(['step'=>$tutorial,'id_class'=>$class])->with('material','task.task_fields.task_field_options')->get();
         $list = ModuleList::where('id_class',$class)->orderBy('step','asc')->get();
         $users = UserModule::where('id_user',Auth::user()->id)->get();
         $user_module = [];
         $counts = [];
+        $status = 0;
         for($i=0;$i<count($list);$i++){
             for($j=0;$j<count($users);$j++){
                 if($list[$i]['id']==$users[$j]['id_module']){
                     array_push($user_module,$users[$j]);
                     if($users[$j]['status']==1){
                         array_push($counts,$users[$j]);
+                        if($users[$j]['id_module']==$module[0]['id']){
+                            $status=$users[$j]['status'];
+                        }
                     }
                 }
             }
         }
+        
         $data = [
+            'status'=>$status,
             'module'=>$module,
             'list'  => $list,
             'user' => $user_module,
             'counts'=>$counts
         ];
+        // take result from user answer
+        if($status == 1 && $module[0]['type']=='task'){
+            $user_task = UserTask::where(['id_user'=>Auth::user()->id,'id_task'=>$module[0]['id_task']])->get();
+            $user_answer = UserTaskAnswer::where('id_user_task',$user_task[0]['id'])->get();
+            $data['task'] = $user_task;
+            $data['answer']=$user_answer;
+        }
         return MyHelper::checkGet($data);
     }
 
@@ -280,6 +294,8 @@ class ClassesBEController extends Controller
         $module = ModuleList::where('id',$request['id'])->with('material','task')->get();
         if($module[0]['type']=='material'){
             $point = $module[0]['material']['point'];
+        }else{
+            $point = $request['point'];
         }
         $point = $student[0]['point']+$point;
         DB::beginTransaction();
@@ -349,6 +365,7 @@ class ClassesBEController extends Controller
     }
 
     public static function checkTask($request,$id){
+        // return $request;
         // status : 0 (not yet),1(acc),2(wrong),3(pending)
         $answers = [];
         // upload files
@@ -361,26 +378,31 @@ class ClassesBEController extends Controller
         foreach($request->all() as $key=>$value){
             if(stristr($key,'multiple')!==FALSE){
                 $answer = [
+                    'id_user'=>Auth::user()->id,
+                    'id_task'=>$id,
                     'type' =>'multiple',
                     'id_task_field' => substr($key,-1),
-                    'answer' => $value
+                    'answer_multiple' => $value
                 ];
                 array_push($answers,$answer);
             }
             if(stristr($key,'short_answer')!==FALSE){
                 $answer = [
+                    'id_user'=>Auth::user()->id,
+                    'id_task'=>$id,
                     'type'=>'short answer',
                     'id_task_field' => substr($key,-1),
-                    'answer' => $value
+                    'answer_short' => strtolower($value),
                 ];
                 array_push($answers,$answer);
             }
             if(stristr($key,'file')!==FALSE){
                 $answer = [
-                    'id_user'=Auth::user()->id;
+                    'id_user'=>Auth::user()->id,
+                    'id_task'=>$id,
                     'type'=>'file upload',
                     'id_task_field' => substr($key,-1),
-                    'answer' => $path,
+                    'answer_upload' => $path,
                     'point'=>0,
                     'status'=>3
                 ];
@@ -394,7 +416,7 @@ class ClassesBEController extends Controller
                 if($answers[$j]['id_task_field']==$task[$i]['id']){
                     if($answers[$j]['type']=='multiple'){
                         for($x=0;$x<count($task[$i]['task_field_options']);$x++){
-                            if($answers[$j]['answer']==$task[$i]['task_field_options'][$x]['id']){
+                            if($answers[$j]['answer_multiple']==$task[$i]['task_field_options'][$x]['id']){
                                 if($task[$i]['task_field_options'][$x]['option_value']=='true'){
                                     $answers[$j]['point']=$task[$i]['point'];
                                     $answers[$j]['status']=1;
@@ -405,18 +427,21 @@ class ClassesBEController extends Controller
                             }
                         }
                     }else if($answers[$j]['type']=='short answer'){
-                        if($answers[$j]['answer']==$task[$i]['task_field_options'][0]['option_value']){
+                        if($answers[$j]['answer_short']==$task[$i]['task_field_options'][0]['option_value']){
                             $answers[$j]['point']=$task[$i]['point'];
                             $answers[$j]['status']=1;
                         }else{
                             $answers[$j]['point']=0;
                             $answers[$j]['status']=2;
                         }
+                    }else{
+                        $answers[$j]['point']=0;
+                        $answers[$j]['status']=3;
                     }
                 }
             }
         }
-        // dah besok tinggal masukin datanya semua
+        // return $answers;
         // insert to user Task
         DB::beginTransaction();
         try{
@@ -430,9 +455,62 @@ class ClassesBEController extends Controller
             return $e;
             return MyHelper::checkCreate($user_task);
         }
-
+        $points = 0;
+        // return $answers;
+        // insert to user_task_answer
         for($i=0;$i<count($answers);$i++){
-            try
+            $points = $points+$answers[$i]['point'];
+            $answers[$i]['id_user_task']=$user_task['id'];
+            // return $answers;
+            try{
+                $user_answer=UserTaskAnswer::create($answers[$i]);
+            }catch(\Exception $e){
+                DB::rollback();
+                return $e;
+            }
+        }
+        // update user Task
+        try{
+            $user_task_update = UserTask::where('id',$user_task['id'])->update(['point'=>$points]);
+        }catch(\Exception $e){
+            DB::rollback();
+            return $e;
+        }
+
+        // search modulelist 
+        $module_list = ModuleList::where(['id_class'=>$request['id_class'],'id_task'=>$id])->get();
+        // return $module_list;
+        // update userModule
+        $module_lists = UserModule::where(['id_module'=>$module_list[0]['id'],'id_user'=>Auth::user()->id])->update(['status'=>'1']);
+        $param = [
+            'point' =>$points,
+            'id'=>$module_list[0]['id']
+        ];
+        $add_point = self::addPoint($param);
+        // return $add_point;
+        $id_class=$request['id_class'];
+        if($add_point=='true'){
+            $count1 = UserModule::whereHas('module_list',function($q) use($id_class){
+                return $q->where('id_class','=',$id_class);
+            })
+            ->where('status','1')
+            ->get();
+            $count2 = UserModule::whereHas('module_list',function($q) use($id_class){
+                return $q->where('id_class','=',$id_class);
+            })
+            ->get();
+            $percent = self::percentage(count($count1),count($count2));
+            try{
+                $userClass = UserClassList::where(['id_user'=>Auth::user()->id,'id_class'=>$request['id_class']])->update(array('progress'=>$percent));
+            }catch(\Exception $e){
+                DB::rollback();
+                return $e;
+            }
+            DB::commit();
+            return $add_point;
+        }else{
+            DB::rollback();
+            return MyHelper::checkCreate($add_point);
         }
         
     }

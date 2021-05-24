@@ -5242,7 +5242,7 @@ input[type='button'].btn-block
 
 .custom-radio .custom-control-input:disabled:checked ~ .custom-control-label::before
 {
-    background-color: rgba(94, 114, 228, .5);
+    background-color: rgba(36, 36, 39, 0.5);
 }
 
 .custom-switch

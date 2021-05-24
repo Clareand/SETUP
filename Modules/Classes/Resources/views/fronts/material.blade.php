@@ -87,53 +87,126 @@
                         </p>
                         <br>
                         <form action="{{url('app/check/task/'.$item['id_task'])}}" method="post" enctype="multipart/form-data">
+                        @if ($status==1)
+                            {{-- if already done --}}
+                            @foreach ($item['task']['task_fields'] as $items)
+                            <h2>{{$loop->iteration}}. {{$items['field_question']}}</h2>
+                                @foreach ($answer as $ans)
+                                    @if ($items['id']==$ans['id_task_field'])
+                                        @if ($items['field_type']=='multiple')
+                                        <div class="row">
+                                            @foreach ($items['task_field_options'] as $opt)
+                                            <div class="col-md-3">
+                                                <div class="form-group custom-control custom-radio custom-control-inline">
+                                                    <input type="radio" id="customRadioInline{{$opt['id']}}" name="multiple_answer{{$items['id']}}" class="custom-control-input selected " value="{{$opt['id']}}" {{ ($opt['id']==$ans['answer_multiple'])? "checked" : "" }} disabled>
+                                                    @if ($opt['option_value']=='true')
+                                                    <label class="custom-control-label text-green" for="customRadioInline{{$opt['id']}}">{{$opt['option_text']}}</label>
+                                                    @else
+                                                    <label class="custom-control-label" for="customRadioInline{{$opt['id']}}" class="text-red">{{$opt['option_text']}}</label>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            @endforeach 
+                                        </div> 
+                                        <br>
+                                        @elseif($items['field_type']=='short answer')
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <div class="form-group">
+                                                    <label class="form-control-label" for="input-email">Answer</label>
+                                                    <input type="text" class="form-control" placeholder="..." value="{{$ans['answer_short']}}" disabled>
+                                                    <br>
+                                                    @if ($ans['status']==1)
+                                                    <div class="text-md text-green">Correct Answer : {{$items['task_field_options'][0]['option_value']}}</div>
+                                                    @else
+                                                    <div class="text-md text-red">Correct Answer : {{$items['task_field_options'][0]['option_value']}}</div>
+                                                    @endif
+                                                </div>
+                                            </div>	
+                                        </div>
+                                        <br>
+                                        @else
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <div class="form-group">
+                                                    <label class="form-control-label" for="input-username">Upload file</label>
+                                                    <br>
+                                                    <span>Status : 
+                                                        @if ($ans['status']==1)
+                                                            Accepted
+                                                        @elseif($ans['status']==2)
+                                                            Wrong
+                                                        @elseif($ans['status']==3)
+                                                            Under Review
+                                                        @endif
+                                                    </span>
+                                                    {{-- <div class="invalid-feedback">
+                                                        Please insert class name.
+                                                    </div> --}}
+                                                </div>
+                                            </div>
+                                        </div> 
+                                        @endif
+                                    @endif
+                                @endforeach
+                            @endforeach
+                            {{-- /if already done --}}
+                        @else
+                        {{-- if not done --}}
                         @csrf
                         <input type="hidden" name="id_task" value="{{$item['id_task']}}">
+                        <input type="hidden" name="id_class" value="{{$item['id_class']}}">
                         @foreach ($item['task']['task_fields'] as $items)
-                            <h2>{{$loop->iteration}}. {{$items['field_question']}}</h2>
-                            @if ($items['field_type']=='multiple')
-                            <div class="row">
-                                @foreach ($items['task_field_options'] as $opt)
-                                <div class="col-md-3">
-                                    <div class="form-group custom-control custom-radio custom-control-inline">
-                                        <input type="radio" id="customRadioInline{{$opt['id']}}" name="multiple_answer{{$items['id']}}" class="custom-control-input" value="{{$opt['id']}}">
-                                        <label class="custom-control-label" for="customRadioInline{{$opt['id']}}">{{$opt['option_text']}}</label>
-                                    </div>
-                                </div>
-                                @endforeach 
-                            </div> 
-                            <br>
-                        @elseif($items['field_type']=='short answer')
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <div class="form-group">
-                                        <label class="form-control-label" for="input-email">Answer</label>
-                                        <input type="text" class="form-control" placeholder="..." name="short_answer{{$items['id']}}" required>
-                                        <div class="invalid-feedback">
-                                            Please insert the Answer.
-                                        </div>
-                                    </div>
-                                </div>	
-                            </div>
-                            <br>
-                        @else
-                            <input type="hidden" name="file{{$items['id']}}">
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <div class="form-group">
-                                        <label class="form-control-label" for="input-username">Upload file</label>
-                                        <input type="file" id="input-username" class="form-control" placeholder="Basic programing" name="upload">
-                                        {{-- <div class="invalid-feedback">
-                                            Please insert class name.
-                                        </div> --}}
-                                    </div>
+                        <h2>{{$loop->iteration}}. {{$items['field_question']}}</h2>
+                        @if ($items['field_type']=='multiple')
+                        <div class="row">
+                            @foreach ($items['task_field_options'] as $opt)
+                            <div class="col-md-3">
+                                <div class="form-group custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="customRadioInline{{$opt['id']}}" name="multiple_answer{{$items['id']}}" class="custom-control-input" value="{{$opt['id']}}">
+                                    <label class="custom-control-label" for="customRadioInline{{$opt['id']}}">{{$opt['option_text']}}</label>
                                 </div>
                             </div>
-                            @endif
-                            <br>
-                        @endforeach
+                            @endforeach 
+                        </div> 
                         <br>
+                    @elseif($items['field_type']=='short answer')
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="input-email">Answer</label>
+                                    <input type="text" class="form-control" placeholder="..." name="short_answer{{$items['id']}}" required>
+                                    <div class="invalid-feedback">
+                                        Please insert the Answer.
+                                    </div>
+                                </div>
+                            </div>	
+                        </div>
+                        <br>
+                    @else
+                        <input type="hidden" name="file{{$items['id']}}">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="input-username">Upload file</label>
+                                    <input type="file" id="input-username" class="form-control" placeholder="Basic programing" name="upload">
+                                    {{-- <div class="invalid-feedback">
+                                        Please insert class name.
+                                    </div> --}}
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                        <br>
+                        @endforeach
+                            {{-- /if not --}}
+                        @endif
+                        <br>
+                        @if ($status==0)
                         <button type="submit" class="btn btn-olive btn-small text-right">Submit</button>
+                        @else
+                        <button disabled type="button" class="btn btn-olive btn-small text-right">Submit</button>
+                        @endif
                     </form>
                     </div>
                 </div>
@@ -148,7 +221,7 @@
                 @if ($item['step']==1)
                 <a class="btn btn-outline-olive btn-lg disabled" style="width: 200px">Previous</a>
                 @else
-                <a href="{{url('app/class/material/'.$item['id_class'].'/'.'tutorials/'.($item['id']-1))}}" class="btn btn-outline-olive btn-lg" style="width: 200px">Previous</a>
+                <a href="{{url('app/class/material/'.$item['id_class'].'/'.'tutorials/'.($item['step']-1))}}" class="btn btn-outline-olive btn-lg" style="width: 200px">Previous</a>
                 @endif
             </div>
             <div class="col-lg-6 text-right">
@@ -165,11 +238,11 @@
                 @if ($item['step']==1)
                 <a class="btn btn-outline-olive btn-lg disabled" style="width: 200px">Previous</a>
                 @else
-                <a href="{{url('app/class/material/'.$item['id_class'].'/'.'tutorials/'.($item['id']-1))}}" class="btn btn-outline-olive btn-lg" style="width: 200px">Previous</a>
+                <a href="{{url('app/class/material/'.$item['id_class'].'/'.'tutorials/'.($item['step']-1))}}" class="btn btn-outline-olive btn-lg" style="width: 200px">Previous</a>
                 @endif
             </div>
             <div class="col-lg-6 text-right">
-                @if ($item['status']==0)
+                @if ($status==0)
                 <button type="button" class="btn btn-olive btn-lg disabled" style="width: 150px" onclick="getChecked({{$item['id']}},{{$item['id_class']}})">Next</button>
                 @else
                 @if ($item['step']==count($list))
@@ -253,5 +326,15 @@
 					}
 			});
         }
+    </script>
+    <script type="text/javascript">
+        var type = "{{ Session::get('modal') }}";
+        console.log(type)
+        if(type=='true'){
+            $(window).on('load', function() {
+                $('#ModalSuccess').modal('show');
+            });
+        }
+        // var delete ="{{Session::forget('modal')}}"
     </script>
 @endsection

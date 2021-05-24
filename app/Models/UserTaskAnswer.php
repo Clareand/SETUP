@@ -51,7 +51,8 @@ class UserTaskAnswer extends Model
 		'answer_short',
 		'answer_multiple',
 		'answer_upload',
-		'point'
+		'point',
+		'status'
 	];
 
 	public function task_field()
