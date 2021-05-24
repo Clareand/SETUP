@@ -12,12 +12,18 @@ use App\Models\Task;
 use App\Models\ClassList;
 use App\Library\MyHelper;
 use App\Models\ModuleList;
+use App\Models\Student;
+use App\Models\TaskField;
 use App\Models\UserClassList;
+use App\Models\UserModule;
+use App\Models\UserTask;
 use Illuminate\Support\Facades\Storage;
 use DB;
 use Validator;
 use Auth;
 use Hash;
+use Session;
+use Modules\Student\Http\Controllers\StudentBEController;
 
 class ClassesBEController extends Controller
 {
@@ -198,6 +204,23 @@ class ClassesBEController extends Controller
             return $e;
             return MyHelper::checkCreate($data);
         }
+
+        $module_list=ModuleList::where('id_class',$request['id_class'])->get();
+        // return $module_list;
+        for($i=0;$i<count($module_list);$i++){
+            $storeModule = [
+                'id_user'=>$request['id_user'],
+                'id_module'=>$module_list[$i]['id'],
+                'status'=>'0',
+            ];
+
+            try{
+                $data2 = UserModule::create($storeModule);
+            }catch(\Exception $e){
+                return $e;
+                return MyHelper::checkCreate($data2);
+            }
+        }
         DB::commit();
         return MyHelper::checkCreate($data);
     }
@@ -218,11 +241,200 @@ class ClassesBEController extends Controller
     }
 
     public static function checkEnrollment($request){
-        $data = UserClassList::where(['id_user'=>$request['id'],'id_class'=>$request['class']])->get();
-        if(count($data)!=0){
-            return 'true';
+        $user = UserClassList::where(['id_user'=>$request['id'],'id_class'=>$request['class']])->get();
+        if(count($user)!=0){
+            $data = self::checkStep($request['class']);
+            $data['flag']='true'; 
+            return $data;
         }
         return 'false';
+    }
+
+    public static function classMaterial($class,$tutorial){
+        $module = ModuleList::where(['id'=>$tutorial,'id_class'=>$class])->with('material','task.task_fields.task_field_options')->get();
+        $list = ModuleList::where('id_class',$class)->orderBy('step','asc')->get();
+        $users = UserModule::where('id_user',Auth::user()->id)->get();
+        $user_module = [];
+        $counts = [];
+        for($i=0;$i<count($list);$i++){
+            for($j=0;$j<count($users);$j++){
+                if($list[$i]['id']==$users[$j]['id_module']){
+                    array_push($user_module,$users[$j]);
+                    if($users[$j]['status']==1){
+                        array_push($counts,$users[$j]);
+                    }
+                }
+            }
+        }
+        $data = [
+            'module'=>$module,
+            'list'  => $list,
+            'user' => $user_module,
+            'counts'=>$counts
+        ];
+        return MyHelper::checkGet($data);
+    }
+
+    public static function addPoint($request){
+        $student = Student::where('id_user',Auth::user()->id)->get();
+        $module = ModuleList::where('id',$request['id'])->with('material','task')->get();
+        if($module[0]['type']=='material'){
+            $point = $module[0]['material']['point'];
+        }
+        $point = $student[0]['point']+$point;
+        DB::beginTransaction();
+        try{
+            $data = Student::where('id_user',Auth::user()->id)->update(array('point'=>$point));
+        }catch(\Exception $e){
+            DB::rollback();
+            return 'false';
+        }
+        DB::commit();
+        $student = Student::where('id_user',Auth::user()->id)->get();
+        Session::put('point',$student[0]['point']);
+        return 'true';
+    }
+
+    public static function checkStatusMaterial($request){
+        $checked = UserModule::where(['id_user'=>Auth::user()->id,'id_module'=>$request['id']])->get();
+        if($checked[0]['status']==1){
+            return 'done';
+        }
+        DB::beginTransaction();
+        try{
+            $data = UserModule::where(['id_user'=>Auth::user()->id,'id_module'=>$request['id']])->update(array('status'=>'1'));
+        }catch(\Exception $e){
+            DB::rollback();
+            return 'false';
+        }
+        $addPoint=self::addPoint($request);
+        if($addPoint=='true'){
+            $count1 = UserModule::where(['id_user'=>Auth::user()->id,'status'=>'1'])->get();
+            $count2 = UserModule::where('id_user',Auth::user()->id)->get();
+            $percent = self::percentage(count($count1),count($count2));
+            try{
+                $userClass = UserClassList::where(['id_user'=>Auth::user()->id,'id_class'=>$request['class']])->update(array('progress'=>$percent));
+            }catch(\Exception $e){
+                DB::rollback();
+                return 'false';
+            }
+            DB::commit();
+        }else{
+            DB::rollback();
+        }
+        return $addPoint;
+    }
+
+    public static function percentage($num1,$num2){
+        $data = round((($num1/$num2)*100),2);
+        return $data;
+    }
+
+    public static function checkStep($id){
+        $module=ModuleList::where('id_class',$id)->orderBy('step','asc')->get();
+        $user_module = UserModule::where('id_user',Auth::user()->id)->with('module_list')->get();
+        for($i=0;$i<count($user_module);$i++){
+            if($user_module[$i]['module_list']['id_class']==$id){
+                $modules[]=$user_module[$i];
+            }
+        }
+        for($i=0;$i<count($modules);$i++){
+            if($module[$i]['id']==$modules[$i]['id_module']){
+                if($modules[$i]['status']==0){
+                    return $modules[$i];
+                    break;
+                }
+            }
+        }
+    }
+
+    public static function checkTask($request,$id){
+        // status : 0 (not yet),1(acc),2(wrong),3(pending)
+        $answers = [];
+        // upload files
+        if($request->file('upload')){
+            $file = $request->file('upload');
+            $name = time().'.'.$file->getClientOriginalExtension();
+            $path = $request->file('upload')->storeAs(('public/task'), $name);
+        }
+        // sorting answer
+        foreach($request->all() as $key=>$value){
+            if(stristr($key,'multiple')!==FALSE){
+                $answer = [
+                    'type' =>'multiple',
+                    'id_task_field' => substr($key,-1),
+                    'answer' => $value
+                ];
+                array_push($answers,$answer);
+            }
+            if(stristr($key,'short_answer')!==FALSE){
+                $answer = [
+                    'type'=>'short answer',
+                    'id_task_field' => substr($key,-1),
+                    'answer' => $value
+                ];
+                array_push($answers,$answer);
+            }
+            if(stristr($key,'file')!==FALSE){
+                $answer = [
+                    'id_user'=Auth::user()->id;
+                    'type'=>'file upload',
+                    'id_task_field' => substr($key,-1),
+                    'answer' => $path,
+                    'point'=>0,
+                    'status'=>3
+                ];
+                array_push($answers,$answer);
+            }
+        }
+        $task = TaskField::where('id_task',$id)->with('task_field_options')->get();
+        // return $answers[0]['answer'];
+        for($i=0;$i<count($task);$i++){
+            for($j=0;$j<count($answers);$j++){
+                if($answers[$j]['id_task_field']==$task[$i]['id']){
+                    if($answers[$j]['type']=='multiple'){
+                        for($x=0;$x<count($task[$i]['task_field_options']);$x++){
+                            if($answers[$j]['answer']==$task[$i]['task_field_options'][$x]['id']){
+                                if($task[$i]['task_field_options'][$x]['option_value']=='true'){
+                                    $answers[$j]['point']=$task[$i]['point'];
+                                    $answers[$j]['status']=1;
+                                }else{
+                                    $answers[$j]['point']=0;
+                                    $answers[$j]['status']=2;
+                                }
+                            }
+                        }
+                    }else if($answers[$j]['type']=='short answer'){
+                        if($answers[$j]['answer']==$task[$i]['task_field_options'][0]['option_value']){
+                            $answers[$j]['point']=$task[$i]['point'];
+                            $answers[$j]['status']=1;
+                        }else{
+                            $answers[$j]['point']=0;
+                            $answers[$j]['status']=2;
+                        }
+                    }
+                }
+            }
+        }
+        // dah besok tinggal masukin datanya semua
+        // insert to user Task
+        DB::beginTransaction();
+        try{
+            $user_task = UserTask::create([
+                'id_task'=>$request['id_task'],
+                'id_user'=>Auth::user()->id,
+                'point'=>0
+            ]);
+        }catch(\Exception $e){
+            DB::rollback();
+            return $e;
+            return MyHelper::checkCreate($user_task);
+        }
+
+        for($i=0;$i<count($answers);$i++){
+            try
+        }
+        
     }
 
     // module & task in class

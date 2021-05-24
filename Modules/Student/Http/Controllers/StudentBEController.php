@@ -11,6 +11,8 @@ use App\Models\Province;
 use App\Models\Regency;
 use App\Models\Role;
 use App\Library\MyHelper;
+use App\Models\ClassList;
+use App\Models\UserClassList;
 use DB;
 use Validator;
 use Auth;
@@ -152,5 +154,11 @@ class StudentBEController extends Controller
     public static function studentProfile($id){
         $data = Student::where('id_user',$id)->with('user','regency.province','user.badges','user.class_lists')->get();
         return MyHelper::checkGet($data);
+    }
+    
+    public static function classHistory(){
+        $class = UserClassList::where('id_user',Auth::user()->id)->with('class_list')->get();
+        // $path = 
+        return MyHelper::checkGet($class);
     }
 }

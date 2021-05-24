@@ -46,6 +46,7 @@ class MasterDataBEController extends Controller
      */
     public static function storeTech($request)
     {
+        return $request;
         $validator=Validator::make($request->all(),[
             'name'=>'string'
         ]);

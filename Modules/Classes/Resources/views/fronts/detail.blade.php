@@ -36,18 +36,20 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="list-group">
-                    <a class="list-group-item list-group-item-action active" onclick="getText(1)" id="info">
+                    <a class="list-group-item list-group-item-action active olive" onclick="getText(1)" id="info">
                         Information
                     </a>
-                    <a class="list-group-item list-group-item-action" onclick="getText(2)" id="material">Materials</a>
+                    <a class="list-group-item list-group-item-action olive" onclick="getText(2)" id="material">Materials</a>
                 </div>
             </div>
         </div>
         <br><br>
         <div class="row">
+            @if (Auth::user())
             <div class="col-lg-12">
                 <button class="btn btn-olive btn-block" onclick="checkEnrollment({{Auth::user()->id}},{{$result[0]['id']}})">Learn</button>
             </div>
+            @endif
         </div>
     </div>
     <div class="col-xl-9">
@@ -136,9 +138,11 @@
 					data:"_token="+token+"&id="+$id+"&class="+$class,
 					success:function(data){
 						console.log(data)
-                        if(data=='true'){
+                        if(data['flag']=='true'){
                             console.log('ok')
-                            window.location.href = "{{URL::to('app/list')}}"
+                            const url = "{{URL::to('app/class/material')}}"+"/"+$class+"/"+"tutorials"+"/"+data['id_module'];
+                            console.log(url);
+                            window.location.href = url
                         }else{
                             console.log('fail')
                             $('#ModalFailed').modal('show');

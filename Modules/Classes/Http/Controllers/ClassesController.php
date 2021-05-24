@@ -4,7 +4,9 @@ namespace Modules\Classes\Http\Controllers;
 
 use App\Http\Controllers\HomeController;
 use App\Models\ClassList;
+use App\Models\ModuleList;
 use App\Models\Task;
+use App\Models\UserClassList;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -123,15 +125,17 @@ class ClassesController extends Controller
 
     public function classFe(){
         $data = ClassesBEController::index();
+        if(Auth::user()){
+            $data['user']=UserClassList::where('id_user',Auth::user()->id)->get();
+        }
         // return $data;
         if($data['status']=='success'){
-            return view('classes::fronts.index',$data['result']);
+            return view('classes::fronts.index',$data);
         }
     }
 
     public function classEnroll(Request $request){
         $data = ClassesBEController::classEnroll($request);
-        // return $data;
         if($data['status']=='success'){
             return redirect('class/list')->withSuccess(['Enrollment Success']);
         }
@@ -160,6 +164,23 @@ class ClassesController extends Controller
 
     public function checkEnrollment(Request $request){
         $data = ClassesBEController::checkEnrollment($request);
+        return $data;
+    }
+
+    public function classMaterial($class,$tutorial){
+        $data = ClassesBEController::classMaterial($class,$tutorial);
+        // return $data;
+        return view('classes::fronts.material',$data['result']);
+    }
+
+    public function checkStatus(Request $request){
+        $data = ClassesBEController::checkStatusMaterial($request);
+        return $data;
+    }
+
+    // check Task
+    public function checkTask(Request $request,$id){
+        $data = ClassesBEController::checkTask($request,$id);
         return $data;
     }
 

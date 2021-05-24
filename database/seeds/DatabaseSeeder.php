@@ -28,5 +28,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TaskFieldOptionsTableSeeder::class);
         $this->call(ModuleListsTableSeeder::class);
         $this->call(ClassPathTableSeeder::class);
+        $this->call(UserClassListsTableSeeder::class);
+        $this->call(UserModulesTableSeeder::class);
     }
 }

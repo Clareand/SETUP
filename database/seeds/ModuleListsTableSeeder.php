@@ -63,17 +63,6 @@ class ModuleListsTableSeeder extends Seeder
             ),
             4 => 
             array (
-                'id' => 5,
-                'id_class' => 4,
-                'id_task' => NULL,
-                'id_material' => 2,
-                'type' => 'material',
-                'step' => 1,
-                'created_at' => '2021-05-03 14:33:28',
-                'updated_at' => '2021-05-03 14:33:28',
-            ),
-            5 => 
-            array (
                 'id' => 6,
                 'id_class' => 2,
                 'id_task' => NULL,
@@ -83,7 +72,7 @@ class ModuleListsTableSeeder extends Seeder
                 'created_at' => '2021-05-03 14:34:05',
                 'updated_at' => '2021-05-03 14:34:05',
             ),
-            6 => 
+            5 => 
             array (
                 'id' => 7,
                 'id_class' => 2,
@@ -94,7 +83,7 @@ class ModuleListsTableSeeder extends Seeder
                 'created_at' => '2021-05-03 14:38:03',
                 'updated_at' => '2021-05-03 14:38:03',
             ),
-            7 => 
+            6 => 
             array (
                 'id' => 11,
                 'id_class' => 1,
@@ -104,6 +93,28 @@ class ModuleListsTableSeeder extends Seeder
                 'step' => 3,
                 'created_at' => '2021-05-05 07:19:56',
                 'updated_at' => '2021-05-05 07:19:56',
+            ),
+            7 => 
+            array (
+                'id' => 12,
+                'id_class' => 12,
+                'id_task' => NULL,
+                'id_material' => 6,
+                'type' => 'material',
+                'step' => 1,
+                'created_at' => '2021-05-19 03:48:25',
+                'updated_at' => '2021-05-19 03:48:25',
+            ),
+            8 => 
+            array (
+                'id' => 13,
+                'id_class' => 12,
+                'id_task' => NULL,
+                'id_material' => 7,
+                'type' => 'material',
+                'step' => 2,
+                'created_at' => '2021-05-19 03:48:35',
+                'updated_at' => '2021-05-19 03:48:35',
             ),
         ));
         

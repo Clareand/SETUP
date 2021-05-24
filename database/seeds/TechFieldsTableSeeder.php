@@ -45,6 +45,13 @@ class TechFieldsTableSeeder extends Seeder
                 'created_at' => '2021-04-06 16:09:23',
                 'updated_at' => '2021-04-06 16:09:23',
             ),
+            4 => 
+            array (
+                'id' => 5,
+                'name' => 'Game',
+                'created_at' => '2021-04-06 16:09:23',
+                'updated_at' => '2021-04-06 16:09:23',
+            ),
         ));
         
         

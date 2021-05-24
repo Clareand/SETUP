@@ -141,4 +141,9 @@ class StudentController extends Controller
        }
        return back()->withErrors($data['result'])->withInput();
     }
+
+    public function classHistory(){
+        $data = StudentBEController::classHistory();
+        return $data;
+    }
 }

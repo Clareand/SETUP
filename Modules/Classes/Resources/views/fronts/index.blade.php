@@ -61,7 +61,7 @@
       </div>
       <div class="col-lg-9">
         <div class="row">
-          @foreach ($data as $item)
+          @foreach ($result as $item)
         <div class="col-lg-4">
           <div class="card card-cascade narrower">
             <div class="view view-cascade narrower overlay">
@@ -83,11 +83,35 @@
               </p>
               <button disabled class="btn btn-outline-olive btn-sm">@if($item['all_module']) {{$item['all_module']}} Module @else 0 Module @endif</button>
               <br><br>
-              <form action="{{url('class/enroll')}}" method="POST">
+              <form action="{{url('app/class/enroll')}}" method="POST">
                 @csrf
                 <input type="hidden" name="id_class" value="{{$item['id']}}">
+                      @php
+                          $i=0;
+                          $values=null;
+                      @endphp
+              @if (isset($user))
+                  @foreach ($user as $items)
+                    @if ($items['id_class']==$item['id'])
+                        @php
+                            $i=$i+1;
+                            $values = $items['progress'];
+                        @endphp
+                    @endif
+                  @endforeach
+                  @if ($i==1)
+                  <a href="{{url('app/detail/class/'.$item['id'])}}" class="btn btn-block btn-default">Learn</a>
+                  <br>
+                  Progress: <span>{{$values}} %</span>
+                  @else
+                  <br><br>
+                  <a href="{{url('app/detail/class/'.$item['id'])}}" class="btn btn-default">Detail</a>
+                  <button type="submit" class="btn btn-olive">Enroll</button>
+                  @endif
+              @else
                 <a href="{{url('app/detail/class/'.$item['id'])}}" class="btn btn-default">Detail</a>
                 <button type="submit" class="btn btn-olive">Enroll</button>
+                @endif
               </form>
             </div>
           </div>

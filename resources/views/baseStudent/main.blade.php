@@ -38,7 +38,7 @@
   
 </head>
 
-<body>
+<body style="background-color: #FAFAFA !important">
   <!-- Main content -->
   <div class="main-content" id="panel">
     <!-- Topnav -->
@@ -154,7 +154,7 @@
                   </div>
                   <div class="row dropdown-margin-2">
                     <div class="col-md-6">
-                      <a href="" class="text-default">
+                      <a href="{{url('app/class/history')}}" class="text-default">
                         <i class="fa fa-history"></i>
                         <span>Class History</span>
                       </a>
@@ -215,7 +215,7 @@
       @yield('content')
       <!-- Footer -->
       <br>
-      <footer class="footer pt-0">
+      <footer class="footer pt-0" style="background-color: #FAFAFA">
         <div class="row align-items-center justify-content-lg-between">
           <div class="col-lg-12">
             <div class="copyright text-center text-gray">

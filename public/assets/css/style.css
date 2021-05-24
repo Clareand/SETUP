@@ -188,6 +188,27 @@ button.bg-teal-pastel:focus
     height: 300px;
 }
 
+.less{
+    border: 2px solid #9a9a9a;
+    padding: 4rem;
+}
+
+.list-group-item.active.olive {
+    border-color: #92928c !important;
+    background-color: #92928c !important;
+}
+.list-group-item-action.olive:hover,
+.list-group-item-action.olive:focus
+{
+    color: #363632;
+    background-color: #f3f3f3;
+}
+.list-group-item-action.olive:active
+{
+    color: #f0f0f0;
+    background-color: #aaaaaa;
+}
+
 
 /* Wider */
 .card-cascade.wider{

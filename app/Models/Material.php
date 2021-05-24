@@ -31,7 +31,8 @@ class Material extends Model
 	protected $fillable = [
 		'title',
 		'material_text',
-		'material_image'
+		'material_image',
+		'point'
 	];
 
 	public function module_lists()

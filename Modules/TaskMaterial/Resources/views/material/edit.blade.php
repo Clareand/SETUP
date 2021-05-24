@@ -35,6 +35,15 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="input-username">Name</label>
+                                    <input type="text" id="input-username" class="form-control" placeholder="Basic programing" name="point" value="{{old('point')?old('point'):$result[0]['point']}}" required>
+                                    <div class="invalid-feedback">
+                                        Please insert material title.
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <hr class="my-4">

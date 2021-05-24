@@ -62,6 +62,24 @@ class MaterialsTableSeeder extends Seeder
                 'created_at' => '2021-05-05 06:50:45',
                 'updated_at' => '2021-05-05 06:50:45',
             ),
+            5 => 
+            array (
+                'id' => 6,
+                'title' => 'Setup for Unity',
+                'material_text' => '<h1>Unity Game Engine</h1><p>	Vestibulum dapibus tincidunt nisl, ac iaculis lorem eleifend laoreet. Donec et tortor lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet dictum turpis. Vivamus at tellus enim. Nulla facilisi. Vestibulum cursus metus ante, et consectetur odio ultricies quis. Aliquam eu elementum mi. Etiam vel rutrum risus. Quisque vel pulvinar velit. Fusce accumsan sagittis tortor, in finibus ante mollis vitae. Integer commodo convallis nisi, in molestie quam accumsan id. In ultricies porttitor elit, vitae aliquet ligula aliquam pellentesque. Mauris posuere pharetra sem, eu bibendum leo aliquet non.</p><p>More :</p><ul><li>Unity Learn</li><li>Assets Store</li><li>Documentation</li></ul><p>	Donec laoreet arcu vitae diam sodales tincidunt. Duis eu vehicula tellus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed augue ut odio cursus eleifend non sed mi. Vivamus auctor vehicula sapien non posuere. Curabitur dapibus lectus at libero ornare sollicitudin. Nullam eget rhoncus tortor. Nam euismod justo quis diam semper laoreet. Vestibulum facilisis et augue id sagittis. Sed nec bibendum leo. Etiam pellentesque elit et convallis aliquam.</p><p>	Praesent pellentesque, massa nec fermentum luctus, tortor arcu pharetra purus, non ullamcorper eros risus sed arcu. Nulla consectetur massa nec nisi commodo faucibus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum nec mollis massa. Maecenas sed dolor ac sapien consequat volutpat tristique non ex. Nam sed enim at nisl viverra porta. Donec nec ornare eros.</p><p><br></p><p><br></p><p><br></p>',
+                'material_image' => 'public/material/1621395665.jpg',
+                'created_at' => '2021-05-19 03:35:55',
+                'updated_at' => '2021-05-19 03:41:05',
+            ),
+            6 => 
+            array (
+                'id' => 7,
+                'title' => 'Unity Scripting',
+            'material_text' => '<h1>C#, The Language</h1><p>A script must be attached to a GameObject in the scene in order to be called by Unity. Scripts are written in a special language that Unity can understand. And, it’s through this language that we can talk to the engine and give it our instructions.</p><p>The language that’s used in Unity is called C# (pronounced C-sharp). All the languages that Unity operates with are object-oriented scripting languages. Like any language, scripting languages have syntax, or parts of speech, and the primary parts are called variables, functions, and classes.</p><p>If you’re using a version of Unity until 2017.3, you’ll notice that it has a text editor called MonoDevelop: it can help us complete our code, it’ll let us know if we’re writing a wrong piece of code, and allows us to take shortcuts. Starting with 2018.1, you can also use&nbsp;Visual Studio for Unity Community, or other text editors such as Visual Studio, Notepad, or Sublime text.</p><p><br></p><h2>What do these do?</h2><ul><li>Variables&nbsp;hold values and references to objects (you can see objects as “bigger” variables). They’re like a box that holds something for us to use. Variables start with a lowercase letter.</li><li>Functions&nbsp;are collections of code that compare and manipulate these variables. Functions start with an uppercase letter. We organise code in functions so that they can be easily reused multiple times in different parts of the program.</li><li>Classes&nbsp;are a way to structure code to wrap collections of variables and functions together to create a template that defines the properties of an object.</li></ul>',
+                'material_image' => 'public/material/1621395750.png',
+                'created_at' => '2021-05-19 03:39:57',
+                'updated_at' => '2021-05-19 03:42:30',
+            ),
         ));
         
         
