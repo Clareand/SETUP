@@ -247,6 +247,7 @@ class ClassesBEController extends Controller
     }
 
     public static function checkEnrollment($request){
+        // return $request;
         $user = UserClassList::where(['id_user'=>$request['id'],'id_class'=>$request['class']])->get();
         if(count($user)!=0){
             $data = self::checkStep($request['class']);
@@ -330,10 +331,19 @@ class ClassesBEController extends Controller
             return 'false';
         }
         $addPoint=self::addPoint($request);
+        $id_class=$request['class'];
         if($addPoint=='true'){
-            $count1 = UserModule::where(['id_user'=>Auth::user()->id,'status'=>'1'])->get();
-            $count2 = UserModule::where('id_user',Auth::user()->id)->get();
+            $count1 = UserModule::whereHas('module_list',function($q) use($id_class){
+                return $q->where('id_class','=',$id_class);
+            })
+            ->where('status','1')
+            ->get();
+            $count2 = UserModule::whereHas('module_list',function($q) use($id_class){
+                return $q->where('id_class','=',$id_class);
+            })
+            ->get();
             $percent = self::percentage(count($count1),count($count2));
+            // return $percent;
             try{
                 $userClass = UserClassList::where(['id_user'=>Auth::user()->id,'id_class'=>$request['class']])->update(array('progress'=>$percent));
             }catch(\Exception $e){
@@ -368,6 +378,7 @@ class ClassesBEController extends Controller
                 }
             }
         }
+        return end($modules);
     }
 
     public static function checkTask($request,$id){
@@ -519,6 +530,12 @@ class ClassesBEController extends Controller
             return MyHelper::checkCreate($add_point);
         }
         
+    }
+    
+    // Search Class
+    public static function searchClass($request){
+        $data = ClassList::where('name','like','%'.$request['class'].'%')->with('tech_field')->paginate(10);
+        return MyHelper::checkGet($data);
     }
 
     // module & task in class

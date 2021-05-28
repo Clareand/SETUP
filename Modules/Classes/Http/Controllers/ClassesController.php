@@ -192,6 +192,19 @@ class ClassesController extends Controller
         return back();
     }
 
+    // search class
+
+    public function searchClass(Request $request){
+       $data = ClassesBEController::searchClass($request);
+       if($data['status']=='success'){
+        if(Auth::user()){
+            $data['user']=UserClassList::where('id_user',Auth::user()->id)->get();
+        }
+        return view('classes::fronts.index',$data);
+       }
+       return redirect('app/list')->withError($data['result']);
+    }
+
 
     // Module
     public function addModule($id){

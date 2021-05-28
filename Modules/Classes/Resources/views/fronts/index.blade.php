@@ -16,8 +16,8 @@
     </div>
   </div>
 @endsection
-@section('content')
 @include('baseAdmin.alerts')
+@section('content')
     <div class="row">
       <div class="col-xl-12">
         <div class="row margin-1">
@@ -37,7 +37,12 @@
               <div class="col-lg-12">
                 <div class="form-group">
                   <h3 for="input-username" style="font-size:large;font-weight:300">Find Class</h3>
-                  <input type="text" id="input-username" class="form-control" name="search">
+                  <form action="{{url('app/search/class')}}" method="post">
+                    @csrf
+                    <input type="text" id="input-username" class="form-control" name="class">
+                    <br>
+                    <button type="submit" class="btn btn-block btn-default">Find</button>
+                  </form>
               </div>
               </div>
             </div>

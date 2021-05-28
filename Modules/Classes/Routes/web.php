@@ -34,6 +34,7 @@ Route::prefix('app')->group(function(){
     Route::get('/class/material/{class}/tutorials/{tutorial}','ClassesController@classMaterial');
     Route::get('/list','ClassesController@classFe')->name('list');
     Route::get('/path/class/list/{id}','ClassesController@pathClassList');
+    Route::post('/search/class','ClassesController@searchClass');
     Route::middleware(['student','auth'])->group(function(){
         Route::post('/class/enroll','ClassesController@classEnroll');
         Route::post('/enroll/check','ClassesController@checkEnrollment');

@@ -226,9 +226,9 @@
             </div>
             <div class="col-lg-6 text-right">
                 @if ($item['step']==count($list))
-                <a class="btn btn-olive btn-lg disabled" style="width: 150px">Next</a>
+                <button type="button" class="btn btn-olive btn-lg" style="width: 150px" onclick="getChecked({{$item['id']}},{{$item['id_class']}},{{$item['step']}},true)">Done</button>
                 @else
-                <button type="button" class="btn btn-olive btn-lg" style="width: 150px" onclick="getChecked({{$item['id']}},{{$item['id_class']}},{{$item['step']}})">Next</button>
+                <button type="button" class="btn btn-olive btn-lg" style="width: 150px" onclick="getChecked({{$item['id']}},{{$item['id_class']}},{{$item['step']}},false)">Next</button>
                 @endif
             </div>
         </div>
@@ -243,12 +243,12 @@
             </div>
             <div class="col-lg-6 text-right">
                 @if ($status==0)
-                <button type="button" class="btn btn-olive btn-lg disabled" style="width: 150px" onclick="getChecked({{$item['id']}},{{$item['id_class']}},{{$item['step']}})">Next</button>
+                <button type="button" class="btn btn-olive btn-lg disabled" style="width: 150px" onclick="getChecked({{$item['id']}},{{$item['id_class']}},{{$item['step']}},false)">Next</button>
                 @else
                 @if ($item['step']==count($list))
-                <a class="btn btn-olive btn-lg disabled" style="width: 150px">Next</a>
+                <button type="button" class="btn btn-olive btn-lg" style="width: 150px" onclick="getChecked({{$item['id']}},{{$item['id_class']}},{{$item['step']}},true)">Done</button>
                 @else
-                <button type="button" class="btn btn-olive btn-lg" style="width: 150px" onclick="getChecked({{$item['id']}},{{$item['id_class']}},{{$item['step']}})">Next</button>
+                <button type="button" class="btn btn-olive btn-lg" style="width: 150px" onclick="getChecked({{$item['id']}},{{$item['id_class']}},{{$item['step']}},false)">Next</button>
                 @endif
                 @endif
             </div>
@@ -294,13 +294,31 @@
         </div>
         </div>
     </div>
+    <div class="modal fade" id="ModalDone" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Success!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                Congratulation, You Have Finished this Class!
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-outline btn-olive" data-dismiss="modal">Finish</button>
+            </div>
+        </div>
+        </div>
+    </div>
     @endforeach
 </div>    
 @endsection
 
 @section('custom-script')
     <script>
-        function getChecked($id,$class,$step){
+        function getChecked($id,$class,$step,$last){
             var token = "{{csrf_token()}}";
             console.log($step);
             $.ajax({
@@ -310,12 +328,18 @@
 					success:function(data){
 						console.log(data)
                         if(data=='true'){
-                            console.log('ok')
-                            $('#ModalSuccess').modal('show');
+                            if($last==false){
+                                console.log('ok')
+                                $('#ModalSuccess').modal('show');
+                            }else{
+                                $('#ModalDone').modal('show');
+                            }
                         }else if(data=='done'){
+                            if($last==false){
                             const url = "{{URL::to('app/class/material')}}"+"/"+$class+"/"+"tutorials"+"/"+($step+1);
                             window.location.href = url
                             console.log(url);
+                            }
                         }else{
                             console.log('fail')
                             $('#ModalFailed').modal('show');
