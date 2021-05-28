@@ -16,17 +16,67 @@
 @endsection
 @section('content')
 <div class="row">
-  {{-- @foreach ($result as $item)     --}}
-  <div class="col-xl-4 order-xl-2">
-      <div class="row">
-
+  <div class="col-xl-5 order-xl-2">
+    <div class="card">
+      <div class="card-header">
+        <div class="row align-items-center">
+            <div class="col-12">
+                <h1 class="mb-0 text-center">Path</h1>
+            </div>
+        </div>
+      </div>
+      <div class="card-body custom-height">
+        <div class="scrollbar-inner">
+          @foreach ($path as $item)
+              <div class="card">
+                <div class="card-body" style="background-color: #e9e8e8;border-radius:10px">
+                  <div class="row">
+                    <div class="col-lg-3">
+                      @if ($item['badge']['image'])
+                      <img src="{{ Storage::url( $item['badge']['image']) }}" class="rounded float-left img-thumbnail square-2" alt="..." style='object-fit:cover/'>
+                      @else
+                      <img style="width:100px" src="{{url('assets/img/picture/not-found.png')}}" class="rounded float-left img-thumbnail" alt="...">
+                      @endif
+                    </div>
+                    <div class="col-lg-9">
+                      <p class="text-md" style="font-weight: 500;padding-top:2rem">{{$item['name']}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          @endforeach
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class=" col-xl-7 order-xl-1">
+      <div class="card">
+        <div class="card-header">
+          <div class="row align-items-center">
+              <div class="col-12">
+                  <h1 class="mb-0 text-center">Class</h1>
+              </div>
+          </div>
+      </div>
+      <div class="card-body custom-height">
+        <div class="scrollbar-inner">
+          @foreach ($class as $item)  
+          <div class="card">
+            <div class="card-body" style="background-color: #e9e8e8;border-radius:10px">
+              <div class="row">
+                <div class="col-lg-8">
+                  <strong>{{$item['class_list']['name']}}</strong>
+                </div>
+                <div class="col-lg-4 text-right">
+                  {{$item['progress']}}%
+                </div>
+              </div>
+            </div>
+          </div>
+          @endforeach
+        </div>
+      </div>
       </div>
   </div>
-  <div class=" col-xl-8 order-xl-1">
-      <div class="row">
-
-      </div>
-  </div>
-  {{-- @endforeach --}}
   </div>
 @endsection

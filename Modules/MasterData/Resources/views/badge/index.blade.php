@@ -48,7 +48,7 @@
                 </td>
                 <td class="name">
                  @if ($item['image'])
-                 <img src="{{ Storage::url( $item['image']) }}" class="rounded float-left img-thumbnail square-2" alt="..." style='object-fit:cover/>
+                 <img src="{{ Storage::url( $item['image']) }}" class="rounded float-left img-thumbnail square-2" alt="..." style='object-fit:cover/'>
                  @else
                  <img style='width:300px' src="{{url('assets/img/picture/not-found.png')}}" class="rounded float-left img-thumbnail" alt="...">
                  @endif

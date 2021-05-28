@@ -144,6 +144,9 @@ class StudentController extends Controller
 
     public function classHistory(){
         $data = StudentBEController::classHistory();
-        return $data;
+        // return $data['result']['path'];
+        if($data['status']=='success'){
+            return view('student::fronts.classHistory',$data['result']);
+        }
     }
 }

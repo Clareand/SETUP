@@ -12,10 +12,12 @@ use App\Models\Regency;
 use App\Models\Role;
 use App\Library\MyHelper;
 use App\Models\ClassList;
+use App\Models\LearningPath;
 use App\Models\UserClassList;
 use DB;
 use Validator;
 use Auth;
+use Dotenv\Store\File\Paths;
 use Hash;
 
 class StudentBEController extends Controller
@@ -157,8 +159,28 @@ class StudentBEController extends Controller
     }
     
     public static function classHistory(){
-        $class = UserClassList::where('id_user',Auth::user()->id)->with('class_list')->get();
-        // $path = 
-        return MyHelper::checkGet($class);
+        $class = UserClassList::where('id_user',Auth::user()->id)->with('class_list.class_paths.learning_path')->get();
+        $id_path = [];
+        $path=[];
+        // return $class;
+        foreach($class as $item){
+            if(count($item['class_list']['class_paths'])!=0){
+                foreach($item['class_list']['class_paths'] as $items){
+                    if(in_array($items['learning_path']['id'],$id_path)==false){
+                        array_push($id_path,$items['learning_path']['id']);
+                    }
+                }
+            }
+        }
+        foreach($id_path as $item){
+            $paths = LearningPath::where('id',$item)->with('badge')->get();
+            array_push($path,$paths[0]);
+        }
+        // return $path;
+        $data = [
+            'class'=>$class,
+            'path'=>$path
+        ];
+        return MyHelper::checkGet($data);
     }
 }

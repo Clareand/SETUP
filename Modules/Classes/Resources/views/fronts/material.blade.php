@@ -228,7 +228,7 @@
                 @if ($item['step']==count($list))
                 <a class="btn btn-olive btn-lg disabled" style="width: 150px">Next</a>
                 @else
-                <button type="button" class="btn btn-olive btn-lg" style="width: 150px" onclick="getChecked({{$item['id']}},{{$item['id_class']}})">Next</button>
+                <button type="button" class="btn btn-olive btn-lg" style="width: 150px" onclick="getChecked({{$item['id']}},{{$item['id_class']}},{{$item['step']}})">Next</button>
                 @endif
             </div>
         </div>
@@ -243,12 +243,12 @@
             </div>
             <div class="col-lg-6 text-right">
                 @if ($status==0)
-                <button type="button" class="btn btn-olive btn-lg disabled" style="width: 150px" onclick="getChecked({{$item['id']}},{{$item['id_class']}})">Next</button>
+                <button type="button" class="btn btn-olive btn-lg disabled" style="width: 150px" onclick="getChecked({{$item['id']}},{{$item['id_class']}},{{$item['step']}})">Next</button>
                 @else
                 @if ($item['step']==count($list))
                 <a class="btn btn-olive btn-lg disabled" style="width: 150px">Next</a>
                 @else
-                <button type="button" class="btn btn-olive btn-lg" style="width: 150px" onclick="getChecked({{$item['id']}},{{$item['id_class']}})">Next</button>
+                <button type="button" class="btn btn-olive btn-lg" style="width: 150px" onclick="getChecked({{$item['id']}},{{$item['id_class']}},{{$item['step']}})">Next</button>
                 @endif
                 @endif
             </div>
@@ -289,7 +289,7 @@
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-outline btn-olive" data-dismiss="modal">Close</button>
-            <a href="{{url('app/class/material/'.$item['id_class'].'/'.'tutorials/'.($item['id']+1))}}" class="btn btn-olive">Next</a>
+            <a href="{{url('app/class/material/'.$item['id_class'].'/'.'tutorials/'.($item['step']+1))}}" class="btn btn-olive">Next</a>
             </div>
         </div>
         </div>
@@ -300,9 +300,9 @@
 
 @section('custom-script')
     <script>
-        function getChecked($id,$class){
+        function getChecked($id,$class,$step){
             var token = "{{csrf_token()}}";
-            console.log($id);
+            console.log($step);
             $.ajax({
 					type:'POST',
 					url:"<?php echo url('app/check/status')?>",
@@ -313,7 +313,7 @@
                             console.log('ok')
                             $('#ModalSuccess').modal('show');
                         }else if(data=='done'){
-                            const url = "{{URL::to('app/class/material')}}"+"/"+$class+"/"+"tutorials"+"/"+($id+1);
+                            const url = "{{URL::to('app/class/material')}}"+"/"+$class+"/"+"tutorials"+"/"+($step+1);
                             window.location.href = url
                             console.log(url);
                         }else{
@@ -328,6 +328,7 @@
         }
     </script>
     <script type="text/javascript">
+    if({{ Session::get('modal') }}){
         var type = "{{ Session::get('modal') }}";
         console.log(type)
         if(type=='true'){
@@ -335,6 +336,7 @@
                 $('#ModalSuccess').modal('show');
             });
         }
-        // var delete ="{{Session::forget('modal')}}"
+    {{Session::forget('modal')}}
+    }
     </script>
 @endsection

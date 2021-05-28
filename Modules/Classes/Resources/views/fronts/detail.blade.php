@@ -140,7 +140,7 @@
 						console.log(data)
                         if(data['flag']=='true'){
                             console.log('ok')
-                            const url = "{{URL::to('app/class/material')}}"+"/"+$class+"/"+"tutorials"+"/"+data['id_module'];
+                            const url = "{{URL::to('app/class/material')}}"+"/"+$class+"/"+"tutorials"+"/"+data['module_list']['step'];
                             console.log(url);
                             window.location.href = url
                         }else{

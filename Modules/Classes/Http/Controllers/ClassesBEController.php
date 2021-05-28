@@ -196,34 +196,39 @@ class ClassesBEController extends Controller
     public static function classEnroll($request){
         $user = Auth::user();
         $request['id_user']=$user['id'];
-        // return $request;
-        DB::beginTransaction();
-        try{
-            $data = UserClassList::create(array_filter($request->all()));
-        }catch(\Exception $e){
-            DB::rollback();
-            return $e;
-            return MyHelper::checkCreate($data);
-        }
-
-        $module_list=ModuleList::where('id_class',$request['id_class'])->get();
-        // return $module_list;
-        for($i=0;$i<count($module_list);$i++){
-            $storeModule = [
-                'id_user'=>$request['id_user'],
-                'id_module'=>$module_list[$i]['id'],
-                'status'=>'0',
-            ];
-
+        $check = UserClassList::where(['id_user'=>$request['id_user'],'id_class'=>$request['id_class']])->get();
+        if(count($check)==0){
+            DB::beginTransaction();
             try{
-                $data2 = UserModule::create($storeModule);
+                $data = UserClassList::create(array_filter($request->all()));
             }catch(\Exception $e){
+                DB::rollback();
                 return $e;
-                return MyHelper::checkCreate($data2);
+                return MyHelper::checkCreate($data);
             }
+    
+            $module_list=ModuleList::where('id_class',$request['id_class'])->get();
+            // return $module_list;
+            for($i=0;$i<count($module_list);$i++){
+                $storeModule = [
+                    'id_user'=>$request['id_user'],
+                    'id_module'=>$module_list[$i]['id'],
+                    'status'=>'0',
+                ];
+    
+                try{
+                    $data2 = UserModule::create($storeModule);
+                }catch(\Exception $e){
+                    return $e;
+                    return MyHelper::checkCreate($data2);
+                }
+            }
+            DB::commit();
+            return MyHelper::checkCreate($data);
+        }else{
+            return MyHelper::checkCreate(null);
         }
-        DB::commit();
-        return MyHelper::checkCreate($data);
+
     }
 
     public static function getPath(){
@@ -252,12 +257,14 @@ class ClassesBEController extends Controller
     }
 
     public static function classMaterial($class,$tutorial){
-        $module = ModuleList::where(['step'=>$tutorial,'id_class'=>$class])->with('material','task.task_fields.task_field_options')->get();
+        $module = ModuleList::where(['id_class'=>$class,'step'=>$tutorial])->with('material','task.task_fields.task_field_options')->get();
         $list = ModuleList::where('id_class',$class)->orderBy('step','asc')->get();
         $users = UserModule::where('id_user',Auth::user()->id)->get();
         $user_module = [];
         $counts = [];
         $status = 0;
+        // return $status;
+        // return $tutorial;
         for($i=0;$i<count($list);$i++){
             for($j=0;$j<count($users);$j++){
                 if($list[$i]['id']==$users[$j]['id_module']){
@@ -271,7 +278,6 @@ class ClassesBEController extends Controller
                 }
             }
         }
-        
         $data = [
             'status'=>$status,
             'module'=>$module,

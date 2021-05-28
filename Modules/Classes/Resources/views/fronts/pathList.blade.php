@@ -63,8 +63,36 @@
                     <br>
                     <h4 class="text-olive">{{$items['class_list']['name']}}</h4> <button disabled class="btn btn-outline-olive btn-sm">{{$items['class_list']['all_module']}} Module</button>
                     <p>{{$items['class_list']['short_description']}}</p>
+                    <form action="{{url('app/class/enroll')}}" method="post">
                     <a href="{{url('app/detail/class/'.$items['class_list']['id'])}}" class="btn btn-default">Detail</a>
-                    <button type="button" class="btn btn-olive">Enroll</button>
+                    @csrf
+                    <input type="hidden" name="id_class" value="{{$items['id']}}">
+                    @php
+                        $i=0;
+                        $values=null;
+                    @endphp
+                    @if (isset($user))
+                        @foreach ($user as $users)
+                            @if ($users['id_class']==$items['id_class'])
+                                @php
+                                    $i=$i+1;
+                                    $values = $users['progress'];
+                                @endphp
+                            @endif
+                        @endforeach
+                        @if ($i==1)
+                        <a href="{{url('app/detail/class/'.$items['id'])}}" class="btn btn-olive">Learn</a><br><br>
+                        Progress: <span>{{$values}} %</span>
+                        @php
+                            $i=0;
+                            $values=null;
+                        @endphp
+                        @else
+                        <button type="submit" class="btn btn-olive">Enroll</button>
+                        @endif
+                        {{-- <button type="submit" class="btn btn-olive">Enroll</button> --}}
+                    @endif
+                </form>
                 </div>
             </div>
         </div>

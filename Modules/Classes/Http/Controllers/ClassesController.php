@@ -135,9 +135,10 @@ class ClassesController extends Controller
     }
 
     public function classEnroll(Request $request){
+        // return $request;
         $data = ClassesBEController::classEnroll($request);
         if($data['status']=='success'){
-            return redirect('class/list')->withSuccess(['Enrollment Success']);
+            return back()->withSuccess(['Enrollment Success']);
         }
         return back()->withError($data['result']);
     }
@@ -152,6 +153,9 @@ class ClassesController extends Controller
 
     public function pathClassList($id){
         $data = ClassesBEController::pathClassList($id);
+        if(Auth::user()){
+            $data['user']=UserClassList::where('id_user',Auth::user()->id)->get();
+        }
         // return $data;
         return view('classes::fronts.pathList',$data);
     }
@@ -168,6 +172,7 @@ class ClassesController extends Controller
     }
 
     public function classMaterial($class,$tutorial){
+        // return $tutorial;
         $data = ClassesBEController::classMaterial($class,$tutorial);
         // return $data;
         // Session::put('modal', 'true');
@@ -183,7 +188,7 @@ class ClassesController extends Controller
     public function checkTask(Request $request,$id){
         $data = ClassesBEController::checkTask($request,$id);
         // return $data;
-        Session::put('modal', 'true');
+        // Session::put('modal', 'true');
         return back();
     }
 
