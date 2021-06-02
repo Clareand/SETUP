@@ -83,6 +83,29 @@
                             </div>
                         </div>
                     </div>
+                    <hr class="my-4">
+                    <h6 class="heading-small text-muted mb-4">Material Video</h6>
+                    <div class="pl-lg-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="input-address">Upload Video</label>
+                                    <input type="file" id="input-username" class="form-control" placeholder="video.mp4" name="video">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                @if ($result[0]['video'])
+                                <video width="500px" height="300px" controls>
+                                    <source src="{{Storage::url( $result[0]['video'])}}" type="video/mp4">
+                                </video>
+                                @else
+                                <img style='width:500px;height:300px' src="{{url('assets/img/picture/not-found.png')}}" class="rounded float-left" alt="...">
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>

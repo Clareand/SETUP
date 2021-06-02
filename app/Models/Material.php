@@ -32,6 +32,7 @@ class Material extends Model
 		'title',
 		'material_text',
 		'material_image',
+		'video',
 		'point'
 	];
 

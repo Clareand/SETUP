@@ -28,10 +28,17 @@
                         </h1>
                     </div>
                     <br>
-                    @if ($result[0]['material_image'])
-                    <img style='width:500px;height:300px' src="{{Storage::url( $item['material_image'])}}" class="rounded mx-auto d-block" alt="...">    
+                    @if ($result[0]['video'])
+                    <video width="900px" height="500px" class="rounded mx-auto d-block" controls>
+                        <source src="{{Storage::url( $result[0]['video'])}}" type="video/mp4">
+                    </video>
+                    <br>
                     @else
-                    <img style='width:500px;height:300px' src="{{url('assets/img/picture/not-found.png')}}" class="rounded mx-auto d-block" alt="...">
+                     @if  ($result[0]['image'])
+                     <img style='width:500px;height:300px' src="{{Storage::url( $item['material_image'])}}" class="rounded mx-auto d-block" alt="...">    
+                     @else
+                     <img style='width:500px;height:300px' src="{{url('assets/img/picture/not-found.png')}}" class="rounded mx-auto d-block" alt="...">
+                     @endif
                     @endif
                     <br>
                     <div id="editor">{!! html_entity_decode($item['material_text']) !!}</div>

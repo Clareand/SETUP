@@ -52,9 +52,17 @@ class TaskMaterialBEController extends Controller
             $name = time().'.'.$image->getClientOriginalExtension();
             $path = $request->image->storeAs(('public/material'), $name);
         }
-        $store = $request->except('_token','image');
+        if($request['video']){
+            $video = $request->file('video');
+            $name = time().'.'.$video->getClientOriginalExtension();
+            $path_video = $request->video->storeAs(('public/material/video'), $name);
+        }
+        $store = $request->except('_token','image','video');
          if($request['image']){
             $store['material_image'] = $path;
+         }
+         if($request['video']){
+            $store['video'] = $path_video;
          }
         DB::beginTransaction();
         try{
@@ -118,9 +126,20 @@ class TaskMaterialBEController extends Controller
            $name = time().'.'.$image->getClientOriginalExtension();
            $path = $request->image->storeAs(('public/material'), $name);
         }
-        $post = $request->except('_token','image');
+        if($request['video']){
+            if(!empty($material['video'])){
+               Storage::delete($material['video']);
+            }
+           $video = $request->file('video');
+           $name_video = time().'.'.$video->getClientOriginalExtension();
+           $path_video = $request->video->storeAs(('public/material/video'), $name_video);
+        }
+        $post = $request->except('_token','image','video');
         if($request['image']){
             $post['material_image'] = $path;
+        }
+        if($request['video']){
+            $post['video'] = $path_video;
         }
         DB::beginTransaction();
         try{

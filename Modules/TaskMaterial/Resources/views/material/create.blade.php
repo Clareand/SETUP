@@ -74,6 +74,18 @@
                             </div>
                         </div>
                     </div>
+                    <hr class="my-4">
+                    <h6 class="heading-small text-muted mb-4">Material Video</h6>
+                    <div class="pl-lg-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="input-address">Upload Video</label>
+                                    <input type="file" id="input-username" class="form-control" placeholder="video.mp4" name="video">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>

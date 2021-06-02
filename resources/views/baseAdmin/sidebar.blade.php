@@ -52,7 +52,7 @@
                     </li>
                     <li class="nav-item @yield('material-list-active')">
                       <a href="{{url('material')}}" class="nav-link">
-                        <span class="sidenav-normal"> Module </span>
+                        <span class="sidenav-normal"> Material </span>
                       </a>
                     </li>
                     <li class="nav-item @yield('task-list-active')">
