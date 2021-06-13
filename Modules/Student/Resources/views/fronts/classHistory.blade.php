@@ -7,7 +7,7 @@
     <div class="container-fluid d-flex align-items-center">
       <div class="row">
         <div class="col-lg-7 col-md-10">
-          <h1 class="display-2 text-white">Hello Stjärna</h1>
+          <h1 class="display-2 text-white">Hello {{Auth::user()->name}}</h1>
           <p class="text-white mt-0 mb-5">This is your History Page of classes and path you've taken. You can see the progress you've made with your class here</p>
         </div>
       </div>

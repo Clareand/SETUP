@@ -14,6 +14,7 @@ use App\Library\MyHelper;
 use App\Models\ClassList;
 use App\Models\LearningPath;
 use App\Models\UserClassList;
+use App\Models\UserTaskAnswer;
 use DB;
 use Validator;
 use Auth;
@@ -153,8 +154,51 @@ class StudentBEController extends Controller
         return MyHelper::checkDelete($deleteStudent);
     }
 
+    // review
+
+    public static function review(){
+        $data = UserTaskAnswer::whereNotNull('answer_upload')->with('task','user','task_field')->paginate('10');
+        return MyHelper::checkGet($data);
+    }
+
+    public static function reviewDetail($id){
+        $data = UserTaskAnswer::where('id',$id)->with('task','user','task_field')->get();
+        return MyHelper::checkGet($data);
+    }
+
+    public static function reviewEdit($id){
+        $data = UserTaskAnswer::where('id',$id)->with('task','user','task_field')->get();
+        return MyHelper::checkGet($data);
+    }
+
+    public static function reviewUpdate($request,$id){
+    //    return $request;
+       DB::beginTransaction();
+       try{
+        $updateAnswer=UserTaskAnswer::where('id',$id)->update($request->except('_token'));
+       }catch(\Exception $e){
+           DB::rollback();
+           return $e;
+           return MyHelper::checkUpdate($updateAnswer);
+       }
+
+       $task = UserTaskAnswer::where('id',$id)->get();
+       $student = Student::where('id_user',$task[0]['id_user'])->get();
+       $point = $student[0]['point']+$request['point'];
+       try{
+        $updateStudent = Student::where('id_user',$task[0]['id_user'])->update(['point'=>$point]);
+       }catch(\Exception $e){
+           DB::rollback();
+           return $e;
+           return MyHelper::checkUpdate($updateStudent);
+       }
+       DB::commit();
+       return MyHelper::checkUpdate($updateAnswer);
+    }
+
     public static function studentProfile($id){
         $data = Student::where('id_user',$id)->with('user','regency.province','user.badges','user.class_lists')->get();
+        // return $data;
         return MyHelper::checkGet($data);
     }
     
@@ -183,4 +227,23 @@ class StudentBEController extends Controller
         ];
         return MyHelper::checkGet($data);
     }
+    public static function leaderboard(){
+        $rank = Student::with('user.badges')->orderBy('point','desc')->take(20)->get();
+        $userSelf = Student::with('user.badges')->orderBy('point','desc')->get();
+        $id=Auth::user()->id;
+        foreach($userSelf as $key=>$values){
+            if($values['id_user']==$id){
+                $rank_user=$key+1;
+                break;
+            }
+        }
+        // return $rank_user;
+        $data =[
+            'rank'=>$rank,
+            'userRank'=>$rank_user
+        ];
+        return MyHelper::checkGet($data);
+    }
 }
+
+

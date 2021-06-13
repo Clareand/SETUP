@@ -40,6 +40,7 @@ Route::prefix('app')->group(function(){
         Route::post('/enroll/check','ClassesController@checkEnrollment');
         Route::post('/check/status','ClassesController@checkStatus');
         Route::post('/check/task/{id}','ClassesController@checkTask');
+        Route::post('/check/path','ClassesController@checkPath');
         Route::get('/homepage','ClassesController@homePage')->name('homepage');
     });
 });

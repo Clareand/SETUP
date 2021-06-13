@@ -115,10 +115,35 @@ class StudentController extends Controller
        return back()->withErrors($data['result']);
     }
 
+    public function review(){
+        $data = StudentBEController::review();
+        // return $data;
+        return view('student::review.index',$data['result']);
+    }
+
+    public function reviewDetail($id){
+        $data = StudentBEController::reviewDetail($id);
+        return view('student::review.detail',$data);
+    }
+
+    public function reviewEdit($id){
+        $data = StudentBEController::reviewEdit($id);
+        return view('student::review.edit',$data);
+    }
+
+    public function reviewUpdate(Request $request,$id){
+        $data = StudentBEController::reviewUpdate($request,$id);
+        // return $data;
+        if($data['status']=='success'){
+            return redirect('student/review/detail/'.$id)->withSuccess(['Succesfuly Updated']);
+        }
+        return back()->withError($data['result']);
+    }
     // front
     public function studentProfile($id){
         $student= StudentBEController::studentProfile($id);
-        if($student['result'][0]['regency']['province']){
+        // return $student;
+        if($student['result'][0]['city']){
             $data=[
                 'result'=>$student['result'],
                 'province'=>HomeController::getProvince(),
@@ -126,7 +151,7 @@ class StudentController extends Controller
             ];
         }else{
             $data=[
-                'user'=>$student['result'],
+                'result'=>$student['result'],
                 'province'=>HomeController::getProvince(),
             ];
         }
@@ -139,7 +164,7 @@ class StudentController extends Controller
        if($data['status']=='success'){
            return back()->withSuccess(['Succesfuly Updated']);
        }
-       return back()->withErrors($data['result'])->withInput();
+       return back()->withError($data['result'])->withInput();
     }
 
     public function classHistory(){
@@ -148,5 +173,11 @@ class StudentController extends Controller
         if($data['status']=='success'){
             return view('student::fronts.classHistory',$data['result']);
         }
+    }
+
+    public function leaderboard(){
+        $data = StudentBEController::leaderboard();
+        // return $data;
+        return view('student::fronts.leaderboard',$data['result']);
     }
 }

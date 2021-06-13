@@ -99,6 +99,7 @@ class AdminBEController extends Controller
            $postUser['password']=Hash::make($request->password);
            $postAdmin=$request->only(['address','city']);
        };
+    //    return $postUser;
        DB::beginTransaction();
        try{
            $updateUser=User::where('id',$admin['id_user'])->update($postUser);
@@ -106,14 +107,13 @@ class AdminBEController extends Controller
            DB::rollback();
            return $e;
        };
-
        try{
            $updateAdmin=Admin::where('id',$id)->update($postAdmin);
        }catch(\Exception $e){
            DB::rollback();
            return $e;
        };
-
+    //    return $postUser;
        DB::commit();
        return MyHelper::checkUpdate($updateAdmin);
 

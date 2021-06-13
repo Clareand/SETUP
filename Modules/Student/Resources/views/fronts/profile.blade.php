@@ -7,7 +7,7 @@
     <div class="container-fluid d-flex align-items-center">
       <div class="row">
         <div class="col-lg-7 col-md-10">
-          <h1 class="display-2 text-white">Hello Stjärna</h1>
+          <h1 class="display-2 text-white">Hello {{Auth::user()->name}}</h1>
           <p class="text-white mt-0 mb-5">This is your profile page. You can see the progress you've made with your work and manage your projects or assigned tasks</p>
         </div>
       </div>
@@ -51,10 +51,13 @@
         </div>
         <div class="text-center">
           <h1 class="display-3">
-            {{$item['last_name']}}<span class="font-weight-light"></span>
+            {{Auth::user()->name}} {{$item['last_name']}}<span class="font-weight-light"></span>
           </h1>
           <div class="h5 font-weight-300">
-            <i class="ni location_pin mr-2"></i>{{$item['regency']['province']['name']}}, Indonesia
+            @if (isset($item['regency']['province']))
+            <i class="ni location_pin mr-2"></i>{{$item['regency']['province']['name']}},  
+            @endif
+            Indonesia
           </div>
           <div class="h5 mt-4">
             <i class="ni business_briefcase-24 mr-2"></i>100/1000

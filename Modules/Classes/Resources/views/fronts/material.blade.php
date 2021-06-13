@@ -100,7 +100,7 @@
                                                 <div class="form-group custom-control custom-radio custom-control-inline">
                                                     <input type="radio" id="customRadioInline{{$opt['id']}}" name="multiple_answer{{$items['id']}}" class="custom-control-input selected " value="{{$opt['id']}}" {{ ($opt['id']==$ans['answer_multiple'])? "checked" : "" }} disabled>
                                                     @if ($opt['option_value']=='true')
-                                                    <label class="custom-control-label text-green" for="customRadioInline{{$opt['id']}}">{{$opt['option_text']}}</label>
+                                                    <label class="custom-control-label text-green text-md" for="customRadioInline{{$opt['id']}}">{{$opt['option_text']}}</label>
                                                     @else
                                                     <label class="custom-control-label" for="customRadioInline{{$opt['id']}}" class="text-red">{{$opt['option_text']}}</label>
                                                     @endif
@@ -117,9 +117,9 @@
                                                     <input type="text" class="form-control" placeholder="..." value="{{$ans['answer_short']}}" disabled>
                                                     <br>
                                                     @if ($ans['status']==1)
-                                                    <div class="text-md text-green">Correct Answer : {{$items['task_field_options'][0]['option_value']}}</div>
+                                                    <p class="text-md">Correct Answer : <span class="text-green"><strong>{{$items['task_field_options'][0]['option_value']}}</strong></span></p>
                                                     @else
-                                                    <div class="text-md text-red">Correct Answer : {{$items['task_field_options'][0]['option_value']}}</div>
+                                                    <p class="text-md">Correct Answer : <span class="text-red"><strong>{{$items['task_field_options'][0]['option_value']}}</strong></span></p>
                                                     @endif
                                                 </div>
                                             </div>	
@@ -130,16 +130,17 @@
                                             <div class="col-lg-8">
                                                 <div class="form-group">
                                                     <label class="form-control-label" for="input-username">Upload file</label>
-                                                    <br>
-                                                    <span>Status : 
+                                                    <br> 
+                                                    <p class="text-md">status:
                                                         @if ($ans['status']==1)
-                                                            Accepted
+                                                        <span class="text-green"><strong>Accepted</strong></span>
                                                         @elseif($ans['status']==2)
-                                                            Wrong
+                                                        <span class="text-Red"><strong>Rejected</strong></span>
                                                         @elseif($ans['status']==3)
-                                                            Under Review
+                                                        Under Review
                                                         @endif
-                                                    </span>
+                                                               
+                                                    </p>
                                                     {{-- <div class="invalid-feedback">
                                                         Please insert class name.
                                                     </div> --}}
@@ -307,7 +308,25 @@
                 Congratulation, You Have Finished this Class!
             </div>
             <div class="modal-footer">
-            <button type="button" class="btn btn-outline btn-olive" data-dismiss="modal">Finish</button>
+            <button type="button" class="btn btn-outline btn-olive" data-dismiss="modal" onclick="reloadPage()">Finish</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="modal fade" id="ModalDonePath" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Success!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                Congratulation, You Have Finished this Class and you got new Badge!
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-outline btn-olive" data-dismiss="modal" onclick="reloadPage()">Finish</button>
             </div>
         </div>
         </div>
@@ -332,7 +351,7 @@
                                 console.log('ok')
                                 $('#ModalSuccess').modal('show');
                             }else{
-                                $('#ModalDone').modal('show');
+                                checkPaths($class);
                             }
                         }else if(data=='done'){
                             if($last==false){
@@ -349,6 +368,31 @@
 						console.log(data)
 					}
 			});
+        }
+
+        function checkPaths($class){
+            console.log('ok');
+            var token = "{{csrf_token()}}";
+            $.ajax({
+                type:'POST',
+					url:"<?php echo url('app/check/path')?>",
+					data:"_token="+token+"&id_class="+$class,
+                    success:function(data){
+                        console.log(data)
+                        console.log('he');
+                        if(data=='true'){
+                            $('#ModalDonePath').modal('show');
+                        }else{
+                            $('#ModalDone').modal('show');
+                        }
+                    },
+                    error:function(data,textStatus,errorThrown){
+						console.log(data)
+					}
+            })
+        }
+        function reloadPage(){
+            location.reload();
         }
     </script>
     <script type="text/javascript">

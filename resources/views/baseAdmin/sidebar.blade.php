@@ -35,6 +35,11 @@
                       <span class="sidenav-normal"> Student </span>
                     </a>
                   </li>
+                  <li class="nav-item @yield('review-active')">
+                    <a href="{{url('/student/review')}}" class="nav-link">
+                      <span class="sidenav-normal"> Task Review </span>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </li>

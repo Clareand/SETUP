@@ -4,7 +4,7 @@
 @section('student-active','active')
 @section('main-title','Student')
 @section('title','List')
-@section('page','Table')
+@section('page','Detail')
 @section('content')
 <div class="row">
     <div class=" col-xl-8 order-xl-1">

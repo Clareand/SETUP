@@ -11,9 +11,13 @@ use App\Models\Material;
 use App\Models\Task;
 use App\Models\ClassList;
 use App\Library\MyHelper;
+use App\Models\Badge;
+use App\Models\ClassPath;
 use App\Models\ModuleList;
 use App\Models\Student;
 use App\Models\TaskField;
+use App\Models\User;
+use App\Models\UserBadge;
 use App\Models\UserClassList;
 use App\Models\UserModule;
 use App\Models\UserTask;
@@ -22,6 +26,7 @@ use Illuminate\Support\Facades\Storage;
 use DB;
 use Validator;
 use Auth;
+use Dotenv\Store\File\Paths;
 use Hash;
 use Session;
 use Modules\Student\Http\Controllers\StudentBEController;
@@ -336,11 +341,13 @@ class ClassesBEController extends Controller
             $count1 = UserModule::whereHas('module_list',function($q) use($id_class){
                 return $q->where('id_class','=',$id_class);
             })
+            ->where('id_user',Auth::user()->id)
             ->where('status','1')
             ->get();
             $count2 = UserModule::whereHas('module_list',function($q) use($id_class){
                 return $q->where('id_class','=',$id_class);
             })
+            ->where('id_user',Auth::user()->id)
             ->get();
             $percent = self::percentage(count($count1),count($count2));
             // return $percent;
@@ -350,10 +357,10 @@ class ClassesBEController extends Controller
                 DB::rollback();
                 return 'false';
             }
-            DB::commit();
         }else{
             DB::rollback();
         }
+        DB::commit();
         return $addPoint;
     }
 
@@ -532,6 +539,63 @@ class ClassesBEController extends Controller
         
     }
     
+
+    // check path
+    public static function checkPath($request){
+        $userClass = UserClassList::where('id_user',Auth::user()->id)->where('progress','=',100)->get();
+        // return $userClass;
+        if(count($userClass)!=0){
+            DB::beginTransaction();
+            $path = ClassPath::where('id_class',$request['id_class'])->get();
+            for($i=0;$i<count($path);$i++){
+                $paths[$i]=LearningPath::where('id',$path[$i]['id_learning_path'])->with('class_paths','badge')->get();
+            }
+            // return count($userClass);
+            $pool = [];
+            for($i=0;$i<count($userClass);$i++){
+                $countMatch = 0;
+                for($j=0;$j<count($paths);$j++){
+                    $countClassPath = count($paths[$j][0]['class_paths']);
+                    for($x=0;$x<$countClassPath;$x++){
+                        if($userClass[$i]['id_class']==$paths[$j][0]['class_paths'][$x]['id_class']){
+                            $countMatch=+1;
+                        }
+                    }
+                    if($countMatch==$countClassPath){
+                        $userBadge = UserBadge::where('id_user',Auth::user()->id)->where('id_badge',$paths[$j][0]['id_badge'])->get();
+                        if(count($userBadge)==0){
+                            $post = [
+                                'id_user'=>Auth::user()->id,
+                                'id_badge'=>$paths[$j][0]['id_badge'],
+                            ];
+                           
+                            try{
+                                $createBadge=UserBadge::create($post);
+                            }catch(\Exception $e){
+                                DB::rollback();
+                                return $e;
+                                return MyHelper::checkCreate($createBadge);
+                            }
+                            $badge = Badge::where('id',$paths[$j][0]['id_badge'])->get();
+                            // return $badge;
+                            try{
+                                $updateStudent = Student::where('id_user',Auth::user()->id)->update(array('point'=>$badge[0]['point']));
+                            }catch(\Exception $e){
+                                DB::rollback();
+                                return 'false';
+                            }
+                            DB::commit();
+                        }
+                    }
+                }
+            }
+            return 'true';
+        }
+        return 'false';
+        // testing
+        
+    }
+
     // Search Class
     public static function searchClass($request){
         $data = ClassList::where('name','like','%'.$request['class'].'%')->with('tech_field')->paginate(10);
@@ -591,7 +655,7 @@ class ClassesBEController extends Controller
             return MyHelper::checkCreate($addModule);
         }
         $module['all_module'] = ModuleList::where('id_class',$id)->count();
-        
+        $userClass = UserClassList::where('id_class',$id)->where('progress','<',100)->get();
         try{
             $countModule=ClassList::where('id',$id)->update($module);
         }catch(\Exception $e){
@@ -599,6 +663,46 @@ class ClassesBEController extends Controller
             return $e;
             return MyHelper::checkUpdate($countModule);
         }
+
+        // update user Module
+        for($i=0;$i<count($userClass);$i++){
+            $storeUser = [
+                'id_user'=>$userClass[$i]['id_user'],
+                'id_module'=>$addModule['id'],
+                'status'=>'0'
+            ];
+            try{
+                $storeModulesUser = UserModule::create($storeUser);
+            }catch(\Exception $e){
+                return $e;
+                return MyHelper::checkCreate($storeModulesUser);
+            }
+            
+        }
+
+        for($i=0;$i<count($userClass);$i++){
+            $count1 = UserModule::whereHas('module_list',function($q) use($id){
+                return $q->where('id_class','=',$id);
+            })
+            ->where('status','1')
+            ->where('id_user',$userClass[$i]['id_user'])
+            ->get();
+            $count2 = UserModule::whereHas('module_list',function($q) use($id){
+                return $q->where('id_class','=',$id);
+            })
+            ->where('id_user',$userClass[$i]['id_user'])
+            ->get();
+            // return count($count1);
+            $percent = self::percentage(count($count1),count($count2));
+            // return $percent;
+            try{
+                $userClasses = UserClassList::where(['id_user'=>$userClass[$i]['id_user'],'id_class'=>$id])->update(array('progress'=>$percent));
+            }catch(\Exception $e){
+                DB::rollback();
+                return $e;
+            }
+        }
+        // return 'y';
         DB::commit();
         
         return MyHelper::checkCreate($addModule);
@@ -624,6 +728,42 @@ class ClassesBEController extends Controller
             return $e;
             return MyHelper::checkUpdate($countModule);
         }
+
+        // delete module in user module
+        $userClass = UserClassList::where('id_class',$class[0]['id_class'])->where('progress','<',100)->get();
+        // update user Module
+        // return $id;
+        for($i=0;$i<count($userClass);$i++){
+            try{
+                $storeModulesUser = UserModule::where('id_user',$userClass[$i]['id_user'])->where('id_module','id')->delete();
+            }catch(\Exception $e){
+                return $e;
+                return MyHelper::checkCreate($storeModulesUser);
+            }
+            
+        }
+
+        for($i=0;$i<count($userClass);$i++){
+            $count1 = UserModule::whereHas('module_list',function($q) use($class){
+                return $q->where('id_class','=',$class[0]['id_class']);
+            })
+            ->where('status','1')
+            ->where('id_user',$userClass[$i]['id_user'])
+            ->get();
+            $count2 = UserModule::whereHas('module_list',function($q) use($class){
+                return $q->where('id_class','=',$class[0]['id_class']);
+            })
+            ->where('id_user',$userClass[$i]['id_user'])
+            ->get();
+            $percent = self::percentage(count($count1),count($count2));
+            try{
+                $userClasses = UserClassList::where(['id_user'=>$userClass[$i]['id_user'],'id_class'=>$class[0]['id_class']])->update(array('progress'=>$percent));
+            }catch(\Exception $e){
+                DB::rollback();
+                return $e;
+            }
+        }
+        // return 'y';
         DB::commit();
         return MyHelper::checkDelete($module);
     }

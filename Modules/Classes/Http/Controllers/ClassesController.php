@@ -184,6 +184,11 @@ class ClassesController extends Controller
         return $data;
     }
 
+    public function checkPath(Request $request){
+        $data = ClassesBEController::checkPath($request);
+        return $data;
+    }
+
     // check Task
     public function checkTask(Request $request,$id){
         $data = ClassesBEController::checkTask($request,$id);
@@ -216,6 +221,7 @@ class ClassesController extends Controller
 
     public function storeModule(Request $request,$id){
         $data = ClassesBEController::storeModule($request,$id);
+        // return $data;
         if($data['status']=='success'){
             return back()->withSuccess(['Successfuly Added']);
         }
@@ -224,6 +230,7 @@ class ClassesController extends Controller
 
     public function destroyModule($id){
         $data = ClassesBEController::destroyModule($id);
+        // return $data;
         if($data['status']=='success'){
             return back()->withSuccess(['Learning Material has been deleted']);
         }

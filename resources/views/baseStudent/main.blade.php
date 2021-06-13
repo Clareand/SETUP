@@ -166,7 +166,7 @@
                 <div class="nav-link pr-0">
                   <div class="media align-items-center">
                     <span>
-                        <a href="" class="btn btn-olive">Leaderboard</a>
+                        <a href="{{url('app/leaderboard')}}" class="btn btn-olive">Leaderboard</a>
                     </span>
                   </div>
                 </div>
