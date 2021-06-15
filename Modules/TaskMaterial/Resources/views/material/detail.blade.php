@@ -52,9 +52,11 @@
 @section('custom-script')
     <script>
         const image = document.getElementById('imgs');
-        console.log(image);
-        image.append(
-            `<img style='width:500px;height:300px' src="{{Storage::url( $item['material_image'])}}" class="rounded mx-auto d-block" alt="...">`
-        )
+        image.src = "{{Storage::url( $item['material_image'])}}"
+        image.className="rounded mx-auto d-block"
+        image.style="width:500px;height:300px"
+        // image.append(
+        //     `<img style='width:500px;height:300px' src="" class="rounded mx-auto d-block" alt="...">`
+        // )
     </script>
 @endsection

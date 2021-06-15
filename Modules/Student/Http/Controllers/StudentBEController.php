@@ -19,6 +19,7 @@ use DB;
 use Validator;
 use Auth;
 use Dotenv\Store\File\Paths;
+use Session;
 use Hash;
 
 class StudentBEController extends Controller
@@ -242,6 +243,8 @@ class StudentBEController extends Controller
             'rank'=>$rank,
             'userRank'=>$rank_user
         ];
+        $student = Student::where('id_user',Auth::user()->id)->get();
+        Session::put('point',$student[0]['point']);
         return MyHelper::checkGet($data);
     }
 }

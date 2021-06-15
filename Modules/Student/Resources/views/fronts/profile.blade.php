@@ -49,8 +49,22 @@
             </div>
           </div>
         </div>
+        <div class="row justify-content-center">
+          @if ($item['user']['badges'])
+            @foreach ($item['user']['badges'] as $badge)
+                <div class="text-center">
+                  @if ($badge['image'])
+                  <img src="{{ Storage::url( $item['image']) }}" class="rounded float-left img-thumbnail" alt="..." style='object-fit:cover/;width:50px;height:50px'>
+                  @else
+                  <img style='width:50px' src="{{url('assets/img/picture/not-found.png')}}" class="rounded float-left img-thumbnail" alt="...">
+                  @endif
+                </div>
+            @endforeach
+          @endif
+        </div>
+        <br>
         <div class="text-center">
-          <h1 class="display-3">
+          <h1 class="display-4">
             {{Auth::user()->name}} {{$item['last_name']}}<span class="font-weight-light"></span>
           </h1>
           <div class="h5 font-weight-300">

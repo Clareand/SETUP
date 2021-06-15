@@ -172,6 +172,7 @@ class ClassesController extends Controller
     }
 
     public function classMaterial($class,$tutorial){
+        // return 'true';
         // return $tutorial;
         $data = ClassesBEController::classMaterial($class,$tutorial);
         // return $data;
@@ -180,11 +181,13 @@ class ClassesController extends Controller
     }
 
     public function checkStatus(Request $request){
+        // return 'true';
         $data = ClassesBEController::checkStatusMaterial($request);
         return $data;
     }
 
     public function checkPath(Request $request){
+        // return 'true';
         $data = ClassesBEController::checkPath($request);
         return $data;
     }

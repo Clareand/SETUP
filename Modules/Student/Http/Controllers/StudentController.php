@@ -67,7 +67,9 @@ class StudentController extends Controller
     {
         $student=StudentBEController::show($id);
         if($student['status']=='success'){
-            if($student['result'][0]['province']){
+            // if($student['result'][0]['province']){
+            if($student['result'][0]['city']){
+                // return'y';
                 $data=[
                     'user'=>$student['result'],
                     'province'=>HomeController::getProvince(),
@@ -79,7 +81,7 @@ class StudentController extends Controller
                     'province'=>HomeController::getProvince(),
                 ];
             }
-           
+        //    return $data;
             return view('student::layouts.edit',$data);
         };
         return back()->withErrors(['Sorry,Not Found']);

@@ -542,26 +542,30 @@ class ClassesBEController extends Controller
 
     // check path
     public static function checkPath($request){
-        $userClass = UserClassList::where('id_user',Auth::user()->id)->where('progress','=',100)->get();
+        $userClass = UserClassList::where('id_user',Auth::user()->id)->where('progress','=',100)->get(); //ini bugnya
         // return $userClass;
+        DB::beginTransaction();
         if(count($userClass)!=0){
-            DB::beginTransaction();
             $path = ClassPath::where('id_class',$request['id_class'])->get();
             for($i=0;$i<count($path);$i++){
                 $paths[$i]=LearningPath::where('id',$path[$i]['id_learning_path'])->with('class_paths','badge')->get();
             }
-            // return count($userClass);
-            $pool = [];
+            // return $paths;
+            $given = 0;
             for($i=0;$i<count($userClass);$i++){
                 $countMatch = 0;
                 for($j=0;$j<count($paths);$j++){
                     $countClassPath = count($paths[$j][0]['class_paths']);
                     for($x=0;$x<$countClassPath;$x++){
                         if($userClass[$i]['id_class']==$paths[$j][0]['class_paths'][$x]['id_class']){
+                            // echo $userClass;
                             $countMatch=+1;
                         }
                     }
+                    // echo ' $j :',$j;
+                    // echo ' countMatch :' ,$countMatch;
                     if($countMatch==$countClassPath){
+                        $given++;
                         $userBadge = UserBadge::where('id_user',Auth::user()->id)->where('id_badge',$paths[$j][0]['id_badge'])->get();
                         if(count($userBadge)==0){
                             $post = [
@@ -577,19 +581,25 @@ class ClassesBEController extends Controller
                                 return MyHelper::checkCreate($createBadge);
                             }
                             $badge = Badge::where('id',$paths[$j][0]['id_badge'])->get();
-                            // return $badge;
+                            $students= Student::where('id_user',Auth::user()->id)->get();
+                            $points=$badge[0]['point']+$students[0]['point'];
                             try{
-                                $updateStudent = Student::where('id_user',Auth::user()->id)->update(array('point'=>$badge[0]['point']));
+                                $updateStudent = Student::where('id_user',Auth::user()->id)->update(array('point'=>$points));
                             }catch(\Exception $e){
                                 DB::rollback();
                                 return 'false';
                             }
-                            DB::commit();
                         }
                     }
                 }
             }
-            return 'true';
+            DB::commit();
+            Session::put('point',$points);
+            if($given==0){
+                return 'truefalse';
+            }else{
+                return 'true';
+            }
         }
         return 'false';
         // testing
