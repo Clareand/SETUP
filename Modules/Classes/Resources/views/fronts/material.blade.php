@@ -62,6 +62,20 @@
 						{{$item['material']['title']}}
 					</h1>
 				</div>
+				<div class="col-lg-12">
+					@if ($item['material']['video'])
+                    <video width="900px" height="500px" class="rounded mx-auto d-block" controls>
+                        <source src="{{Storage::url( $item['material']['video'])}}" type="video/mp4">
+                    </video>
+                    <br>
+                    @else
+                     @if  ($item['material']['material_image'])
+                     <img style='width:500px;height:300px' src="{{Storage::url( $item['material']['material_image'])}}" class="rounded mx-auto d-block" alt="...">    
+                     @else
+                     <img style='width:500px;height:300px' src="{{url('assets/img/picture/not-found.png')}}" class="rounded mx-auto d-block" alt="...">
+                     @endif
+                    @endif
+				</div>
 				<div id="editor">{!! html_entity_decode($item['material']['material_text']) !!}</div>
 				</div>
 			</div>
@@ -407,4 +421,13 @@
 	{{Session::forget('modal')}}
 	}
 	</script>
+	<script>
+        const image = document.getElementById('imgs');
+        image.src = "{{Storage::url( $item['material']['material_image'])}}"
+        image.className="rounded mx-auto d-block"
+        image.style="width:500px;height:300px"
+        // image.append(
+        //     `<img style='width:500px;height:300px' src="" class="rounded mx-auto d-block" alt="...">`
+        // )
+    </script>
 @endsection

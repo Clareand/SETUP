@@ -16,7 +16,7 @@
                     @include('baseAdmin.alerts')
                     <div class="row align-items-center">
                         <div class="col-8">
-                            <h3 class="mb-0">Class Detail </h3>
+                            <h3 class="mb-0">Class Edit </h3>
                         </div>
                         <div class="col-4 text-right">
                             <button class="btn btn-olive" id="submited" onclick="getValue()">Edit</button>
@@ -106,14 +106,34 @@
             </div>
             <div class="card-body custom-height">
                 <div class="scrollbar-inner">
-                    @if (!$item['module_list'])
-                    <strong>No Module to display</strong>
+                @if (!$item['module_lists'])
+                <strong>No Module to display</strong>
                 @else
-                    <div class="card bg-light">
-                        <div class="card-body">
-                            test
+                    @foreach ($item['module_lists'] as $items)
+                        <div class="card bg-light">
+                            <div class="card-body" style="background-color: #e9e8e8">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    {{$items['step']}}
+                                </div>
+                                <div class="col-md-7">
+                                    @if ($items['type']=='task')
+                                        {{$items['task']['name']}}
+                                    @else
+                                        {{$items['material']['title']}}
+                                    @endif
+                                </div>
+                                <div class="col-md-3">
+                                    @if ($items['type']=='task')
+                                    <span class="badge badge-md badge-warning">{{$items['type']}}</span>
+                                    @else
+                                        <span class="badge badge-md badge-success">{{$items['type']}}</span>
+                                    @endif
+                                </div>
+                            </div>
+                            </div>
                         </div>
-                    </div>
+                    @endforeach
                 @endif
                 </div>
             </div>

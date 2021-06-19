@@ -29,7 +29,7 @@ class AdminController extends Controller
         $data = AdminBEController::getUserAll();
         // return $data;
         if($data['status']=='success'){
-            return view('admin::layouts.index',$data['result']);
+            return view('admin::layouts.index',$data);
         }
     }
 
@@ -144,4 +144,6 @@ class AdminController extends Controller
         }
         return view('admin::layouts.dashboard');
     }
+
+    // ubah profile belom ada :"
 }

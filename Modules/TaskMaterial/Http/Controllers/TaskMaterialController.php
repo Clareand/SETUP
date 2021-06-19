@@ -21,6 +21,7 @@ class TaskMaterialController extends Controller
     public function getMaterial()
     {
         $data = TaskMaterialBEController::getMaterial();
+        // return $data;
         return view('taskmaterial::material.index',$data);
     }
 

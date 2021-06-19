@@ -18,7 +18,7 @@ class StudentController extends Controller
     public function index()
     {
         $data = StudentBEController::index();
-        return view('student::layouts.index',$data['result']);
+        return view('student::layouts.index',$data);
     }
 
     /**
@@ -120,7 +120,7 @@ class StudentController extends Controller
     public function review(){
         $data = StudentBEController::review();
         // return $data;
-        return view('student::review.index',$data['result']);
+        return view('student::review.index',$data);
     }
 
     public function reviewDetail($id){

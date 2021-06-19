@@ -40,7 +40,7 @@
               @foreach ($result as $item)
               <tr>
                 <th scope="row">
-                  {{$loop->iteration+(10*($result['current_page']))}}
+                  {{($loop->iteration)+(10*($result->currentPage()-1))}}
                 </th>
                 <td class="title">
                   {{$item['title']}}
@@ -85,10 +85,11 @@
           </table>
         </div>
         <!-- Card footer -->
+        
         <div class="card-footer py-4">
           <nav aria-label="...">
             <ul class="pagination justify-content-end mb-0">
-              <li class="page-item disabled">
+              {{-- <li class="page-item disabled">
                 <a class="page-link" href="#" tabindex="-1">
                   <i class="fas fa-angle-left"></i>
                   <span class="sr-only">Previous</span>
@@ -106,7 +107,8 @@
                   <i class="fas fa-angle-right"></i>
                   <span class="sr-only">Next</span>
                 </a>
-              </li>
+              </li> --}}
+              {{$result->links()}}
             </ul>
           </nav>
         </div>
