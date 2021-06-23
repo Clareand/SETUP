@@ -33,7 +33,7 @@
                   <div class="row">
                     <div class="col-lg-3">
                       @if ($item['badge']['image'])
-                      <img src="{{ Storage::url( $item['badge']['image']) }}" class="rounded float-left img-thumbnail square-2" alt="..." style='object-fit:cover/'>
+                      <img src="{{ Storage::url( $item['badge']['image']) }}" class="rounded float-left img-thumbnail square-2" alt="..." style="width:100px;height:100px">
                       @else
                       <img style="width:100px" src="{{url('assets/img/picture/not-found.png')}}" class="rounded float-left img-thumbnail" alt="...">
                       @endif

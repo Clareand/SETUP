@@ -55,7 +55,8 @@
                                 <div class="row">
                                     <div class="col-lg-9">
                                         <div class="form-group">
-                                            <h2> Task Field :{{$task['task_field']['field_question']}}</h2>
+                                            <h2>Class       : {{$task['task']['module_lists'][0]['class_list']['name']}}</h2>
+                                            <h4 style="font-weight: 200"> Task Field :{{$task['task_field']['field_question']}}</h4>
                                         </div>
                                     </div>
                                    <div class="col-lg-3">

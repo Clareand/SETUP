@@ -142,7 +142,7 @@ class MasterDataController extends Controller
     {
         $data = MasterDataBEController::storeBadge($request);
         if($data['status']=='success'){
-            return redirect('badge')->withSuccess(['Badge field has been created']);
+            return redirect('badge')->withSuccess(['Badge has been created']);
         }
         return back()->withError($data['result']);
     }
@@ -182,7 +182,7 @@ class MasterDataController extends Controller
         $data = MasterDataBEController::updateBadge($request,$id);
         // return $data;
         if($data['status']=='success'){
-            return redirect('badge')->withSuccess(['Badge field has been updated']);
+            return redirect('badge')->withSuccess(['Badge has been updated']);
         }
         return back()->withError($data['result'])->withInput($request->all());
     }
@@ -195,8 +195,9 @@ class MasterDataController extends Controller
     public function destroyBadge($id)
     {
         $data = MasterDataBEController::destroyBadge($id);
+        // return $data;
         if($data['status']=='success'){
-            return redirect('badge')->withSuccess(['Badge Field has been deleted']);
+            return redirect('badge')->withSuccess(['Badge has been deleted']);
         }
         return back()->withError($data['result']);
     }

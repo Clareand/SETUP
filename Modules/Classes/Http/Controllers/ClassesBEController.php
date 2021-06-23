@@ -74,7 +74,7 @@ class ClassesBEController extends Controller
             'long_description'=>'nullable',
         ]);
         if($validator->fails()){
-            $response=[$validator->messages()];
+            $response=MyHelper::checkValidator($validator->messages()->all());
             return $response;
         }
         if($request['image']){
@@ -138,10 +138,7 @@ class ClassesBEController extends Controller
             'long_description'=>'nullable'
         ]);
         if($validator->fails()){
-            $response=[
-                'status'=>'fail',
-                'result'=>$validator->messages()->all()
-            ];
+            $response=MyHelper::checkValidator($validator->messages()->all());
             return $response;
         }
         $class = ClassList::where('id',$id)->get();
@@ -178,6 +175,7 @@ class ClassesBEController extends Controller
     public static function destroy($id)
     {
         $class = ClassList::findOrFail($id);
+        // return $class;
         $path = $class['image'];
         DB::beginTransaction();
         try{
@@ -186,11 +184,16 @@ class ClassesBEController extends Controller
             DB::rollback();
             return MyHelper::checkDelete($deleteClass);
         }
-        $image = Storage::delete($path);
+        if($path){
+            $image = Storage::delete($path);
         if($image==1){
             DB::commit();
             return MyHelper::checkDelete($deleteClass);
+        } 
+        }else{
+            DB::commit();
         }
+       
         DB::rollback();
         return MyHelper::checkDelete($deleteClass);
     }
@@ -202,10 +205,14 @@ class ClassesBEController extends Controller
         $user = Auth::user();
         $request['id_user']=$user['id'];
         $check = UserClassList::where(['id_user'=>$request['id_user'],'id_class'=>$request['id_class']])->get();
+        $post = [
+            'id_user'=>$user['id'],
+            'id_class'=>(int)$request['id_class'],
+        ];
         if(count($check)==0){
             DB::beginTransaction();
             try{
-                $data = UserClassList::create(array_filter($request->all()));
+                $data = UserClassList::create($post);
             }catch(\Exception $e){
                 DB::rollback();
                 return $e;
@@ -652,7 +659,7 @@ class ClassesBEController extends Controller
                     'status'=>'fail',
                     'result'=>['task already added']
                 ];
-                return $response;
+                return MyHelper::checkCreate($response);
             }
         }
 

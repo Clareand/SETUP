@@ -44,7 +44,7 @@ class TaskMaterialBEController extends Controller
             'title'=>'string|required'
         ]);
         if($validator->fails()){
-            $response=[$validator->messages()];
+            $response=MyHelper::checkValidator($validator->messages()->all());
             return $response;
         }
         if($request['image']){
@@ -111,10 +111,7 @@ class TaskMaterialBEController extends Controller
             'title'=>'string|required'
         ]);
         if($validator->fails()){
-            $response=[
-                'status'=>'fail',
-                'result'=>$validator->messages()->all()
-            ];
+            $response=MyHelper::checkValidator($validator->messages()->all());
             return $response;
         }
         $material = Material::where('id',$id)->get();
@@ -188,7 +185,7 @@ class TaskMaterialBEController extends Controller
             'name'=>'string|required'
         ]);
         if($validator->fails()){
-            $response=[$validator->messages()];
+            $response=MyHelper::checkValidator($validator->messages()->all());
             return $response;
         }
         DB::beginTransaction();
@@ -224,10 +221,7 @@ class TaskMaterialBEController extends Controller
             'name'=>'string|required'
         ]);
         if($validator->fails()){
-            $response=[
-                'status'=>'fail',
-                'result'=>$validator->messages()->all()
-            ];
+            $response=MyHelper::checkValidator($validator->messages()->all());
             return $response;
         }
         $post = $request->except('_token');

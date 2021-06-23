@@ -163,7 +163,7 @@ class StudentBEController extends Controller
     }
 
     public static function reviewDetail($id){
-        $data = UserTaskAnswer::where('id',$id)->with('task','user','task_field')->get();
+        $data = UserTaskAnswer::where('id',$id)->with('task.module_lists.class_list','user','task_field',)->get();
         return MyHelper::checkGet($data);
     }
 

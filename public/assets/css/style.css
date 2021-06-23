@@ -209,6 +209,12 @@ button.bg-teal-pastel:focus
     background-color: #aaaaaa;
 }
 
+.crop {
+    width: auto;
+    height: 250px;
+    overflow: hidden;
+}
+
 
 /* Wider */
 .card-cascade.wider{

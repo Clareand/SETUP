@@ -147,4 +147,10 @@ class AdminBEController extends Controller
         return MyHelper::checkDelete($deleteAdmin);
        
     }
+
+    public static function profile(){
+        $id = Auth::user()->id;
+        $data = Admin::with('user')->where('id_user',$id)->get();
+        return MyHelper::checkGet($data);
+    }
 }

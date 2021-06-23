@@ -66,7 +66,7 @@
                     <form action="{{url('app/class/enroll')}}" method="post">
                     <a href="{{url('app/detail/class/'.$items['class_list']['id'])}}" class="btn btn-default">Detail</a>
                     @csrf
-                    <input type="hidden" name="id_class" value="{{$items['id']}}">
+                    <input type="hidden" name="id_class" value="{{$items['class_list']['id']}}">
                     @php
                         $i=0;
                         $values=null;
@@ -81,7 +81,7 @@
                             @endif
                         @endforeach
                         @if ($i==1)
-                        <a href="{{url('app/detail/class/'.$items['id'])}}" class="btn btn-olive">Learn</a><br><br>
+                        <a href="{{url('app/detail/class/'.$items['class_list']['id'])}}" class="btn btn-olive">Learn</a><br><br>
                         Progress: <span>{{$values}} %</span>
                         @php
                             $i=0;

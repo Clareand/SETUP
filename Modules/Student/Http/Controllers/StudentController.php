@@ -119,12 +119,13 @@ class StudentController extends Controller
 
     public function review(){
         $data = StudentBEController::review();
-        // return $data;
+        return $data;
         return view('student::review.index',$data);
     }
 
     public function reviewDetail($id){
         $data = StudentBEController::reviewDetail($id);
+        // return $data;
         return view('student::review.detail',$data);
     }
 

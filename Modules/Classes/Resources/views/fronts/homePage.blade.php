@@ -37,9 +37,9 @@
     @foreach ($result as $item)
     <div class="col-lg-3">
         <div class="card card-cascade narrower">
-        <div class="view view-cascade narrower overlay">
+        <div class="view view-cascade narrower overlay crop">
             @if ($item['badge']['image'])
-            <img src="{{ Storage::url( $item['badge']['image']) }}" class="rounded img-thumbnail" alt="..." style='object-fit: cover;'/>
+            <img src="{{ Storage::url( $item['badge']['image']) }}" class="rounded img-thumbnail" alt="..." style='object-fit: fill;'/>
             @else
             <img class="card-img-top" src="{{url('assets/img/picture/cyan-forest.jpg')}}" alt=""/>
             @endif

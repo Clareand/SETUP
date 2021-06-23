@@ -69,9 +69,9 @@
           @foreach ($result as $item)
         <div class="col-lg-4">
           <div class="card card-cascade narrower">
-            <div class="view view-cascade narrower overlay">
+            <div class="view view-cascade narrower overlay crop">
               @if ($item['image'])
-              <img class="card-img-top" src="{{Storage::url( $item['image']) }}" alt=""/>
+              <img class="card-img-top" src="{{Storage::url( $item['image']) }}" alt="" style="object-fit: cover; "/>
               @else
               <img class="card-img-top" src="{{url('assets/img/picture/cyan-forest.jpg')}}" alt=""/>
               @endif
@@ -86,6 +86,7 @@
               <p class="card-text" style="height:8rem;">
                 {{$item['short_description']}}
               </p>
+              <br><br><br>
               <button disabled class="btn btn-outline-olive btn-sm">@if($item['all_module']) {{$item['all_module']}} Module @else 0 Module @endif</button>
               <br><br>
               <form action="{{url('app/class/enroll')}}" method="POST">
@@ -109,9 +110,9 @@
                   <br>
                   Progress: <span>{{$values}} %</span>
                   @else
-                  <br><br>
                   <a href="{{url('app/detail/class/'.$item['id'])}}" class="btn btn-default">Detail</a>
                   <button type="submit" class="btn btn-olive">Enroll</button>
+                  <br><br><br>
                   @endif
               @else
                 <a href="{{url('app/detail/class/'.$item['id'])}}" class="btn btn-default">Detail</a>

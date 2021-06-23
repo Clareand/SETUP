@@ -145,5 +145,30 @@ class AdminController extends Controller
         return view('admin::layouts.dashboard');
     }
 
-    // ubah profile belom ada :"
+    // profileAdmin
+    public function profile(){
+        $admin = AdminBEController::profile();
+        if($admin['result'][0]['city']){
+            $data=[
+                'result'=>$admin['result'],
+                'province'=>HomeController::getProvince(),
+                'city'=>HomeController::getCities($admin['result'][0]['regency']['province_id'])
+            ];
+        }else{
+            $data=[
+                'result'=>$admin['result'],
+                'province'=>HomeController::getProvince(),
+            ];
+        }
+        // return $data;
+        return view('admin::layouts.profile',$data);
+    }
+
+    public function updateProfile(Request $request,$id){
+        $data = AdminBEController::update($request,$id);
+        if($data['status']=='success'){
+            return back()->withSuccess(['Succesfuly Updated']);
+        }
+        return back()->withError($data['result'])->withInput();
+    }
 }

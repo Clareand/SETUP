@@ -48,7 +48,7 @@ class LearningPathBEController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'name'=>'string',
-            'description'=>'string|nullable'
+            'description'=>'string'
         ]);
         if($validator->fails()){
             $response=MyHelper::checkValidator($validator->messages()->all());

@@ -137,6 +137,7 @@ class ClassesController extends Controller
     public function classEnroll(Request $request){
         // return $request;
         $data = ClassesBEController::classEnroll($request);
+        // return $data;
         if($data['status']=='success'){
             return back()->withSuccess(['Enrollment Success']);
         }
@@ -234,6 +235,7 @@ class ClassesController extends Controller
     public function destroyModule($id){
         $data = ClassesBEController::destroyModule($id);
         // return $data;
+       
         if($data['status']=='success'){
             return back()->withSuccess(['Learning Material has been deleted']);
         }

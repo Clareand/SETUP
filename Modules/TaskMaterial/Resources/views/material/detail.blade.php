@@ -34,7 +34,7 @@
                     </video>
                     <br>
                     @else
-                     @if  ($result[0]['image'])
+                     @if  ($result[0]['material_image'])
                      <img style='width:500px;height:300px' src="{{Storage::url( $item['material_image'])}}" class="rounded mx-auto d-block" alt="...">    
                      @else
                      <img style='width:500px;height:300px' src="{{url('assets/img/picture/not-found.png')}}" class="rounded mx-auto d-block" alt="...">

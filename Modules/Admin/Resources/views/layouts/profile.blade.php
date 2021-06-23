@@ -1,19 +1,5 @@
-@extends('baseStudent.main')
-@section('header')
-<div class="header pb-6 d-flex align-items-center" style="min-height: 500px; background-size: cover; background-position: center top;">
-    <!-- Mask -->
-    <span class="mask bg-black-blue opacity-8"></span>
-    <!-- Header container -->
-    <div class="container-fluid d-flex align-items-center">
-      <div class="row">
-        <div class="col-lg-7 col-md-10">
-          <h1 class="display-2 text-white">Hello {{Auth::user()->name}}</h1>
-          <p class="text-white mt-0 mb-5">This is your profile page. You can see the progress you've made with your work and manage your projects or assigned tasks</p>
-        </div>
-      </div>
-    </div>
-  </div>
-@endsection
+@extends('baseAdmin.main')
+
 @section('content')
 <div class="row">
   @foreach ($result as $item)    
@@ -31,37 +17,6 @@
       </div>
       <br><br><br>
       <div class="card-body pt-0">
-        <div class="row">
-          <div class="col">
-            <div class="card-profile-stats d-flex justify-content-center">
-              <div>
-                <span class="heading">{{$item['point']}}</span>
-                <span class="description">Points</span>
-              </div>
-              <div>
-                <span class="heading">{{count($item['user']['badges'])}}</span>
-                <span class="description">Bagdes</span>
-              </div>
-              <div>
-                <span class="heading">{{count($item['user']['class_lists'])}}</span>
-                <span class="description">Class</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row justify-content-center">
-          @if ($item['user']['badges'])
-            @foreach ($item['user']['badges'] as $badge)
-                <div class="text-center">
-                  @if ($badge['image'])
-                  <img src="{{ Storage::url( $item['image']) }}" class="rounded float-left img-thumbnail" alt="..." style='object-fit:cover/;width:50px;height:50px'>
-                  @else
-                  <img style='width:50px' src="{{url('assets/img/picture/not-found.png')}}" class="rounded float-left img-thumbnail" alt="...">
-                  @endif
-                </div>
-            @endforeach
-          @endif
-        </div>
         <br>
         <div class="text-center">
           <h1 class="display-4">
@@ -73,16 +28,13 @@
             @endif
             Indonesia
           </div>
-          <div class="h5 mt-4">
-            <i class="ni business_briefcase-24 mr-2"></i>100/1000
-          </div>
         </div>
       </div>
     </div>
   </div>
   <div class=" col-xl-8 order-xl-1">
       <div class="card">
-          <form action="{{url('app/profile/update/'.$item['id'])}}" method="post">
+          <form action="{{url('admin/profile/update/'.Auth::user()->id)}}" method="post">
               @csrf
               <div class="card-header">
                   @include('baseAdmin.alerts')
@@ -114,12 +66,6 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="form-control-label" for="input-email">Last Name</label>
-                                    <input type="text" id="input-last-name" class="form-control" placeholder="Doe" name="last_name"  value="{{old('last_name')?old('last_name'):$item['last_name']}}">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
                                     <label class="form-control-label" for="input-first-name">Phone</label>
                                     <input  type="text" id="input-first-name" class="form-control" placeholder="08XXXXXXXXXXX" name="phone"  value="{{old('phone')?old('phone'):$item['user']['phone']}}">
                                 </div>
@@ -139,7 +85,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="form-control-label" for="input-city">Province</label>
                                     <select class="form-control selects" data-toggle="select" id="province" name="province" onchange="getCity()">
@@ -153,7 +99,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="form-control-label" for="input-country">City</label>
                                     <select class="form-control selects" data-toggle="select" id="city" name="city">
@@ -164,12 +110,6 @@
                                             @endforeach
                                         @endif
                                     </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-email">Postal Code</label>
-                                    <input type="text" id="input-email" class="form-control" placeholder="12345" name="postal_code"  value="{{old('postal_code')?old('postal_code'):$item['user']['postal_code']}}">
                                 </div>
                             </div>
                         </div>

@@ -226,12 +226,17 @@ class MasterDataBEController extends Controller
             $image = $request->file('image');
             $name = time().'.'.$image->getClientOriginalExtension();
             $path = $request->image->storeAs(('public/badges'), $name);
+            $post = [
+                'name'=>$request->name,
+                'point'=>$request->point,
+                'image'=>$path
+            ];
+         }else{
+            $post = [
+                'name'=>$request->name,
+                'point'=>$request->point
+            ];
          }
-         $post = [
-             'name'=>$request->name,
-             'point'=>$request->point,
-             'image'=>$path
-         ];
          DB::beginTransaction();
          try{
              $updateTech = Badge::where('id',$id)->update($post);
@@ -252,6 +257,7 @@ class MasterDataBEController extends Controller
      public static function destroyBadge($id)
      {
          $tech = Badge::findOrFail($id);
+        //  return $tech;
          DB::beginTransaction();
          try{
             if(Storage::delete($tech->image)) {

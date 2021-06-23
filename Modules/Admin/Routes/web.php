@@ -23,5 +23,7 @@ Route::prefix('admin')->group(function() {
         Route::post('/update/{id}', 'AdminController@update'); 
         Route::get('/delete/{id}', 'AdminController@destroy'); 
         Route::get('/alert/{id}', 'AdminController@notifTest'); 
+        Route::get('/profile', 'AdminController@profile')->name('profile'); 
+        Route::post('/profile/update/{id}', 'AdminController@updateProfile'); 
     });
 });

@@ -49,6 +49,7 @@ class LearningPathController extends Controller
     public function store(Request $request)
     {
         $data = LearningPathBEController::store($request);
+        // return $data;
         if($data['status']=='success'){
             return redirect('learningPath')->withSuccess(['New Path has been added']);
         }
