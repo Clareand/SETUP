@@ -14,9 +14,6 @@ class AddPointTableMaterial extends Migration
     public function up()
     {
         Schema::table('materials', function($table) {
-            $table->dropColumn('point');
-        });
-        Schema::table('materials', function($table) {
             $table->integer('point')->after('material_image')->default(0)->nullable();
         });
     }
