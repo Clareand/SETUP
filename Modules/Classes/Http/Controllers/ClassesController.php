@@ -125,6 +125,7 @@ class ClassesController extends Controller
 
     public function classFe(){
         $data = ClassesBEController::index();
+        // return $data;
         if(Auth::user()){
             $data['user']=UserClassList::where('id_user',Auth::user()->id)->get();
         }
@@ -132,6 +133,7 @@ class ClassesController extends Controller
         if($data['status']=='success'){
             return view('classes::fronts.index',$data);
         }
+        return view('classes::fronts.index',$data);
     }
 
     public function classEnroll(Request $request){
@@ -148,6 +150,8 @@ class ClassesController extends Controller
         $data = ClassesBEController::getPath();
         // return $data;
         if($data['status']=='success'){
+            return view('classes::fronts.homePage',$data);
+        }else{
             return view('classes::fronts.homePage',$data);
         }
     }

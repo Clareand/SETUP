@@ -92,7 +92,9 @@
         <div class="card-footer py-4">
           <nav aria-label="...">
             <ul class="pagination justify-content-end mb-0">
+              @if ($status=='success')
               {{$result->links()}}
+              @endif
             </ul>
           </nav>
         </div>

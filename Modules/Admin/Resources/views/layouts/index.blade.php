@@ -90,7 +90,9 @@
         <div class="card-footer py-4">
           <nav aria-label="...">
             <ul class="pagination justify-content-end mb-0">
-            {{$result->links()}}
+              @if ($status=='success')
+              {{$result->links()}}
+              @endif
               <!-- <li class="page-item disabled">
                 <a class="page-link" href="#" tabindex="-1">
                   <i class="fas fa-angle-left"></i>

@@ -54,7 +54,7 @@
               <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="media align-items-center">
                   <span class="text-default text-md">
-                    Programme
+                    Program
                   </span>
                   <div class="media-body  ml-2  d-none d-lg-block">
                     <i class="fa fa-chevron-down"></i>
@@ -72,11 +72,11 @@
                         <div class="col-sm-8">
                           <div class="row">
                             <span class="text-md">
-                              Class List
+                              Class
                             </span>
                           </div>
                           <div class="row">
-                            <span class="text-gray">lorem ipsum sir</span>
+                            <span class="text-gray">Daftar pilihan kelas</span>
                           </div>
                         </div>
                       </div>
@@ -95,7 +95,7 @@
                             </span>
                           </div>
                           <div class="row">
-                            <span class="text-gray">lorem ipsum sir</span>
+                            <span class="text-gray">Daftar Alur Belajar</span>
                           </div>
                         </div>
                       </div>
@@ -106,7 +106,7 @@
             </li>
           </ul>
           <!-- Navbar links -->
-          @if (Auth::user()) 
+          @if (Auth::user()&&Auth::user()->id_role==2) 
           <ul class="navbar-nav align-items-center  ml-md-auto ">
             <li class="nav-item dropdown">
                 <a class="nav-link pr-0" aria-haspopup="true" aria-expanded="false">

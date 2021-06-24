@@ -108,7 +108,9 @@
                   <span class="sr-only">Next</span>
                 </a>
               </li> --}}
+              @if ($status=='success')
               {{$result->links()}}
+              @endif
             </ul>
           </nav>
         </div>

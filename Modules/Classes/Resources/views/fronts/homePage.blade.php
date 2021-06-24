@@ -6,10 +6,10 @@
        <div class="row margin-1">
            <div class="col-lg-4 top-2">
             <h1 class="display-3">
-                Hello @if (Auth::user()){{Auth::user()->name}}@endif, <br>
-                Lorem Ipsum sir dolor amet Vestibulum porta nibh
+                Hallo @if (Auth::user()&&Auth::user()->id_role==2){{Auth::user()->name}}@endif, <br>
+                Yuk Mulai Belajar di SETUP
             </h1>
-            <h6 class="lead">Lorem Ipsum sir dolor</h6>
+            <h6 class="lead">Temukan kelasmu sekarang!</h6>
             <br><br>
             <a href="=" class="btn btn-olive btn-lg">
                 Find Class
@@ -17,18 +17,19 @@
            </div>
            <div class="col-lg-8">
                <div class="img width-80">
-                   <img class="rounded mx-auto d-block img-fluid" src="{{url('assets/img/picture/cyan-forest.jpg')}}" alt="" srcset="">
+                   <img class="rounded mx-auto d-block img-fluid" src="{{url('assets/img/picture/main_pict.png')}}" alt="" srcset="">
                </div>
            </div>
        </div>
     </div>
 </div>
 <br><br>
+@if ($status!='fail')
 <div class="row">
     <div class="col-xl-12">
         <div class="text-center">
             <h1 class="display-4 text-gray-dark">Learning Path Choices</h1>
-            <h5 class="lead text-gray">Lorem Ipsum sir</h5>
+            <h5 class="lead text-gray">Pilih alur belajarmu!</h5>
         </div>
     </div>
 </div>
@@ -51,10 +52,9 @@
             <h3 class="font-weight-bold card-title text-center">
               {{$item['name']}}
             </h3>
-            <p class="card-text" style="height:23rem;">
+            <p class="card-text" style="height:10rem;">
               {{$item['description']}}
             </p>
-            <br><br>
               {{-- <input type="hidden" name="id_class" value="{{$item['id']}}"> --}}
               <a href="{{url('app/path/class/list/'.$item['id'])}}" class="btn btn-olive">Detail</a>
           </div>
@@ -62,4 +62,5 @@
     </div>
     @endforeach
 </div>
+@endif
 @endsection

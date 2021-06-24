@@ -28,7 +28,14 @@ button.bg-teal-pastel:focus
 {
     background-color: #b8d3d4 !important;
 }
-
+ 
+.cropped{
+    width: 300px;
+    height: 300px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    object-fit: cover;
+}
 
 /* button */
 
@@ -211,7 +218,7 @@ button.bg-teal-pastel:focus
 
 .crop {
     width: auto;
-    height: 250px;
+    height: 238px;
     overflow: hidden;
 }
 

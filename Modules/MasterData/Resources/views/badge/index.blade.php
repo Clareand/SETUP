@@ -48,7 +48,7 @@
                 </td>
                 <td class="name">
                  @if ($item['image'])
-                 <img src="{{ Storage::url( $item['image']) }}" class="rounded float-left img-thumbnail square-2" alt="..." style='object-fit:cover/'>
+                 <img src="{{ Storage::url( $item['image']) }}" class="rounded float-left img-thumbnail square-1 cropped" alt="...">
                  @else
                  <img style='width:300px' src="{{url('assets/img/picture/not-found.png')}}" class="rounded float-left img-thumbnail" alt="...">
                  @endif
@@ -100,7 +100,9 @@
         <div class="card-footer py-4">
           <nav aria-label="...">
             <ul class="pagination justify-content-end mb-0">
+              @if ($status=='success')
               {{$result->links()}}
+              @endif
             </ul>
           </nav>
         </div>
