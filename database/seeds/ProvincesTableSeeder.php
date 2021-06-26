@@ -1,7 +1,7 @@
 <?php
 use Illuminate\Database\Seeder;
 
-class ProvincesTableSeeder extends Seeder
+class ProvinceTableSeeder extends Seeder
 {
 
     /**

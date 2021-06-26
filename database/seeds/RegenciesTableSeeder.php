@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class RegenciesTableSeeder extends Seeder
+class RegencyTableSeeder extends Seeder
 {
 
     /**

@@ -1,10 +1,8 @@
 <?php
 
-namespace Database\Seeders;
-
 use Illuminate\Database\Seeder;
 
-class MaterialsTableSeeder extends Seeder
+class MaterialTableSeeder extends Seeder
 {
 
     /**
