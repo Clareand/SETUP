@@ -27,3 +27,4 @@ class DatabaseSeeder extends Seeder
         $this->call(TaskFieldsTableSeeder::class);
         $this->call(TaskFieldOptionsTableSeeder::class);
     }
+}
