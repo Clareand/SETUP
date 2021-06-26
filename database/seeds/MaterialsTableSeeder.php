@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 
 class MaterialsTableSeeder extends Seeder
@@ -66,11 +68,11 @@ class MaterialsTableSeeder extends Seeder
                 'id' => 5,
                 'title' => 'Instalasi Selesai!',
                 'material_text' => '<p>Yeay, Selamat Kamu berhasi memasang Android Studio! Kamu sudah siap untuk melakukan pengembangan aplikasi Android. Ikuti Kelas lanjutan untuk mempelajari tahap selanjutnya dalam pengembangan Android. Sampai Bertemu Kembali di kelas Selanjutnya!</p>',
-                'material_image' => 'public/material/1624449603.png',
+                'material_image' => 'public/material/1624705407.png',
                 'video' => NULL,
                 'point' => 100,
                 'created_at' => '2021-06-23 12:00:03',
-                'updated_at' => '2021-06-23 12:00:03',
+                'updated_at' => '2021-06-26 11:03:27',
             ),
             5 => 
             array (
@@ -110,11 +112,11 @@ class MaterialsTableSeeder extends Seeder
                 'id' => 9,
                 'title' => 'Tampilan mu selesai!',
                 'material_text' => '<h3>Yeay, selamat Kamu dapat mengubah tampilan dari aplikasimu!</h3><p>Kamu sudah bisa untuk mengatur dari tampilan aplikasimu agar semakin menarik untuk dilihat dan dapat menyesesuaikan di berbagai perangkat. Tetap Belajar dan terus mencoba berbagai jenis tampilan untuk mengasah keterampilanmu dalam menyusun tampilan antarmuka di Android. tetap semangat dan Jangan Menyerah!</p><p><br></p><blockquote>Sampai bertemu di kelas lainya!</blockquote>',
-                'material_image' => 'public/material/1624508829.png',
+                'material_image' => 'public/material/1624705437.png',
                 'video' => NULL,
                 'point' => 300,
                 'created_at' => '2021-06-24 04:27:09',
-                'updated_at' => '2021-06-24 04:27:09',
+                'updated_at' => '2021-06-26 11:03:57',
             ),
             9 => 
             array (
@@ -165,11 +167,11 @@ class MaterialsTableSeeder extends Seeder
                 'id' => 14,
                 'title' => 'Jalankan programmu!',
                 'material_text' => '<p>Selamat! Kamu sudah bisa menuliskan progam dalam bahasa Java.</p><p>Tetap belajar untuk mendalalami bahasa pemograman Java.</p><p>Semangag!</p>',
-                'material_image' => 'public/material/1624513410.png',
+                'material_image' => 'public/material/1624705486.png',
                 'video' => NULL,
                 'point' => 300,
                 'created_at' => '2021-06-24 05:43:30',
-                'updated_at' => '2021-06-24 05:43:30',
+                'updated_at' => '2021-06-26 11:04:46',
             ),
         ));
         
