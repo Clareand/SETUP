@@ -20,37 +20,44 @@ class TechFieldsTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'name' => 'Web',
-                'created_at' => '2021-04-06 16:06:13',
-                'updated_at' => '2021-04-06 16:06:13',
+                'name' => 'Android',
+                'created_at' => '2021-06-23 06:13:18',
+                'updated_at' => '2021-06-23 06:13:58',
             ),
             1 => 
             array (
                 'id' => 2,
-                'name' => 'Mobile',
-                'created_at' => '2021-04-06 16:06:13',
-                'updated_at' => '2021-04-06 16:06:13',
+                'name' => 'UI/UX',
+                'created_at' => '2021-06-23 06:13:28',
+                'updated_at' => '2021-06-23 06:13:28',
             ),
             2 => 
             array (
                 'id' => 3,
-                'name' => 'Artificial Intelligence',
-                'created_at' => '2021-04-06 16:09:11',
-                'updated_at' => '2021-04-06 16:09:11',
+                'name' => 'IOS',
+                'created_at' => '2021-06-23 06:14:07',
+                'updated_at' => '2021-06-23 06:14:07',
             ),
             3 => 
             array (
                 'id' => 4,
-                'name' => 'UI/UX',
-                'created_at' => '2021-04-06 16:09:23',
-                'updated_at' => '2021-04-06 16:09:23',
+                'name' => 'Artificial Intelligence',
+                'created_at' => '2021-06-23 06:14:59',
+                'updated_at' => '2021-06-23 06:14:59',
             ),
             4 => 
             array (
                 'id' => 5,
+                'name' => 'Web',
+                'created_at' => '2021-06-23 06:15:12',
+                'updated_at' => '2021-06-23 06:15:12',
+            ),
+            5 => 
+            array (
+                'id' => 6,
                 'name' => 'Game',
-                'created_at' => '2021-04-06 16:09:23',
-                'updated_at' => '2021-04-06 16:09:23',
+                'created_at' => '2021-06-23 06:15:30',
+                'updated_at' => '2021-06-23 06:15:30',
             ),
         ));
         

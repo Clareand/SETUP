@@ -27,9 +27,16 @@ class ClassPathTableSeeder extends Seeder
             1 => 
             array (
                 'id' => 2,
-                'id_class' => 2,
+                'id_class' => 3,
                 'id_learning_path' => 1,
                 'step' => 2,
+            ),
+            2 => 
+            array (
+                'id' => 3,
+                'id_class' => 2,
+                'id_learning_path' => 1,
+                'step' => 3,
             ),
         ));
         
