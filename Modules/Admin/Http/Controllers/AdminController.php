@@ -62,6 +62,7 @@ class AdminController extends Controller
     public function show($id)
     {
         $admin = AdminBEController::edit($id);
+        // return $admin;
         if($admin['status']=='success'){
             // return $admin['result'][0]['regency'];
             $data =[

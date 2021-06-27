@@ -156,7 +156,7 @@ class AuthController extends Controller
         DB::commit();
         if($user->id_role==1){
             Session::flash('success', ['Register Admin Success!']);
-            return redirect()->route('list');
+            return redirect('admin/list');
         }else if($user->id_role==2){
             Session::flash('success', ['Register Success! Please Login to access']);
             return redirect('/login');

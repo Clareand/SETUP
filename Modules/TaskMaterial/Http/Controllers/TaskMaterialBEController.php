@@ -167,8 +167,10 @@ class TaskMaterialBEController extends Controller
             return $e;
             return MyHelper::checkDelete($deteleMaterial);
         }
+        if($path!=null){
+            Storage::delete($path);
+        }
         DB::commit();
-        Storage::delete($path);
         return MyHelper::checkDelete($deteleMaterial);
     }
 

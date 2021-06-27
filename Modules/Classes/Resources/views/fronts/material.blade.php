@@ -258,7 +258,7 @@
 			</div>
 			<div class="col-lg-6 text-right">
 				@if ($status==0)
-				<button type="button" class="btn btn-olive btn-lg disabled" style="width: 150px" onclick="getChecked({{$item['id']}},{{$item['id_class']}},{{$item['step']}},false)">Next</button>
+				<button type="button" class="btn btn-olive btn-lg disabled" style="width: 150px" onclick="getChecked({{$item['id']}},{{$item['id_class']}},{{$item['step']}},false)" disabled>Next</button>
 				@else
 				@if ($item['step']==count($list))
 				<button type="button" class="btn btn-olive btn-lg" style="width: 150px" onclick="getChecked({{$item['id']}},{{$item['id_class']}},{{$item['step']}},true)">Done</button>
@@ -421,13 +421,15 @@
 	{{Session::forget('modal')}}
 	}
 	</script>
+	@if ($module[0]['material'])
 	<script>
         const image = document.getElementById('imgs');
-        image.src = "{{Storage::url( $item['material']['material_image'])}}"
-        image.className="rounded mx-auto d-block"
-        image.style="width:500px;height:300px"
+		image.src = "{{Storage::url( $item['material']['material_image'])}}"
+		image.className="rounded mx-auto d-block"
+		image.style="width:500px;height:300px"
         // image.append(
         //     `<img style='width:500px;height:300px' src="" class="rounded mx-auto d-block" alt="...">`
         // )
     </script>
+	@endif
 @endsection

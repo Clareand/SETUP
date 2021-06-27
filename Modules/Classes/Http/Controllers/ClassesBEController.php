@@ -331,6 +331,7 @@ class ClassesBEController extends Controller
     }
 
     public static function checkStatusMaterial($request){
+        // return 'true';
         $checked = UserModule::where(['id_user'=>Auth::user()->id,'id_module'=>$request['id']])->get();
         if($checked[0]['status']==1){
             return 'done';
@@ -596,12 +597,12 @@ class ClassesBEController extends Controller
                                 DB::rollback();
                                 return 'false';
                             }
+                            DB::commit();
+                            Session::put('point',$points);
                         }
                     }
                 }
             }
-            DB::commit();
-            Session::put('point',$points);
             if($given==0){
                 return 'truefalse';
             }else{

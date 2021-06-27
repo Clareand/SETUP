@@ -64,7 +64,7 @@
 										<div class="col-lg-6">
 											<div class="form-group">
 												<label class="form-control-label" for="input-city">Province</label>
-												@if (!$user['regency'])
+												@if (!$users['regency'])
 												<input disabled id="input-address" class="form-control" placeholder="Home Address" name="address" type="text">
 												@else
 												<input disabled id="input-address" class="form-control" placeholder="Home Address" name="address" type="text"  value="{{old('province')?old('province'):$users['regency']['province']['name']}}">
@@ -74,7 +74,7 @@
 										<div class="col-lg-6">
 											<div class="form-group">
 												<label class="form-control-label" for="input-country">City</label>
-												@if (!$user['regency'])
+												@if (!$users['regency'])
 												<input disabled id="input-address" class="form-control" placeholder="Home Address" name="address" type="text" >
 												@else
 												<input disabled id="input-address" class="form-control" placeholder="Home Address" name="address" type="text"  value="{{old('city')?old('city'):$users['regency']['name']}}">
