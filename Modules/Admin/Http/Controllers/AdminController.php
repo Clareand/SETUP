@@ -149,6 +149,7 @@ class AdminController extends Controller
     // profileAdmin
     public function profile(){
         $admin = AdminBEController::profile();
+        // return $admin;
         if($admin['result'][0]['city']){
             $data=[
                 'result'=>$admin['result'],

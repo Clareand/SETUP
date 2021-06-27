@@ -91,7 +91,8 @@ class AuthController extends Controller
         $rules = [
             'name'                  => 'required|min:3|max:35',
             'email'                 => 'required|email|unique:users,email',
-            'password'              => 'required|confirmed'
+            'password'              => 'required|confirmed',
+            'phone'                 => 'required|unique:users,phone',
         ];
  
         $messages = [
@@ -101,6 +102,7 @@ class AuthController extends Controller
             'email.required'        => 'Email wajib diisi',
             'email.email'           => 'Email tidak valid',
             'email.unique'          => 'Email sudah terdaftar',
+            'email.unique'          => 'Phone sudah terdaftar',
             'password.required'     => 'Password wajib diisi',
             'password.confirmed'    => 'Password tidak sama dengan konfirmasi password'
         ];

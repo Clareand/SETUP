@@ -1,5 +1,7 @@
 @extends('baseAdmin.main')
-
+@section('main-title','Profile')
+@section('title','Admin')
+@section('page','Profile')
 @section('content')
 <div class="row">
   @foreach ($result as $item)    
