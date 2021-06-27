@@ -32,6 +32,7 @@
               </tr>
             </thead>
             <tbody class="list">
+            @if ($status=='success')
               @foreach ($result as $item)
               <tr>
                 <th scope="row">
@@ -84,6 +85,11 @@
                 </div>
               </div>
               @endforeach
+              @else
+              <tr>
+                <td colspan="5" class="text-center">No Data to display</td>
+              </tr>
+            @endif
             </tbody>
           </table>
         </div>
@@ -91,7 +97,9 @@
         <div class="card-footer py-4">
           <nav aria-label="...">
             <ul class="pagination justify-content-end mb-0">
-            {{$result->links()}}
+              @if ($status=='success')
+              {{$result->links()}}
+              @endif
             </ul>
           </nav>
         </div>
