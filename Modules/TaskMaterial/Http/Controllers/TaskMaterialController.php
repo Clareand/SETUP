@@ -116,6 +116,7 @@ class TaskMaterialController extends Controller
     public function storeTask(Request $request)
     {
         $data = TaskMaterialBEController::storeTask($request);
+        // return $data;
         if($data['status']=='success'){
             return redirect('task')->withSuccess(['Task has ben created']);
             // nanti langsung diarahin ke detail, buat tambahin field pertanyaan

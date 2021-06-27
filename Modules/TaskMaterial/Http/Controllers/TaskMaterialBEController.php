@@ -182,7 +182,8 @@ class TaskMaterialBEController extends Controller
     public static function storeTask($request)
     {
         $validator = Validator::make($request->all(),[
-            'name'=>'string|required'
+            'name'=>'string|required',
+            'description'=>'string|required',
         ]);
         if($validator->fails()){
             $response=MyHelper::checkValidator($validator->messages()->all());
@@ -250,7 +251,7 @@ class TaskMaterialBEController extends Controller
             return MyHelper::checkDelete($deleteTask);
         }
         DB::commit();
-        Storage::delete($path);
+        // Storage::delete($path);
         return MyHelper::checkDelete($deleteTask);
     }
 

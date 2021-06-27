@@ -33,15 +33,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-username">Point</label>
-                                    <input type="text" id="input-username" class="form-control" placeholder="0000" name="point" required>
-                                    <div class="invalid-feedback">
-                                        Please insert Path point.
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6">
