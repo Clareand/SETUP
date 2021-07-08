@@ -54,7 +54,7 @@
             @foreach ($item['user']['badges'] as $badge)
                 <div class="text-center">
                   @if ($badge['image'])
-                  <img src="{{ Storage::url( $item['image']) }}" class="rounded float-left img-thumbnail" alt="..." style='object-fit:cover/;width:50px;height:50px'>
+                  <img src="{{ Storage::url( $badge['image']) }}" class="rounded float-left cropped" alt="..." style='width:50px;height:50px'>
                   @else
                   <img style='width:50px' src="{{url('assets/img/picture/not-found.png')}}" class="rounded float-left img-thumbnail" alt="...">
                   @endif
@@ -74,7 +74,7 @@
             Indonesia
           </div>
           <div class="h5 mt-4">
-            <i class="ni business_briefcase-24 mr-2"></i>100/1000
+            <i class="ni business_briefcase-24 mr-2"></i>{{$userRank}}/{{$total}}
           </div>
         </div>
       </div>

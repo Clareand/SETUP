@@ -186,7 +186,6 @@ class ClassesController extends Controller
     }
 
     public function checkStatus(Request $request){
-        // return 'true';
         $data = ClassesBEController::checkStatusMaterial($request);
         return $data;
     }

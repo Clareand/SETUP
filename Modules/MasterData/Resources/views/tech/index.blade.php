@@ -66,7 +66,7 @@
                       </button>
                     </div>
                     <div class="modal-body">
-                      Are you sure want to delete class <strong>{{$item['name']}}</strong> ?
+                      Are you sure want to delete Field <strong>{{$item['name']}}</strong> ?
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -106,7 +106,7 @@ class AdminController extends Controller
         if($data['status']=='success'){
             return redirect('admin/list')->withSuccess(['Admin has been updated']);
         }else{
-            return back()->withErrors($data['result'])->withInput();
+            return back()->withError($data['result'])->withInput();
         };
     }
 

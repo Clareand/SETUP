@@ -59,7 +59,7 @@
           <br>
           <div class="row">
             <div class="col-lg-12">
-              <a href="" class="btn btn-olive btn-block">Find your Path</a>
+              <a href="{{url('/')}}" class="btn btn-olive btn-block">Find your Path</a>
             </div>
           </div>
         </div>

@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Library\MyHelper;
 use Validator;
 use Hash;
 use Session;
@@ -108,9 +109,8 @@ class AuthController extends Controller
         ];
  
         $validator = Validator::make($request->all(), $rules, $messages);
- 
         if($validator->fails()){
-            return redirect()->back()->withError($validator)->withInput($request->all);
+            return back()->withError($validator->messages()->all())->withInput($request->all);
         }
         
         DB::beginTransaction();

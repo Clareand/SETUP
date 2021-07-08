@@ -119,7 +119,7 @@ class StudentController extends Controller
 
     public function review(){
         $data = StudentBEController::review();
-        return $data;
+        // return $data;
         return view('student::review.index',$data);
     }
 
@@ -145,17 +145,21 @@ class StudentController extends Controller
     // front
     public function studentProfile($id){
         $student= StudentBEController::studentProfile($id);
-        // return $student;
+        $leaderboard = StudentBEController::leaderboard();
         if($student['result'][0]['city']){
             $data=[
                 'result'=>$student['result'],
                 'province'=>HomeController::getProvince(),
-                'city'=>HomeController::getCities($student['result'][0]['regency']['province_id'])
+                'city'=>HomeController::getCities($student['result'][0]['regency']['province_id']),
+                'userRank'=>$leaderboard['result']['userRank'],
+                'total'=>count($leaderboard['result']['rank'])
             ];
         }else{
             $data=[
                 'result'=>$student['result'],
                 'province'=>HomeController::getProvince(),
+                'userRank'=>$leaderboard['result']['userRank'],
+                'total'=>count($leaderboard['result']['rank'])
             ];
         }
         // return $data;

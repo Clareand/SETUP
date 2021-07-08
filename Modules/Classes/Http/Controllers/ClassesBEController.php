@@ -373,6 +373,9 @@ class ClassesBEController extends Controller
     }
 
     public static function percentage($num1,$num2){
+        if($num1==0||$num2==0){
+            return 0;
+        }
         $data = round((($num1/$num2)*100),2);
         return $data;
     }
@@ -397,7 +400,7 @@ class ClassesBEController extends Controller
     }
 
     public static function checkTask($request,$id){
-        // return $request;
+        // return $request->file('upload');
         // status : 0 (not yet),1(acc),2(wrong),3(pending)
         $answers = [];
         // upload files
@@ -406,14 +409,16 @@ class ClassesBEController extends Controller
             $name = time().'.'.$file->getClientOriginalExtension();
             $path = $request->file('upload')->storeAs(('public/task'), $name);
         }
+        // return $path;
         // sorting answer
         foreach($request->all() as $key=>$value){
+            preg_match_all('!\d+!', $key, $keys);
             if(stristr($key,'multiple')!==FALSE){
                 $answer = [
                     'id_user'=>Auth::user()->id,
                     'id_task'=>$id,
                     'type' =>'multiple',
-                    'id_task_field' => substr($key,-1),
+                    'id_task_field' => $keys[0][0],
                     'answer_multiple' => $value
                 ];
                 array_push($answers,$answer);
@@ -423,7 +428,8 @@ class ClassesBEController extends Controller
                     'id_user'=>Auth::user()->id,
                     'id_task'=>$id,
                     'type'=>'short answer',
-                    'id_task_field' => substr($key,-1),
+                    'id_task_field' => $keys[0][0],
+                    // 'id_task_field' => substr($key,-1),
                     'answer_short' => strtolower($value),
                 ];
                 array_push($answers,$answer);
@@ -433,7 +439,7 @@ class ClassesBEController extends Controller
                     'id_user'=>Auth::user()->id,
                     'id_task'=>$id,
                     'type'=>'file upload',
-                    'id_task_field' => substr($key,-1),
+                    'id_task_field' => $keys[0][0],
                     'answer_upload' => $path,
                     'point'=>0,
                     'status'=>3
@@ -484,7 +490,7 @@ class ClassesBEController extends Controller
             ]);
         }catch(\Exception $e){
             DB::rollback();
-            return $e;
+            Storage::delete($path); 
             return MyHelper::checkCreate($user_task);
         }
         $points = 0;
@@ -498,7 +504,9 @@ class ClassesBEController extends Controller
                 $user_answer=UserTaskAnswer::create($answers[$i]);
             }catch(\Exception $e){
                 DB::rollback();
+                Storage::delete($path);
                 return $e;
+                // return $answers;
             }
         }
         // update user Task
@@ -549,70 +557,71 @@ class ClassesBEController extends Controller
     
 
     // check path
-    public static function checkPath($request){
-        $userClass = UserClassList::where('id_user',Auth::user()->id)->where('progress','=',100)->get(); //ini bugnya
-        // return $userClass;
-        DB::beginTransaction();
-        if(count($userClass)!=0){
-            $path = ClassPath::where('id_class',$request['id_class'])->get();
-            for($i=0;$i<count($path);$i++){
+   public static function checkPath($request){
+       $userClass = UserClassList::where('id_user',Auth::user()->id)->where('progress','=',100)->get();
+    //    return $userClass;
+       if(count($userClass)!=0){
+           $path = ClassPath::where('id_class',$request['id_class'])->with('learning_path')->get();
+           for($i=0;$i<count($path);$i++){
                 $paths[$i]=LearningPath::where('id',$path[$i]['id_learning_path'])->with('class_paths','badge')->get();
             }
-            // return $paths;
-            $given = 0;
-            for($i=0;$i<count($userClass);$i++){
-                $countMatch = 0;
-                for($j=0;$j<count($paths);$j++){
-                    $countClassPath = count($paths[$j][0]['class_paths']);
-                    for($x=0;$x<$countClassPath;$x++){
-                        if($userClass[$i]['id_class']==$paths[$j][0]['class_paths'][$x]['id_class']){
-                            // echo $userClass;
-                            $countMatch=+1;
-                        }
-                    }
-                    // echo ' $j :',$j;
-                    // echo ' countMatch :' ,$countMatch;
-                    if($countMatch==$countClassPath){
-                        $given++;
-                        $userBadge = UserBadge::where('id_user',Auth::user()->id)->where('id_badge',$paths[$j][0]['id_badge'])->get();
-                        if(count($userBadge)==0){
-                            $post = [
-                                'id_user'=>Auth::user()->id,
-                                'id_badge'=>$paths[$j][0]['id_badge'],
-                            ];
-                           
-                            try{
-                                $createBadge=UserBadge::create($post);
-                            }catch(\Exception $e){
-                                DB::rollback();
-                                return $e;
-                                return MyHelper::checkCreate($createBadge);
-                            }
-                            $badge = Badge::where('id',$paths[$j][0]['id_badge'])->get();
-                            $students= Student::where('id_user',Auth::user()->id)->get();
-                            $points=$badge[0]['point']+$students[0]['point'];
-                            try{
-                                $updateStudent = Student::where('id_user',Auth::user()->id)->update(array('point'=>$points));
-                            }catch(\Exception $e){
-                                DB::rollback();
-                                return 'false';
-                            }
-                            DB::commit();
-                            Session::put('point',$points);
-                        }
+        //    return $path[0]['learning_path'];
+        // return $paths;
+        DB::beginTransaction();
+        $status = false;
+        for($i=0;$i<count($paths[0]);$i++){
+            $givenCount = 0;
+            $countClassinPath=count($paths[$i][0]['class_paths']);
+            for($j=0;$j<$countClassinPath;$j++){
+                for($x=0;$x<count($userClass);$x++){
+                    if($userClass[$x]['id_class']==$paths[$i][0]['class_paths'][$j]['id_class']){
+                        $givenCount++;
+                        echo 'classUser : ',$userClass[$x]['id_class'] , 'pathClass: ', $paths[$i][0]['class_paths'][$j]['id_class'];
+                        echo' ', $givenCount, ' ';
                     }
                 }
             }
-            if($given==0){
-                return 'truefalse';
+            // return $countClassinPath;
+            if($givenCount==$countClassinPath){
+                $userBadge = UserBadge::where('id_user',Auth::user()->id)->where('id_badge',$paths[$i][0]['id_badge'])->get();
+                if(count($userBadge)==0){
+                    $post = [
+                        'id_user'=>Auth::user()->id,
+                        'id_badge'=>$paths[$i][0]['id_badge'],
+                    ];
+                    try{
+                        $createBadge=UserBadge::create($post);
+                    }catch(\Exception $e){
+                        DB::rollback();
+                        return $e;
+                        return MyHelper::checkCreate($createBadge);
+                    }
+                    $badge = Badge::where('id',$paths[$i][0]['id_badge'])->get();
+                    $students= Student::where('id_user',Auth::user()->id)->get();
+                    $points=$badge[0]['point']+$students[0]['point'];
+                    try{
+                        $updateStudent = Student::where('id_user',Auth::user()->id)->update(array('point'=>$points));
+                    }catch(\Exception $e){
+                        DB::rollback();
+                        return 'false';
+                    }
+                    DB::commit();
+                    Session::put('point',$points);
+                    $status=true;
+                    
+                }
             }else{
-                return 'true';
+                $givenCount=0;
             }
         }
-        return 'false';
-        // testing
-        
-    }
+        if($status==false){
+            return 'truefalse';
+        }else{
+            return 'true';
+        }
+       }
+       return 'false';
+   }
 
     // Search Class
     public static function searchClass($request){

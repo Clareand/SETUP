@@ -5,6 +5,7 @@ namespace Modules\TaskMaterial\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Task;
 use App\Models\TaskField;
 use App\Models\ClassList;
@@ -258,6 +259,18 @@ class TaskMaterialBEController extends Controller
     }
 
     public static function storeQuestion($request,$id){
+        $validator = Validator::make($request->all(),[
+            'title'=>'string|required',
+            'point'=>'int|nullable',
+            'type'=>'required'
+        ]);
+        if($request['point']==null){
+            $request['point']=0;
+        };
+        if($validator->fails()){
+            $response=MyHelper::checkValidator($validator->messages()->all());
+            return $response;
+        }
         if($request['field_type']=='short answer'||$request['field_type']=='file upload'){
             $storeField = [
                 'id_task'=>$id,

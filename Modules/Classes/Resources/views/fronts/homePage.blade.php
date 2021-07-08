@@ -11,7 +11,7 @@
             </h1>
             <h6 class="lead">Temukan kelasmu sekarang!</h6>
             <br><br>
-            <a href="=" class="btn btn-olive btn-lg">
+            <a href="{{url('app/list')}}" class="btn btn-olive btn-lg">
                 Find Class
             </a>
            </div>
