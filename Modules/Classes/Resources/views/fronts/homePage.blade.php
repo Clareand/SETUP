@@ -7,9 +7,10 @@
            <div class="col-lg-4 top-2">
             <h1 class="display-3">
                 Hallo @if (Auth::user()&&Auth::user()->id_role==2){{Auth::user()->name}}@endif, <br>
-                Yuk Mulai Belajar di SETUP
+                Yuk Mulai Belajar di SETUP*
             </h1>
-            <h6 class="lead">Temukan kelasmu sekarang!</h6>
+            <h5>*Software Engineering Technology Upgrading Skill</h5>
+            <h3 class="lead" style="font-weight: 300;font-size:16pt">Temukan kelasmu sekarang!</h3>
             <br><br>
             <a href="{{url('app/list')}}" class="btn btn-olive btn-lg">
                 Find Class
@@ -52,7 +53,7 @@
             <h3 class="font-weight-bold card-title text-center">
               {{$item['name']}}
             </h3>
-            <p class="card-text" style="height:10rem;">
+            <p class="card-text" style="height:17rem;">
               {{$item['description']}}
             </p>
               {{-- <input type="hidden" name="id_class" value="{{$item['id']}}"> --}}
