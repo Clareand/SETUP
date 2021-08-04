@@ -260,9 +260,9 @@ class TaskMaterialBEController extends Controller
 
     public static function storeQuestion($request,$id){
         $validator = Validator::make($request->all(),[
-            'title'=>'string|required',
+            'field_question'=>'string|required',
             'point'=>'int|nullable',
-            'type'=>'required'
+            'field_type'=>'required'
         ]);
         if($request['point']==null){
             $request['point']=0;

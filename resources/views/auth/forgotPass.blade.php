@@ -61,9 +61,9 @@
           <div class="card bg-secondary border-0 mb-0">
             <div class="card-body px-lg-5 py-lg-5">
               <div class="text-center text-muted mb-4">
-                Sign in with credentials
+                Change your password here
               </div>
-              <form role="form" action="{{route('login')}}" method="post">
+              <form role="form" action="{{route('forgot')}}" method="post">
                 @csrf
                 @include('baseAdmin.alerts')
                 <div class="form-group mb-3">
@@ -79,21 +79,26 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                     </div>
-                    <input class="form-control" placeholder="Password" type="password" name="password">
+                    <input class="form-control" placeholder="new Password" type="password" name="password">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group input-group-merge input-group-alternative">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                    </div>
+                    <input class="form-control" placeholder="Password Confirmation" type="password" name="password_confirmation">
                   </div>
                 </div>
                 <div class="text-center">
-                  <button type="submit" class="btn btn-olive my-4">Sign in</button>
+                  <button type="submit" class="btn btn-olive my-4">Change</button>
                 </div>
               </form>
               <div class="row mt-3">
-                <div class="col-12 text-center text-gray"><small>Don't Have Account or fogot your password?</small>
+                <div class="col-12 text-center text-gray"><small>Don't Have Account?</small>
                 </div>
                 <div class="col-12 text-center">
                   <a href="{{route('register')}}" class="text-gray"><small>Sign Up</small></a>
-                </div>
-                <div class="col-12 text-center">
-                  <a href="{{route('forgot')}}" class="text-gray"><small>Forgot Password</small></a>
                 </div>
               </div>
             </div>

@@ -176,4 +176,35 @@ class AuthController extends Controller
             return redirect()->route('login');
         }   
     }
+
+    public function showFormForgot(){
+        return view('auth.forgotPass');
+    }
+
+    public function forgotPass(Request $request){
+        $rules = [
+            'email'                 => 'required|email',
+            'password'              => 'required|confirmed'
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if($validator->fails()){
+            return back()->withError($validator->messages()->all())->withInput($request->all);
+        }
+
+        $student = User::where('email',$request['email'])->where('id_role',2)->get();
+        if(count($student)==null){
+            return back()->withError(['Email not registered'])->withInput($request->all);
+        }
+        DB::beginTransaction();
+        try{
+            $updateStudent = User::where('email',$request['email'])->update(['password'=>Hash::make($request['password'])]);
+        }catch(\Exception $e){
+            DB::rollback();
+            Session::flash('errors', ['Password Change Failed']);
+            return back();
+        }
+        DB::commit();
+        Session::flash('success', ['Change password Success, please Login']);
+        return redirect('/login');
+    }
 }

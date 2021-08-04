@@ -22,6 +22,9 @@ Route::get('login', 'AuthController@showFormLogin')->name('login');
 Route::post('login', 'AuthController@login');
 Route::get('register', 'AuthController@showFormRegister')->name('register');
 Route::post('register', 'AuthController@register');
+Route::get('forgot', 'AuthController@showFormForgot')->name('forgot');
+Route::post('forgot', 'AuthController@forgotPass');
+
 Route::post('city', 'HomeController@getCity');
  
 Route::group(['middleware' => 'auth'], function () {
